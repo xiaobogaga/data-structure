@@ -10,7 +10,7 @@ public class BasicArrayHeap<E extends Comparable<E>> {
     /**
      * heap type holder.
      */
-    enum HeapType {
+    public enum HeapType {
         MAXHEAP, MINHEAP
     }
 
