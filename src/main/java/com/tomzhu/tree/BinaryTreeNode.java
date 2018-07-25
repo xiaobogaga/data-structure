@@ -1,0 +1,262 @@
+package com.tomzhu.tree;
+
+/**
+ * Created by tomzhu on 17-7-15.
+ */
+public class BinaryTreeNode<E> extends TreeNode<E> {
+
+    private BinaryTreeNode<E> parent;
+    private BinaryTreeNode<E> leftChild;
+    private BinaryTreeNode<E> rightChild;
+
+    public BinaryTreeNode(E value) {
+        this.value = value;
+        this.childrenSize = 0;
+        this.parent = this.leftChild = this.rightChild = null;
+    }
+
+    public BinaryTreeNode(E value , BinaryTreeNode<E> parent ,
+                          BinaryTreeNode<E> leftChild , BinaryTreeNode<E> rightChild) {
+        this.value = value;
+        this.parent = parent;
+        this.leftChild = leftChild;
+        this.rightChild = rightChild;
+        this.childrenSize += this.leftChild == null ? 0 : 1;
+        this.childrenSize +=  this.rightChild == null ? 0 : 1;
+    }
+
+    public BinaryTreeNode(E value , BinaryTreeNode<E> parent) {
+        this.value = value;
+        this.parent = parent;
+        this.childrenSize = 0;
+        this.leftChild = this.rightChild = null;
+    }
+
+    /**
+     * return whether this node has left sibling.
+     * @return
+     */
+    public boolean hasLeftSibling() {
+        return this.parent != null && this.parent.leftChild != null;
+    }
+
+    /**
+     * return whether this node has right sibling.
+     * @return
+     */
+    public boolean hasRightSibling() {
+        return this.parent != null && this.parent.rightChild != null;
+    }
+
+    /**
+     * return whether this node has left child.
+     * @return
+     */
+    public boolean hasLeftChild() {
+        return this.leftChild != null;
+    }
+
+    /**
+     * return whether this node has right child.
+     * @return
+     */
+    public boolean hasRightChild() {
+        return this.rightChild != null;
+    }
+
+    /**
+     * return whether this node is the root node.
+     * @return
+     */
+    public boolean isRoot() {
+        return this.parent == null;
+    }
+
+    /**
+     * return a array holds all the children of the current node
+     * with left to right order.
+     * @param leftToRight
+     * @return
+     */
+    public BinaryTreeNode<E>[] getChilds(boolean leftToRight) {
+        if (!hasChildren())
+            return new BinaryTreeNode[0];
+        BinaryTreeNode<E>[] ar = new BinaryTreeNode[this.childrenSize];
+        if (leftToRight) {
+            if (this.childrenSize == 2) {
+                ar[0] = this.getLeftChild();
+                ar[1] = this.getRightChild();
+            } else
+                ar[0] = this.getLeftChild() == null ? this.getRightChild() : this.getLeftChild();
+        } else {
+            if (this.childrenSize == 2) {
+                ar[0] = this.getRightChild();
+                ar[1] = this.getLeftChild();
+            } else
+                ar[0] = this.getLeftChild() == null ? this.getRightChild() : this.getLeftChild();
+        }
+        return ar;
+    }
+
+//    public boolean isFirstChild() {
+//        return
+//    }
+//
+//    public boolean isLastChild() {
+//        return false;
+//    }
+
+    /**
+     * add the left child using specific "value" to the current node.
+     * and return the added node.
+     * @param value
+     * @return
+     */
+    public BinaryTreeNode<E> addLeftChild(E value) {
+        this.childrenSize++;
+        return this.leftChild = new BinaryTreeNode<E>(value , this);
+    }
+
+    /**
+     * add the right child using specific "value" to the current node.
+     * and return the added node
+     * @param value
+     * @return
+     */
+    public BinaryTreeNode<E> addRightChild(E value) {
+        this.childrenSize++;
+        return this.rightChild = new BinaryTreeNode<E>(value , this);
+
+    }
+
+    /**
+     * add the leftChild node to the current node as its left child.
+     * and return the added node
+     * @param leftChild
+     * @return
+     */
+    public BinaryTreeNode<E> addLeftChild(BinaryTreeNode<E> leftChild) {
+        this.childrenSize ++;
+        this.leftChild = leftChild;
+        this.leftChild.parent = this;
+        return this.leftChild;
+    }
+
+    /**
+     * add the rightChild node to the current node as its right child
+     * and return the added node.
+     * @param rightChild
+     * @return
+     */
+    public BinaryTreeNode<E> addRightChild(BinaryTreeNode<E> rightChild) {
+        this.childrenSize ++;
+        this.rightChild = rightChild;
+        this.rightChild.parent = this;
+        return this.rightChild;
+    }
+
+    /**
+     * return the left child of the current node , return null if it doesn't have left child.
+     * @return
+     */
+    public BinaryTreeNode<E> getLeftChild() {
+        return this.leftChild;
+    }
+
+    /**
+     * return the right child of the current node , return null if it doesn't have right child.
+     * @return
+     */
+    public BinaryTreeNode<E> getRightChild() {
+        return this.rightChild;
+    }
+
+    /**
+     * remove the children node of the current node
+     * and then return the current node.
+     * @return
+     */
+    public BinaryTreeNode<E> clearChildren() {
+        this.childrenSize = 0;
+        this.leftChild = this.rightChild = null;
+        return this;
+    }
+
+    /**
+     * remove and return the left child of current node.
+     * return null if current node doesn't have left child.
+     * @return
+     */
+    public BinaryTreeNode<E> removeLeftChild() {
+        BinaryTreeNode<E> temp = this.leftChild;
+        this.childrenSize -= temp == null ? 0 : 1;
+        this.leftChild = null;
+        return temp;
+    }
+
+    /**
+     * remove  and return the right child of current node
+     * return null if current node doesn't have right child.
+     * @return
+     */
+    public BinaryTreeNode<E> removeRightChild() {
+        BinaryTreeNode<E> temp = this.rightChild;
+        this.childrenSize -= temp == null ? 0 : 1;
+        this.rightChild = null;
+        return temp;
+    }
+
+    /**
+     * return the parent node of the current node.
+     * @return
+     */
+    public BinaryTreeNode<E> getParent() { return this.parent; }
+
+    /**
+     * set the parent node of the current node and return
+     * the parent node.
+     * @param newParent
+     * @return
+     */
+    public BinaryTreeNode<E> setParent(BinaryTreeNode<E> newParent) {
+        this.parent = newParent;
+        return this;
+    }
+
+    /**
+     * remove the binary tree's child node
+     * @param node
+     */
+    public void removeChild(BinaryTreeNode<E> node) {
+        if (node == null)
+            return;
+        if (this.leftChild == node)
+            removeLeftChild();
+        else if (this.rightChild == node)
+            removeRightChild();
+    }
+
+    /**
+     * set the current node's left child.
+     * @param leftChild
+     */
+    public void setLeftChild(BinaryTreeNode<E> leftChild) {
+        if (leftChild == null)
+            return;
+        leftChild.parent = this;
+        this.childrenSize += this.hasLeftChild() ? 0 : 1;
+        this.leftChild = leftChild;
+    }
+
+    /**
+     * set the current node's right child.
+     * @param rightChild
+     */
+    public void setRightChild(BinaryTreeNode<E> rightChild) {
+        if (rightChild == null)
+            return;
+        rightChild.parent = this;
+        this.childrenSize += this.hasRightChild() ? 0 : 1;
+        this.rightChild = rightChild;
+    }
+}
