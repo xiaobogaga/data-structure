@@ -54,6 +54,8 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
      * @param p
      */
     public void insert(K key, P p) {
+       // System.out.println("[" + key + ", " + p + "]");
+
         if (isEmpty()) {
             this.root = new Node(key, p);
             this.size++;
@@ -105,7 +107,6 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                     } else {
                         RightRotate(n.parent);
                     }
-                    n = n.parent;
                 } else {
                     break;
                 }
@@ -118,12 +119,12 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                     } else {
                         RightRotate(n.parent);
                     }
-                    n = n.parent;
                 } else {
                     break;
                 }
             }
         }
+
         if (n.parent == null)
             this.root = n;
     }
@@ -169,7 +170,7 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
             n.parent = left;
             if (left.right != null)
                 left.right.parent = n;
-            n.right = left.right;
+            n.left = left.right;
             left.right = n;
         }
     }
@@ -269,18 +270,24 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                 Node right = n.right;
                 if (left == null && right == null) {
                     // ignore.
+                    return;
                 } else if (left == null) {
                     if (right.priority.compareTo(n.priority) < 0) {
                         leftRotate(n);
                         this.root = right;
+                    } else {
+                        return;
                     }
                 } else if (right == null) {
                     if (left.priority.compareTo(n.priority) < 0) {
                         RightRotate(n);
                         this.root = left;
+                    } else {
+                        return;
                     }
                 } else {
-                    if (left.priority.compareTo(right.priority) < 0 && left.priority.compareTo(n.priority) < 0) {
+                    if (left.priority.compareTo(right.priority) < 0 &&
+                            left.priority.compareTo(n.priority) < 0) {
                         RightRotate(n);
                         this.root = left;
                     } else if (right.priority.compareTo(n.priority) < 0){
@@ -300,15 +307,20 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                 } else if (left == null) {
                     if (right.priority.compareTo(n.priority) < 0) {
                         leftRotate(n);
+                    } else {
+                        return;
                     }
                 } else if (right == null) {
                     if (left.priority.compareTo(n.priority) < 0) {
                         RightRotate(n);
+                    } else {
+                        return;
                     }
                 } else {
-                    if (left.priority.compareTo(right.priority) < 0 && left.priority.compareTo(n.priority) < 0) {
+                    if (left.priority.compareTo(right.priority) < 0 &&
+                            left.priority.compareTo(n.priority) < 0) {
                         RightRotate(n);
-                    } else if (right.priority.compareTo(n.priority) < 0){
+                    } else if (right.priority.compareTo(n.priority) < 0) {
                         leftRotate(right);
                     } else {
                         return;
@@ -321,18 +333,24 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                 Node right = n.right;
                 if (left == null && right == null) {
                     // ignore.
+                    return;
                 } else if (left == null) {
                     if (right.priority.compareTo(n.priority) > 0) {
                         leftRotate(n);
                         this.root = right;
+                    } else {
+                        return;
                     }
                 } else if (right == null) {
                     if (left.priority.compareTo(n.priority) > 0) {
                         RightRotate(n);
                         this.root = left;
+                    } else {
+                        return;
                     }
                 } else {
-                    if (left.priority.compareTo(right.priority) > 0 && left.priority.compareTo(n.priority) > 0) {
+                    if (left.priority.compareTo(right.priority) > 0 &&
+                            left.priority.compareTo(n.priority) > 0) {
                         RightRotate(n);
                         this.root = left;
                     } else if (right.priority.compareTo(n.priority) > 0){
@@ -352,15 +370,20 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
                 } else if (left == null) {
                     if (right.priority.compareTo(n.priority) > 0) {
                         leftRotate(n);
+                    } else {
+                        return;
                     }
                 } else if (right == null) {
                     if (left.priority.compareTo(n.priority) > 0) {
                         RightRotate(n);
+                    } else {
+                        return;
                     }
                 } else {
-                    if (left.priority.compareTo(right.priority) > 0 && left.priority.compareTo(n.priority) > 0) {
+                    if (left.priority.compareTo(right.priority) > 0 &&
+                            left.priority.compareTo(n.priority) > 0) {
                         RightRotate(n);
-                    } else if (right.priority.compareTo(n.priority) > 0){
+                    } else if (right.priority.compareTo(n.priority) > 0) {
                         leftRotate(right);
                     } else {
                         return;
@@ -432,6 +455,25 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
      */
     public boolean isMaxHeap() {
         return this.heapType == HeapType.MAXHEAP;
+    }
+
+    public String visitNode (Node r, int i) {
+        StringBuilder build = new StringBuilder();
+        if (r != null) {
+            build.append("Level-").append(i).append(":").append(r.key).
+                    append(" , ").append(r.priority).append("\n");
+            build.append(visitNode(r.left, i + 1));
+            build.append(visitNode(r.right, i + 1));
+        } else {
+            build.append("Level-").append(i).append(":").append("NIL").append("\n");
+        }
+        return build.toString();
+    }
+
+
+
+    public String toString() {
+        return visitNode(this.root, 0);
     }
 
 }

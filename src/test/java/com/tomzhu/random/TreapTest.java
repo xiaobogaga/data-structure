@@ -30,7 +30,7 @@ public class TreapTest {
         }
 
         public int compareTo(Entry o) {
-            return k.compareTo(o.k);
+            return p.compareTo(o.p);
         }
     }
 
@@ -46,7 +46,7 @@ public class TreapTest {
         minHeap = new BasicArrayHeap<Entry>(BasicArrayHeap.HeapType.MINHEAP);
 
         map = new HashMap<Integer, Integer>();
-        size = 10;
+        size = 5;
         int i = 0;
         assertTrue(minTreap.isEmpty());
         assertTrue(maxTreap.isEmpty());
@@ -63,21 +63,32 @@ public class TreapTest {
                 maxTreap.insert(key, priority);
                 minHeap.insert(new Entry(key, priority));
                 maxHeap.insert(new Entry(key, priority));
+             //   System.out.println(minTreap);
+             //   System.out.println("------");
+             //   System.out.println(maxTreap);
+             //   System.out.println(i);
                 i ++;
             }
         }
+        System.out.println(minTreap);
         assertFalse(minTreap.isEmpty());
         for (Integer t : map.keySet())
             assertTrue(minTreap.contains(t));
 
-        for (Integer t : map.keySet())
+        for (Integer t : map.keySet()) {
             assertTrue(minTreap.remove(t));
+            System.out.println(minTreap);
+        }
 
         for (Integer t : map.keySet())
             assertFalse(minTreap.contains(t));
 
+        System.out.println(minTreap);
+
         for (Map.Entry<Integer, Integer> t : map.entrySet())
             minTreap.insert(t.getKey(), t.getValue());
+
+        System.out.println(minTreap);
 
         i = 0;
         while (i < size) {
