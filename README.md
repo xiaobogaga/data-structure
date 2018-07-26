@@ -9,4 +9,4 @@ a dozen of data structure implementations:
 * Hash: basic seperate chain hash table, hash table by linear probing, quadratic probing, perfect hashing table, cuckoo
 hash table, hopscotch hash table, Extensible Hash table, HashMap based on Extensible Hashing.
 
-* Random: SkipList.
+* Random: SkipList, Treap.
