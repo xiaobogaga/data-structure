@@ -10,3 +10,5 @@ a dozen of data structure implementations:
 hash table, hopscotch hash table, Extensible Hash table, HashMap based on Extensible Hashing.
 
 * Random: SkipList, Treap.
+
+* string: tries, bitMap.

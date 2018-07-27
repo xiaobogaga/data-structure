@@ -26,11 +26,18 @@ public class SkipList<E extends Comparable<E>> {
 
     }
 
+    /**
+     * construct a skipList with max level.
+     * @param MAX_LAVEL
+     */
     public SkipList(int MAX_LAVEL) {
         this.MAX_LAVEL = MAX_LAVEL;
         this.header = new Node(null, this.MAX_LAVEL);
     }
 
+    /**
+     * @param ele insert an element to this skipList.
+     */
     public void insert(E ele) {
         // set higher forwards.
         int k = randomLevel(), i = this.level;
@@ -82,6 +89,10 @@ public class SkipList<E extends Comparable<E>> {
         return level;
     }
 
+    /**
+     * @param ele
+     * @return whether this skipList contains this element.
+     */
     public boolean contains(E ele) {
         if (isEmpty())
             return false;
@@ -104,6 +115,11 @@ public class SkipList<E extends Comparable<E>> {
         return false;
     }
 
+    /**
+     * remove an element from this skipList.
+     * @param ele
+     * @return
+     */
     public boolean remove(E ele) {
         if (isEmpty())
             return false;
@@ -130,6 +146,9 @@ public class SkipList<E extends Comparable<E>> {
         return find;
     }
 
+    /**
+     * @return whether this skipList is empty.
+     */
     public boolean isEmpty() {
         return  this.size == 0;
     }

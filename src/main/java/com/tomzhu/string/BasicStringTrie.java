@@ -40,31 +40,44 @@ package com.tomzhu.string;
  * compression.
  * <p>
  * 1. we can use LinkedList instead of the pointer array with size 256.
- * 2. we can use BitMap for each character, For example, a
- * bitmap with 256 bits plus one pointer can represent 256 pointers and the character.
- * 3. path compression strategy, for example: Patricia tree.
+ * 2. path compression strategy, for example: Patricia tree.
  */
 
 public class BasicStringTrie {
 
+    /**
+     * Node holder.
+     */
     class Node {
+
+        /**
+         * Node can hold a time variable for maintaining
+         * times of a given string. However, for simplicity, I
+         * don't use it here.
+         */
+
         char c;
-        int time;
-        Node parent;
         Node[] nodes = new Node[256];
 
-        public Node(char c, int time) {
+        public Node(char c) {
             this.c = c;
-            this.time = time;
         }
     }
 
     private Node root;
 
+    /**
+     * construct a tries.
+     */
     public BasicStringTrie() {
-        this.root = new Node('\0', Integer.MAX_VALUE);
+        this.root = new Node('\0');
     }
 
+    /**
+     * build a tries using string arrays ss.
+     * @param ss
+     * @return
+     */
     public static BasicStringTrie buildTrie(String[] ss) {
         BasicStringTrie tries = new BasicStringTrie();
         for (String s : ss) {
@@ -73,6 +86,10 @@ public class BasicStringTrie {
         return tries;
     }
 
+    /**
+     * @param s
+     * @return whether this tries contains the string s.
+     */
     public boolean contains(String s) {
         Node h = this.root;
         for (char c : s.toCharArray())
@@ -82,13 +99,41 @@ public class BasicStringTrie {
             } else {
                 return false;
             }
-        return h.parent.time > h.time;
+        return h.nodes['\0'] != null;
     }
 
+    /**
+     * insert a string s to this tries.
+     * @param s
+     */
     public void insert(String s) {
+        Node h = this.root;
+        for (char c : s.toCharArray())
+            if (h.nodes[c] != null) {
+                h = h.nodes[c];
+                continue;
+            } else {
+                h.nodes[c] = new Node(c);
+                h = h.nodes[c];
+            }
+        h.nodes['\0'] = new Node('\0');
     }
 
+    /**
+     * remove a string s from this tries.
+     * @param s
+     */
     public void remove(String s) {
+        Node h = this.root;
+        for (char c : s.toCharArray())
+            if (h.nodes[c] != null) {
+                h = h.nodes[c];
+                continue;
+            } else {
+                return;
+            }
+        h.nodes['\0'] = null;
+        return;
     }
 
 }
