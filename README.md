@@ -7,7 +7,7 @@ a dozen of data structure implementations:
 **Queue**
 
 * Tree: </p>
-**BasicTree** </p>
+**Basic Tree** </p>
 **Binary Search Tree** </p>
 **AVL tree** </p>
 **Splay Tree** </p>
