@@ -1,41 +1,41 @@
 a dozen of data structure implementations:
 
 * List: </p>
-**LinkedList**
-**ArrayList** 
-**Stack**
+**LinkedList** </p>
+**ArrayList** </p>
+**Stack** </p>
 **Queue**
 
 * Tree: </p>
-**BasicTree**
-**Binary Search Tree**
-**AVL tree**
-**Splay Tree**
-**Red-black tree**
-**TreeMap**
-**HashMap based on Red-black Tree**
+**BasicTree** </p>
+**Binary Search Tree** </p>
+**AVL tree** </p>
+**Splay Tree** </p>
+**Red-black tree** </p>
+**TreeMap** </p>
+**HashMap based on Red-black Tree** </p>
 **BTree**
 
 * Heap: </p>
-**Basic Min-Heap**
-**Leftist Heap**
-**Skew Heap**
-**Binomial Heap**
-**DoubleEndedHeap**
+**Basic Min-Heap** </p>
+**Leftist Heap** </p>
+**Skew Heap** </p>
+**Binomial Heap** </p>
+**DoubleEndedHeap** </p>
 
 * Hash: </p>
-**Basic Hash Table by seperate chain**
-**Hash Table by linear probing, quadratic probing**
-**Perfect Hashing Table**
-**Cuckoo Hash Table**
-**Hopscotch Hash Table**
-**Extensible Hash Table**
-**HashMap based on Extensible Hashing**
+**Basic Hash Table by seperate chain** </p>
+**Hash Table by linear probing, quadratic probing** </p>
+**Perfect Hashing Table** </p>
+**Cuckoo Hash Table** </p>
+**Hopscotch Hash Table** </p>
+**Extensible Hash Table** </p>
+**HashMap based on Extensible Hashing** </p>
 
 * Random: </p>
-**SkipList**
+**SkipList** </p>
 **Treap**
 
 * string: </p>
-**Tries**
+**Tries** </p>
 **BitMap**
