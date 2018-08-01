@@ -1,14 +1,43 @@
 a dozen of data structure implementations:
 
-* List: LinkedList, ArrayList, Stack, Queue.
+* List: 
+**LinkedList**
+**ArrayList**
+**Stack**
+**Queue**
 
-* Tree: basicTree, Binary Search Tree, AVL tree, Splay Tree, Red-black tree, TreeMap, HashMap based on Red-black Tree
+* Tree: 
+**BasicTree
+Binary Search Tree
+AVL tree
+Splay Tree
+Red-black tre
+TreeMap
+HashMap based on Red-black Tree
+BTree
+**
 
-* Heap: Basic Min-Heap, Leftist Heap, Skew Heap, Binomial Heap, DoubleEndedHeap.
+* Heap: 
+**Basic Min-Heap
+Leftist Heap
+Skew Heap
+Binomial Heap
+DoubleEndedHeap
+**
 
-* Hash: basic seperate chain hash table, hash table by linear probing, quadratic probing, perfect hashing table, cuckoo
-hash table, hopscotch hash table, Extensible Hash table, HashMap based on Extensible Hashing.
+* Hash: 
+**Basic Hash Table by seperate chain
+Hash Table by linear probing, quadratic probing
+Perfect Hashing Table
+Cuckoo Hash Table
+Hopscotch Hash Table
+Extensible Hash Table
+HashMap based on Extensible Hashing**
 
-* Random: SkipList, Treap.
+* Random: 
+**SkipList
+Treap**
 
-* string: tries, bitMap.
+* string: 
+**Tries
+BitMap**
