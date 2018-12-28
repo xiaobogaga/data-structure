@@ -15,8 +15,8 @@ public class HashMapTest {
 
     java.util.HashMap<Integer, Integer> hashMap1;
     HashMap<Integer, Integer> hashMap2;
-    int size = 3;
-    int initCapacity = 1;
+    int size = 10000;
+    int initCapacity = 16;
 
     @Test
     public void remove() {
@@ -35,25 +35,26 @@ public class HashMapTest {
                 int value = random.nextInt();
                 hashMap1.put(key, value);
                 hashMap2.put(key, value);
+                data[indicator] = key;
             } else {
                 // adding random key, value
                 int key = random.nextInt();
                 int value = random.nextInt();
                 hashMap1.put(key, value);
                 hashMap2.put(key, value);
+                data[indicator] = key;
             }
-            indicator = hashMap1.size();
+            indicator++;
         }
         //  testing
         assertEquals(hashMap1.size(), hashMap2.getSize());
         for (Map.Entry<Integer, Integer> entry : hashMap1.entrySet()) {
             assertTrue(hashMap2.contains(entry.getKey()));
-            hashMap2.remove(entry.getKey());
+            assertTrue(hashMap2.remove(entry.getKey()));
             assertFalse(hashMap2.contains(entry.getKey()));
             assertNull(hashMap2.get(entry.getKey()));
         }
-
-
+        assertEquals(0, hashMap2.getSize());
     }
 
     @Test
@@ -90,6 +91,13 @@ public class HashMapTest {
             assertTrue(hashMap2.contains(entry.getKey()));
             assertEquals(hashMap2.get(entry.getKey()), entry.getValue());
         }
+
+        /*
+        0 = -1357758087 // here.
+        1 = 698393520
+        2 = 1435869658
+         */
+
 
     }
 

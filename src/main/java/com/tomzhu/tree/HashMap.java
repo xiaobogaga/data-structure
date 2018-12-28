@@ -60,6 +60,7 @@ public class HashMap<K extends Comparable<K>, V> {
     public boolean put(K key, V value) {
         int hashCode = hash(key);
         int loc = hashCode & (this.capacity - 1);
+        // System.out.println("inserting " + key + " with hashCode : " + hashCode);
         boolean ans = false;
         if (this.holders[loc] == null) this.holders[loc] = new KeydRedBlackTree<K, V>();
         if ( (ans = this.holders[loc].insert(key, value, hashCode)) ) {
@@ -118,8 +119,8 @@ public class HashMap<K extends Comparable<K>, V> {
             temp = node;
             temp.left = temp.right = temp.parent = null;
             node = node.next;
-            int indicator = ((Entry) temp.ele).hash & (oldCap);
-            if (indicator == 1) {
+            int indicator = ((Entry) temp.ele).hash & (this.capacity - 1);
+            if (indicator != loc) {
                 if (head2 == null) {
                     head2 = tail2 = temp;
                     head2.prev = head2.next = null;
