@@ -39,3 +39,7 @@ a dozen of data structure implementations:
 * string: </p>
 **Tries** </p>
 **BitMap**
+
+* external memory data structure(they can hold long key and long value): </p>
+**HashTable**</p>
+**BPlusTree**
