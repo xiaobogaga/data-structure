@@ -64,9 +64,23 @@ public class KeydRedBlackTree<K extends Comparable<K>, V> extends RedBlackTree {
         }
     }
 
+    public boolean insert(K key, V value, int hash) {
+        return insert(new Entry<K, V>(key, value, hash));
+    }
 
-
-
-
+    public V get(K key) {
+        Node r = this.root;
+        int z;
+        while (r != null) {
+            if ((z = ((Entry) r.ele).key.compareTo(key)) == 0)
+                return (V) ((Entry) r.ele).value;
+            else if (z < 0) {
+                r = r.right;
+            } else {
+                r = r.left;
+            }
+        }
+        return null;
+    }
 
 }

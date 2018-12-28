@@ -16,7 +16,6 @@ public class BitMap {
     public BitMap(int size) {
         this.size = size;
         this.bits = new long[sizeFor(size)];
-        // System.out.println(this.bits.length);
     }
 
     /**

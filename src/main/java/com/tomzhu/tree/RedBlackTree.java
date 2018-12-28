@@ -1,5 +1,7 @@
 package com.tomzhu.tree;
 
+import com.sun.prism.paint.Color;
+
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -65,6 +67,8 @@ public class RedBlackTree<E extends Comparable<E>>{
         Node left;
         Node right;
         Node parent;
+        Node next = null; // used for rehash.
+        Node prev = null;
 
         public Node(E ele) {
             this.ele = ele;
@@ -81,9 +85,16 @@ public class RedBlackTree<E extends Comparable<E>>{
             this.parent = parent;
             this.color = Color.RED;
         }
+        public void reset(Node parent) {
+            this.parent = parent;
+            this.color = Color.RED;
+            this.left = this.right = null;
+        }
     }
 
     protected Node root;
+    protected Node head = null;
+    protected Node tail = null;
 
     int size;
 
@@ -97,6 +108,7 @@ public class RedBlackTree<E extends Comparable<E>>{
         Node r = this.root;
         if (isEmpty()) {
             this.root = new Node(ele, Color.BLACK);
+            tail = head = this.root;
             this.size++;
             return true;
         }
@@ -115,20 +127,57 @@ public class RedBlackTree<E extends Comparable<E>>{
                 r = r.left;
             }
         }
-
+        Node n;
         if (t > 0) {
             // the element ele needs to be inserted as the left child of t.
-            Node n = new Node(ele, r);
+            n = new Node(ele, r);
             r.left = n;
         } else {
             // the ele needs to be inserted as the right child of t.
-            Node n = new Node(ele, r);
+            n = new Node(ele, r);
             r.right = n;
         }
         if (r.color == Color.RED)
             adjustUpForInsert(r);
         this.size++;
+        n.prev = tail;
+        tail.next = n;
+        tail = n;
         return true;
+    }
+
+    protected void insertForRehash(Node n) {
+        Node r = this.root;
+        if (isEmpty()) {
+            this.root = n;
+            n.color = Color.BLACK;
+            this.size ++;
+            return;
+        }
+        int t = 0;
+        while (r != null) {
+            t = r.ele.compareTo(n.ele);
+            if (t < 0) {
+                if (r.right == null)
+                    break;
+                r = r.right;
+            } else {
+                if (r.left == null)
+                    break;
+                r = r.left;
+            }
+        }
+        if (t > 0) {
+            n.reset(r);
+            r.left = n;
+        } else {
+            // the ele needs to be inserted as the right child of t.
+            n.reset(r);
+            r.right = n;
+        }
+        if (r.color == Color.RED)
+            adjustUpForInsert(r);
+        this.size ++;
     }
 
     /**
@@ -479,6 +528,17 @@ public class RedBlackTree<E extends Comparable<E>>{
                 Node t = replaceNode(r, c);
                 t.color = Color.BLACK;
             }
+
+            // adjust list when removing element.
+            if (r == this.head) {
+              this.head = r.next;
+              if (r.next != null) r.next.prev = null;
+              else this.tail = null;
+            }
+            r.prev.next = r.next;
+            if (r.next != null) r.next.prev = r.prev;
+            else this.tail = r.prev;
+
             this.size--;
             return true;
         } else {
