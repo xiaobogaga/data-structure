@@ -1,15 +1,21 @@
 package com.tomzhu.list;
 
 /**
- * Created by tomzhu on 2017/7/11.
- * a simple implementation for stack
+ * a simple implementation for stack like {@link java.util.Stack}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
-public class MyStack<E> {
+public class Stack<E> {
 
     private Node<E> head;
 
     private int size = 0;
 
+    /**
+     * a simple node for holding element.
+     * @param <E>
+     */
     class Node<E> {
 
         private E value;
@@ -20,23 +26,19 @@ public class MyStack<E> {
             this.after = after;
         }
 
-        public Node(E value) {
-            this.value = value;
-            this.after = null;
-        }
-
     }
 
     /**
-     * check whether the stack is empty
-     * return true when it is empty , otherwise false.
-     * @return
+     * @return <tt>true</tt> if stack is empty, return <tt>false</tt> otherwise.
      */
     public boolean isEmpty() {
         return this.size == 0;
     }
 
-    public MyStack() {}
+    /**
+     * construct a stack.
+     */
+    public Stack() {}
 
     /**
      * @return the number of elements the stack holds.
@@ -46,9 +48,9 @@ public class MyStack<E> {
     }
 
     /**
-     * remove and return the head element in this stack,
-     * return null when the stack is empty.
-     * @return the head element
+     * remove and return the tail element in this stack, return <tt>null</tt> when the stack is empty.
+     *
+     * @return the tail element
      */
     public E pop() {
         if (isEmpty())
@@ -61,6 +63,7 @@ public class MyStack<E> {
 
     /**
      * push a element to the stack.
+     *
      * @param ele
      */
     public void push(E ele) {
@@ -70,9 +73,10 @@ public class MyStack<E> {
     }
 
     /**
-     * return the head element in this stack and don't remove it.
-     * throw @see{com.tomzhu.list.MyNosuchElementException} when the stack is empty.
-     * @return
+     * return the tail element in this stack and don't remove it. throw {@link MyNosuchElementException} when
+     * the stack is empty.
+     *
+     * @return the tail element
      */
     public E getHead() {
         if (isEmpty())

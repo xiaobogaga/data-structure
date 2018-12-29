@@ -38,11 +38,11 @@ Red-black Tree etc. it includes:
 **SkipList** </p>
 **Treap**
 
-* string: </p>
+* String: </p>
 **Tries** </p>
 **BitMap**
 
-* external memory data structure(they can hold long key and long value): </p>
+* External memory data structure(they can hold long key and long value): </p>
 **HashTable**</p>
 **BPlusTree**
 
@@ -50,12 +50,30 @@ Red-black Tree etc. it includes:
 
 The reason I build this project is for learning. I think only when you
 really build a collection library, then you might understand the details
-about data structures. Most of class provides limited function, the benefit
-about this is that it can make code clean, more readable and more extensible.
+about data structures. Most of class provides few but really necessary
+functions, the benefit about this is that it can make code clean,
+more readable and more extensible. I also make data structures separate,
+For example, hashmap could be built on red-black tree array and this is
+what java hashmap does, but it turns out java hash map implementation is
+very very complicated, if you go into java hash map source code since
+jdk 1.8, then you can get 2390 line codes, and my hash map implementation
+only has 160 line. This is another reason I built this.
 
 # Documentations
 For a detailed api documentation, please ref here.
 
 # Examples
 
-## LinkedList
+* [List]()
+
+* [Tree]()
+
+* [Heap]()
+
+* [Hash]()
+
+* [Random]()
+
+* [String]()
+
+* [External]()

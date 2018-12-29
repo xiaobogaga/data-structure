@@ -4,8 +4,7 @@ package com.tomzhu.tree.iterator;
  * Created by tomzhu on 17-7-20.
  */
 
-import com.tomzhu.list.MyQueue;
-import com.tomzhu.tree.BasicTreeNode;
+import com.tomzhu.list.Queue;
 import com.tomzhu.tree.TreeNode;
 
 import java.util.Iterator;
@@ -16,11 +15,11 @@ import java.util.Iterator;
  */
 class LayerIterator<E> implements Iterator<TreeNode<E>> {
 
-    private MyQueue<TreeNode<E>> queue;
+    private Queue<TreeNode<E>> queue;
 
     public LayerIterator(TreeNode<E> root) {
-        queue = new MyQueue<TreeNode<E>>();
-        queue.push(root);
+        queue = new Queue<TreeNode<E>>();
+        queue.enQueue(root);
     }
 
     public boolean hasNext() {
@@ -31,7 +30,7 @@ class LayerIterator<E> implements Iterator<TreeNode<E>> {
         TreeNode<E> node = queue.deQueue();
         for (TreeNode<E> n : node.getChilds(true))
             if (n != null)
-                queue.push(n);
+                queue.enQueue(n);
         return node;
     }
 

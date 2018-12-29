@@ -1,8 +1,7 @@
 package com.tomzhu.tree.iterator;
 
-import com.tomzhu.list.MyStack;
+import com.tomzhu.list.Stack;
 import com.tomzhu.tree.BinaryTreeNode;
-import com.tomzhu.tree.TreeNode;
 
 import java.util.Iterator;
 
@@ -48,28 +47,28 @@ public class BinaryTreeInOrderIterator<E> implements Iterator<BinaryTreeNode<E>>
                     mystack.push(node.nextChild());
      */
 
-    private MyStack<BinaryTreeNode<E>> myStack;
+    private Stack<BinaryTreeNode<E>> stack;
 
     public BinaryTreeInOrderIterator(BinaryTreeNode<E> root) {
-        this.myStack = new MyStack<BinaryTreeNode<E>>();
-        this.myStack.push(root);
+        this.stack = new Stack<BinaryTreeNode<E>>();
+        this.stack.push(root);
     }
 
     public boolean hasNext() {
         BinaryTreeNode<E> node;
-        node = myStack.pop();
+        node = stack.pop();
         while (node != null) {
-            myStack.push(node);
+            stack.push(node);
             node = node.getLeftChild();
         }
-        if (myStack.isEmpty())
+        if (stack.isEmpty())
             return false;
         return true;
     }
 
     public BinaryTreeNode<E> next() {
-        BinaryTreeNode<E> node = myStack.pop();
-        myStack.push(node.getRightChild());
+        BinaryTreeNode<E> node = stack.pop();
+        stack.push(node.getRightChild());
         return node;
     }
 

@@ -1,7 +1,10 @@
 package com.tomzhu.list;
 
 /**
- * Created by tomzhu on 2017/7/10.
+ * a exception represent not supported action. like {@link UnsupportedOperationException}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class MyNotSupportException extends Exception{
 

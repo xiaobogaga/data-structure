@@ -2,7 +2,7 @@ package com.tomzhu.example.list;
 
 import com.tomzhu.list.MyNosuchElementException;
 import com.tomzhu.list.MyNotSupportException;
-import com.tomzhu.list.MyStack;
+import com.tomzhu.list.Stack;
 
 /**
  * a simple postfix expression implementation using stack
@@ -130,7 +130,7 @@ public class PostfixExpression {
     public static String transfer(String expressoin) throws MyNosuchElementException, MyNotSupportException {
         StringBuilder sequence = new StringBuilder();
         char[] array = expressoin.toCharArray();
-        MyStack<Operators> pendingStack = new MyStack<Operators>();
+        Stack<Operators> pendingStack = new Stack<Operators>();
         for (char c : array) {
 
             // if it is a variable or digit.

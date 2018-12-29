@@ -1,7 +1,10 @@
 package com.tomzhu.list;
 
 /**
- * Created by tomzhu on 2017/7/10.
+ * a exception represent no such element. like {@link java.util.NoSuchElementException}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class MyNosuchElementException extends Exception{
 

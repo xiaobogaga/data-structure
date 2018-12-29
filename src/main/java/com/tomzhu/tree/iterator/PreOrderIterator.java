@@ -1,8 +1,6 @@
 package com.tomzhu.tree.iterator;
 
-import com.tomzhu.list.MyQueue;
-import com.tomzhu.list.MyStack;
-import com.tomzhu.tree.Tree;
+import com.tomzhu.list.Stack;
 import com.tomzhu.tree.TreeNode;
 
 import java.util.Iterator;
@@ -17,7 +15,7 @@ import java.util.Iterator;
  */
 public class PreOrderIterator<E> implements Iterator<TreeNode<E>> {
 
-    MyStack<TreeNode<E>> stack = new MyStack<TreeNode<E>>();
+    Stack<TreeNode<E>> stack = new Stack<TreeNode<E>>();
 
     /**
      * commonly , the node is the root node.

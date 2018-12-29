@@ -1,6 +1,6 @@
 package com.tomzhu.tree.iterator;
 
-import com.tomzhu.list.MyStack;
+import com.tomzhu.list.Stack;
 import com.tomzhu.tree.BinaryTreeNode;
 import com.tomzhu.tree.TreeNode;
 
@@ -43,13 +43,13 @@ public class PostOrderIterator<E> implements Iterator<TreeNode<E>>{
      */
 
     private BinaryTreeNode<E> root;
-    private MyStack<BinaryTreeNode<E>> stack;
+    private Stack<BinaryTreeNode<E>> stack;
     private BinaryTreeNode<E> lastVisitNode;
     private BinaryTreeNode<E> currentNode;
 
     public PostOrderIterator(BinaryTreeNode<E> node) {
         this.root = node;
-        this.stack = new MyStack<BinaryTreeNode<E>>();
+        this.stack = new Stack<BinaryTreeNode<E>>();
         this.stack.push(this.root);
         this.lastVisitNode = this.root;
     }

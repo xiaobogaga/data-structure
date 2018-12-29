@@ -2,10 +2,6 @@ package com.tomzhu.tree;
 
 import com.tomzhu.list.MyNosuchElementException;
 import com.tomzhu.list.MyNotSupportException;
-import com.tomzhu.list.MyQueue;
-import com.tomzhu.list.MyStack;
-
-import java.util.Iterator;
 
 /**
  * Created by tomzhu on 2017/7/12.
