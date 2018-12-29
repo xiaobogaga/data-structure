@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class AVLTreeTest {
 
     private static AVLTree<Integer> tree;
-    int size = 10;
+    int size = 100;
 
     @Test
     public void contains() throws Exception {

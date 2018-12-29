@@ -5,7 +5,7 @@ import org.junit.Assert;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 17-7-18.
+ * {@link BinaryTree}
  */
 public class BinaryTreeTest {
 

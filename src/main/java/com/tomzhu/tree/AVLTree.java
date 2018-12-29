@@ -148,8 +148,8 @@ public class AVLTree<E extends Comparable<E>> {
         if (lchild.getrChild() != null) {
             lchild.getrChild().setParent(parent);
         }
-        parent.setParent(lchild);
         lchild.setParent(parent.getParent());
+        parent.setParent(lchild);
         parent.setlChildl(lchild.getrChild());
         lchild.setrChild(parent);
         setHeight(parent);

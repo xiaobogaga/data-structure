@@ -8,8 +8,9 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 17-7-18.
+ * testing {@link BasicTree}
  */
+
 public class BasicTreeTest {
 
     private BasicTree<Integer> basicTree = new BasicTree<Integer>(10);

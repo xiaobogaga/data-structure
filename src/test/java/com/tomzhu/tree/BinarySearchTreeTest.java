@@ -1,6 +1,5 @@
 package com.tomzhu.tree;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 17-7-20.
+ * testing {@link BinarySearchTree}
  */
 public class BinarySearchTreeTest {
 
