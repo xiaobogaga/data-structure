@@ -1,18 +1,29 @@
 package com.tomzhu.tree;
 
 /**
- * Created by tomzhu on 18-3-19.
  * a splay tree implementation. this tree cannot save duplicate
  * element, so you cannot insert duplicate element to this tree.
  * for duplicate splaying tree, we can keep a times element in tree
  * node to implies the existing times of element.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class SplayTree<E extends Comparable<E>> implements Tree{
 
     private BinaryTreeNode<E> root;
 
+    /**
+     * construct a default splay tree
+     */
     public SplayTree() {}
 
+    /**
+     * construct a splay tree with element as root.
+     * @param element
+     */
     public SplayTree(E element) {
         this.root = new BinaryTreeNode<E>(element);
     }
@@ -22,17 +33,15 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
     }
 
     /**
-     * get root element of this tree. return null if no root.
-     * @return
+     * @return root element of this tree. return <tt>null</tt> if empty.
      */
     public E getRoot() {
         return this.root == null ? null : this.root.getValue();
     }
 
     /**
-     * check whether the tree contains the specific element
      * @param element
-     * @return
+     * @return whether the tree contains the specific element
      */
     public boolean contains(E element) {
         BinaryTreeNode<E> node = root;
@@ -55,10 +64,9 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
     }
 
     /**
-     * get max element in this tree
-     * @return
+     * @return max element in this tree and <tt>null</tt> for empty tree.
      */
-    public E findMax() {
+    public E getMax() {
         BinaryTreeNode<E> node = root;
         while (node != null && node.getRightChild() != null) {
             node = node.getRightChild();
@@ -72,10 +80,9 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
     }
 
     /**
-     * get min element in this tree
-     * @return
+     * @return min element in this tree and <tt>null</tt> for empty tree.
      */
-    public E findMin() {
+    public E getMin() {
         BinaryTreeNode<E> node = root;
         while (node != null && node.getLeftChild() != null) {
             node = node.getLeftChild();
@@ -92,14 +99,15 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
     /**
      * insert an element. if have a same element in this tree, just return.
      * @param element
+     * @return true if succeed , false if duplicate items.
      */
-    public void insert(E element) {
+    public boolean insert(E element) {
         BinaryTreeNode<E> node = root;
         BinaryTreeNode<E> parent = null;
         while (node != null) {
             if (node.getValue().compareTo(element) == 0) {
                 // find a same element. just return, doesn't insert.
-                return;
+                return false;
             } else if (node.getValue().compareTo(element) < 0) {
                 parent = node;
                 node = node.getRightChild();
@@ -112,7 +120,7 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
         if (parent == null) {
             // just insert this element as the root;
             this.root = new BinaryTreeNode<E>(element);
-            return;
+            return true;
         }
 
         // otherwise, we need insert this element as the child of parent node.
@@ -123,6 +131,7 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
             BinaryTreeNode<E> n = new BinaryTreeNode<E>(element , parent , null , null);
             parent.setLeftChild(n);
         }
+        return true;
     }
 
     /**
@@ -258,8 +267,9 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
     /**
      * attempt to remove an element from the tree, true implies success,
      * false implies that the tree doesn't have the element.
+     *
      * @param element
-     * @return
+     * @return true if succeed and false if no such element found.
      */
     public boolean remove(E element) {
         if (this.contains(element)) {
@@ -271,7 +281,7 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
                 // do promote the leftTree;
                 this.root.getLeftChild().setParent(null);
                 this.root = this.root.getLeftChild();
-                this.findMax(); // do find Max,// and the maxElement would promote to root.
+                this.getMax(); // do find Max,// and the maxElement would promote to root.
                 this.root.setRightChild(rTree);
                 if (rTree != null)
                     rTree.setParent(this.root);
@@ -285,6 +295,13 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return whether this tree is empty
+     */
+    public boolean isEmpty() {
+        return this.root == null;
     }
 
 

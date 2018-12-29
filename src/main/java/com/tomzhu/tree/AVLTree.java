@@ -1,34 +1,35 @@
 package com.tomzhu.tree;
 
-import java.util.TreeMap;
-
 /**
- * Created by tomzhu on 18-3-18.
- * a AVL tree implementation. this implementation doesn't
- * consider the duplicate element, in other words, this
- * implementation doesn't support insert duplicate element.
+ * an AVL tree implementation. this implementation doesn't support insert duplicate element.
  * each element in this tree is unique, but for duplicate elements implementation is
  * also simple, just add a times variable in AVLTreeNode class.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class AVLTree<E extends Comparable<E>> {
 
     private AVLTreeNode<E> root;
 
+    /**
+     * construct an empty default AVLTree
+     */
     public AVLTree() {
     }
 
-    public AVLTree(AVLTreeNode<E> root) {
-        this.root = root;
-    }
-
+    /**
+     * construct an AVLTree with element.
+     * @param element
+     */
     public AVLTree(E element) {
         this.root = new AVLTreeNode<E>(element, 0);
     }
 
     /**
-     * check whether this tree has the specific element.
-     *
-     * @return
+     * @return whether this tree has the specific element.
      */
     public boolean contains(E element) {
         AVLTreeNode<E> node = this.root;
@@ -46,9 +47,9 @@ public class AVLTree<E extends Comparable<E>> {
     }
 
     /**
-     * @return the max element in this tree. null implies that no such element.
+     * @return the max element in this tree. <tt>null</tt> implies empty tree
      */
-    public E findMax() {
+    public E getMax() {
         AVLTreeNode<E> node = root;
         if (node == null) {
             return null;
@@ -61,9 +62,9 @@ public class AVLTree<E extends Comparable<E>> {
     }
 
     /**
-     * @return the min element in this tree. null implies that no such element.
+     * @return the min element in this tree. <tt>null</tt> implies empty tree
      */
-    public E findMin() {
+    public E getMin() {
         AVLTreeNode<E> node = root;
         if (node == null) {
             return null;
@@ -78,20 +79,24 @@ public class AVLTree<E extends Comparable<E>> {
      * insert a element to tree.
      *
      * @param element
+     * @return true if succeed, false if duplicate items.
      */
-    public void insert(E element) {
+    public boolean insert(E element) {
         AVLTreeNode<E> node = root;
         if (node == null) {
             this.root = new AVLTreeNode<E>(element, 0);
-            return;
+            return true;
         }
         // insert this element.
         // first search for location.
         AVLTreeNode<E> prevNode = null;
         while (node != null) {
-            if (node.getElement().compareTo(element) < 0) {
+            int com;
+            if ( (com = node.getElement().compareTo(element)) < 0) {
                 prevNode = node;
                 node = node.getrChild();
+            } else if (com == 0) {
+                return false;
             } else {
                 prevNode = node;
                 node = node.getlChildl();
@@ -110,11 +115,12 @@ public class AVLTree<E extends Comparable<E>> {
 
         // after we insert an element, we need balance this tree.
         balance(prevNode);
+        return true;
     }
 
     /**
      * @param node
-     * @return the height of this node, if this node is null, return -1;
+     * @return the height of this node, if this node is <tt>null</tt>, return -1;
      */
     private int getHeight(AVLTreeNode<E> node) {
         return node != null ? node.getHeight() : -1;
@@ -331,7 +337,11 @@ public class AVLTree<E extends Comparable<E>> {
         // help gc
     }
 
-
+    /**
+     * try to remove an element from this tree, return true if succeed and return false otherwise.
+     * @param element
+     * @return true if succeed and return false otherwise.
+     */
     public boolean remove(E element) {
         AVLTreeNode<E> node = root;
         while (node != null) {
@@ -401,15 +411,26 @@ public class AVLTree<E extends Comparable<E>> {
         }
     }
 
-
+    /**
+     * @return the root element of this tree.
+     */
     public E getRoot() {
         return this.root.getElement();
     }
 
+    /**
+     * @return the root node.
+     */
     public AVLTreeNode<E> getRootNode() {
         return this.root;
     }
 
+    /**
+     * @return whether this tree is empty
+     */
+    public boolean isEmpty() {
+        return this.root == null;
+    }
 
 
 }

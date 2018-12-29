@@ -1,7 +1,5 @@
 package com.tomzhu.tree;
 
-import com.sun.prism.paint.Color;
-
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -488,7 +486,7 @@ public class RedBlackTree<E extends Comparable<E>>{
      * @param ele
      * @return true if found, false if the ele is not found.
      */
-    public boolean delete(E ele) {
+    public boolean remove(E ele) {
         if (isEmpty())
             return false;
         Node r = this.root;

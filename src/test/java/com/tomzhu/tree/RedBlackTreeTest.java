@@ -43,7 +43,7 @@ public class RedBlackTreeTest {
         i = 0;
         while (i < size) {
             assertEquals(arr[i], (int) redBlackTree.getMin());
-            assertTrue(redBlackTree.delete((Integer) arr[i]));
+            assertTrue(redBlackTree.remove((Integer) arr[i]));
             i ++;
         }
         assertTrue(redBlackTree.isEmpty());
@@ -59,7 +59,7 @@ public class RedBlackTreeTest {
         i = size - 1;
         while (i >= 0) {
             assertEquals(arr[i], (int) redBlackTree.getMax());
-            assertTrue(redBlackTree.delete((Integer) arr[i]));
+            assertTrue(redBlackTree.remove((Integer) arr[i]));
             i --;
         }
     }

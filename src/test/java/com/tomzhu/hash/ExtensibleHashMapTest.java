@@ -53,7 +53,7 @@ public class ExtensibleHashMapTest {
             if (!map.containsKey(t)) {
            //     System.out.println("t : " + t);
             //    System.out.println(redBlackTree);
-                assertTrue(redBlackTree.delete(t));
+                assertTrue(redBlackTree.remove(t));
                 assertTrue(nameMap.remove(t));
                 map.put(t, t);
             }

@@ -47,5 +47,8 @@ tree.addRightChild(tree.getRoot(), 3);
 // 2  3
 ```
 
+## Search Tree
+
+Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree are both search trees.
 
 

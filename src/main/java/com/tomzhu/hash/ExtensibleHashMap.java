@@ -144,7 +144,7 @@ public class ExtensibleHashMap<K extends Comparable<K>, V> {
             iterator = this.buckets[diff].entries.iterator();
             while (iterator.hasNext()) {
                 entry = iterator.next();
-                this.buckets[l].entries.delete(entry);
+                this.buckets[l].entries.remove(entry);
             }
 
             // we need to set the corresponding bucket pointer

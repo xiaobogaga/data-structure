@@ -1,8 +1,12 @@
 package com.tomzhu.tree;
 
 /**
- * Created by tomzhu on 17-7-20.
- * a simple implementation for binary search tree with duplicate values.
+ * a simple implementation for binary search tree.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BinarySearchTree<E extends Comparable<E>> implements Tree {
 
@@ -17,22 +21,13 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
     }
 
     /**
-     * create a binarySearchTree using the specific root.
-     * @param root
-     */
-    public BinarySearchTree(BinaryTreeNode<E> root) {
-        this.root = root;
-    }
-
-    /**
      * create a empty binarySearchTree ( it is simply no root).
      */
     public BinarySearchTree() { this.root = null; }
 
     /**
-     * check whether this tree has the root.
      * @param value
-     * @return
+     * @return whether this tree has the value.
      */
     public boolean contains(E value) {
         BinaryTreeNode<E> node = this.root;
@@ -65,7 +60,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
     }
 
     /**
-     * find the adding node value 's parent node recursively.
+     * find the adding node value's parent node recursively.
      * @param node
      * @param value
      * @return
@@ -79,7 +74,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
     }
 
     /**
-     * find the adding node value 's parent node using loop.
+     * find the adding node value's parent node using loop.
      * @param node
      * @param value
      * @return
@@ -98,11 +93,8 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
         return temp;
     }
 
-
-
     /**
-     * return the node with max E and return null if the tree is empty.
-     * @return
+     * @return the max E insides this tree and return null if the tree is empty.
      */
     public E getMax() {
         BinaryTreeNode<E> node = this.root;
@@ -115,8 +107,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
     }
 
     /**
-     * return the node with min E and return null if the tree is empty
-     * @return
+     * @return the min E insides this tree and return null if the tree is empty
      */
     public E getMin() {
         BinaryTreeNode<E> node = this.root;
@@ -148,24 +139,31 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
 
 
     /**
-     * insert
+     * insert an element value to this tree.
      * @param value
-     * @return
+     * @return true if succeed, false if duplicated items.
      */
-    public BinarySearchTree<E> insert(E value) {
+    public boolean insert(E value) {
         BinaryTreeNode<E> parent = searchLocation(root , value);
         if (parent == null) {
             this.root = new BinaryTreeNode<E>(value);
         } else {
-            if (parent.getValue().compareTo(value) >= 0) {
+            if (parent.getValue().compareTo(value) > 0) {
                 parent.addLeftChild(new BinaryTreeNode<E>(value , parent));
+            } else if (parent.getValue().compareTo(value) == 0) {
+                return false;
             } else {
                 parent.addRightChild(new BinaryTreeNode<E>(value , parent));
             }
         }
-        return this;
+        return true;
     }
 
+    /**
+     * try to remove the element with value. return true if succeed and false if not found.
+     * @param value
+     * @return
+     */
     public boolean remove(E value) {
         BinaryTreeNode<E> node = searchNode(value);
         if (node != null && node.getValue().compareTo(value) == 0) {
@@ -234,8 +232,14 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
         }
     }
 
+    /**
+     * @return whether this tree is empty.
+     */
     public boolean isEmpty() { return  this.root == null;}
 
+    /**
+     * @return the root of this tree.
+     */
     public BinaryTreeNode<E> getRoot() { return this.root; }
 
 }

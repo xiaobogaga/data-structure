@@ -3,6 +3,9 @@ package com.tomzhu.tree;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -10,62 +13,66 @@ import static org.junit.Assert.*;
  */
 public class BinarySearchTreeTest {
 
-    private BinarySearchTree tree = new BinarySearchTree(10);
-    {
-        tree.insert(8);
-        // tree.insert(4);
-        tree.insert(9);
-        tree.insert(11);
+    int size = 100;
+    private BinarySearchTree tree;
 
-       // System.out.println("root : " + tree.getRoot().getValue());
-       // System.out.println("layer 1 : " + tree.getRoot().getLeftChild().getValue() + " , "
-       //        );
-       // System.out.println("layer 2 : " + tree.getRoot().getLeftChild().getLeftChild().getValue()
-       //         + " , " + tree.getRoot().getLeftChild().getRightChild().getValue());
-    }
+//    {
+//        java.util.TreeMap<Integer, Integer> test = new java.util.TreeMap<>();
+//        test.put(1, 1);
+//        test.put(2, 2);
+//        System.out.println(test.firstKey()); // 1
+//        System.out.println(test.lastKey()); // 2
+//    }
 
     @Test
     public void contains() throws Exception {
-        Assert.assertFalse(tree.contains(20));
-        Assert.assertTrue(tree.contains(4));
     }
 
     @Test
     public void getMax() throws Exception {
-        Assert.assertEquals(11 , tree.getMax());
     }
 
     @Test
     public void getMin() throws Exception {
-        Assert.assertEquals(4 , tree.getMin());
     }
 
     @Test
     public void insert() throws Exception {
-        // pass
     }
 
     @Test
     public void remove() throws Exception {
-        tree.remove(8); // remove root node
-        Assert.assertFalse(tree.contains(8));
-        Assert.assertEquals(10 , tree.getRoot().getValue());
-        Assert.assertEquals(11 , tree.getRoot().getRightChild().getValue());
-        Assert.assertNull(tree.getRoot().getLeftChild().getLeftChild());
-        Assert.assertNull(tree.getRoot().getLeftChild().getRightChild());
-        Assert.assertEquals(9 , tree.getRoot().getLeftChild().getValue());
-        // Assert.assertEquals(4 , tree.getRoot().getLeftChild().getLeftChild().getValue());
-        // Assert.assertTrue(tree.isEmpty());
+        tree = new BinarySearchTree();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        Random rand = new Random(System.currentTimeMillis());
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            maps.put(k, k);
+            tree.insert(k);
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            i ++;
+        }
+        assertFalse(tree.isEmpty());
+
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) assertTrue(tree.contains(entry.getKey()));
+
+        // testing remove.
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) {
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
+        }
+        assertTrue(tree.isEmpty());
     }
 
     @Test
     public void isEmpty() throws Exception {
-        Assert.assertFalse(tree.isEmpty());
     }
 
     @Test
     public void getRoot() throws Exception {
-        Assert.assertEquals(10 , tree.getRoot().getValue());
     }
 
 }

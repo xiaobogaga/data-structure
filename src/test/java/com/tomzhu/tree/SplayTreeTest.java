@@ -2,6 +2,9 @@ package com.tomzhu.tree;
 
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,16 +12,8 @@ import static org.junit.Assert.*;
  */
 public class SplayTreeTest {
 
-    private static SplayTree<Integer> tree;
-
-    static {
-        tree = new SplayTree<Integer>();
-        int time = 1, i = 7;
-        while (i >= time) {
-            tree.insert(i);
-            i--;
-        }
-    }
+    private SplayTree<Integer> tree;
+    int size = 100;
 
     @Test
     public void getRoot() throws Exception {
@@ -26,14 +21,29 @@ public class SplayTreeTest {
 
     @Test
     public void contains() throws Exception {
-        printSplayTree(tree.getRootNode());
-        int time = 1;
-        while (time <= 7) {
-            tree.contains(time);
-            System.out.println("testing -- > " + time);
-            printSplayTree(tree.getRootNode());
-            time ++;
+        tree = new SplayTree<>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        Random rand = new Random(System.currentTimeMillis());
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            maps.put(k, k);
+            tree.insert(k);
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            i ++;
         }
+        assertFalse(tree.isEmpty());
+
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) assertTrue(tree.contains(entry.getKey()));
+
+        // testing remove.
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) {
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
+        }
+        assertTrue(tree.isEmpty());
     }
 
     @Test
@@ -53,12 +63,6 @@ public class SplayTreeTest {
     }
 
     private void printSplayTree(BinaryTreeNode node) {
-        if (node == null) {
-            return;
-        }
-        System.out.println(node);
-        printSplayTree(node.getLeftChild());
-        printSplayTree(node.getRightChild());
     }
 
 }

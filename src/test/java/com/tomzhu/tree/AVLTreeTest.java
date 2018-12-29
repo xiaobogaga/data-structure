@@ -13,85 +13,55 @@ import static org.junit.Assert.*;
  */
 public class AVLTreeTest {
 
-    private static AVLTree<Integer> avlTree;
-
-    static {
-        avlTree = new AVLTree<Integer>();
-        avlTree.insert(2);
-        avlTree.insert(5);
-        avlTree.insert(3);
-    }
-
+    private static AVLTree<Integer> tree;
+    int size = 10;
 
     @Test
     public void contains() throws Exception {
-        printAVLTree(avlTree.getRootNode());
     }
 
     @Test
     public void findMax() throws Exception {
-        assertEquals(avlTree.findMax() , new Integer(4));
     }
 
     @Test
     public void findMin() throws Exception {
-        assertEquals(avlTree.findMin() , new Integer(1));
     }
 
     @Test
     public void insert() throws Exception {
-        int time = 20;
-        int i = 0;
+        tree = new AVLTree<Integer>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
         Random rand = new Random(System.currentTimeMillis());
-        Map<Integer , Boolean> dm = new HashMap<Integer , Boolean>();
-        dm.put(2 , true);
-        dm.put(5 , true);
-        dm.put(3 , true);
-        while (i < time) {
-            int key = rand.nextInt(i + 4 + time);
-            if (dm.containsKey(key)) {
-                continue;
-            } else {
-                System.out.println("key : " + key);
-                dm.put(key , true);
-                avlTree.insert(key);
-                System.out.println("-----------------------");
-                printAVLTree(avlTree.getRootNode());
-                System.out.println("-----------------------");
-            }
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            maps.put(k, k);
+            tree.insert(k);
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
             i ++;
         }
+        assertFalse(tree.isEmpty());
 
-        // let's check remove.
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) assertTrue(tree.contains(entry.getKey()));
 
-        for (Integer g : dm.keySet()) {
-            System.out.println("remove : key : " + g);
-            avlTree.remove(g);
-            printAVLTree(avlTree.getRootNode());
+        // testing remove.
+        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) {
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
         }
-
+        assertTrue(tree.isEmpty());
     }
 
     private void printAVLTree(AVLTreeNode node) {
-        if (node == null) {
-            return;
-        }
-        System.out.println(node);
-        printAVLTree(node.getlChildl());
-        printAVLTree(node.getrChild());
     }
 
 
     @Test
     public void remove() throws Exception {
-        avlTree.insert(1);
-        avlTree.insert(6);
-        avlTree.insert(4);
-        avlTree.insert(7);
-        printAVLTree(avlTree.getRootNode());
-        System.out.println("test remove");
-        avlTree.remove(3);
-        printAVLTree(avlTree.getRootNode());
+
     }
 
 }
