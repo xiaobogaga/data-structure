@@ -13,7 +13,14 @@ import static org.junit.Assert.*;
 public class SplayTreeTest {
 
     private SplayTree<Integer> tree;
-    int size = 100;
+    int size = 3;
+
+//    {
+//        tree = new SplayTree<>();
+//        tree.insert(214755004);
+//        tree.insert(-968702223);
+//        tree.insert(-619472113);
+//    }
 
     @Test
     public void getRoot() throws Exception {
@@ -28,6 +35,7 @@ public class SplayTreeTest {
         for (int i = 0; i < size;) {
             int k = rand.nextInt();
             if (maps.containsKey(k)) continue;
+           // System.out.println("inserting " + k);
             maps.put(k, k);
             tree.insert(k);
             assertEquals(tree.getMin(), maps.firstKey());

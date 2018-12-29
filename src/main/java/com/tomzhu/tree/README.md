@@ -50,5 +50,29 @@ tree.addRightChild(tree.getRoot(), 3);
 ## Search Tree
 
 Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree are both search trees.
+they exposed similar methods like `insert(E ele)`, `remove(E ele)`, `contains(Ele e)`.
 
+**Usage**
 
+```java
+AVLTree<Integer> tree = new AVLTree<Integer> ();
+tree.insert(1);
+tree.insert(10);
+tree.insert(9);
+
+//   10
+//  / \
+// 1   9
+
+tree.contains(10); // return true
+tree.remove(10)
+// 1
+//  \
+//   9
+```
+
+## BTree
+
+## TreeMap and TreeSet
+
+## HashMap
