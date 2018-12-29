@@ -1,4 +1,6 @@
-a dozen of data structure implementations:
+Yep, another collection library like java collection framework, but it
+provides other data structure implementations like Splay Tree, AVL Tree,
+Red-black Tree etc. it includes:
 
 * List: </p>
 **LinkedList** </p>
@@ -43,3 +45,17 @@ a dozen of data structure implementations:
 * external memory data structure(they can hold long key and long value): </p>
 **HashTable**</p>
 **BPlusTree**
+
+# Motivations
+
+The reason I build this project is for learning. I think only when you
+really build a collection library, then you might understand the details
+about data structures. Most of class provides limited function, the benefit
+about this is that it can make code clean, more readable and more extensible.
+
+# Documentations
+For a detailed api documentation, please ref here.
+
+# Examples
+
+## LinkedList
