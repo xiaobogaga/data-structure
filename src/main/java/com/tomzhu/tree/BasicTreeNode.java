@@ -4,9 +4,12 @@ import com.tomzhu.list.MyNosuchElementException;
 import com.tomzhu.list.MyNotSupportException;
 
 /**
- * Created by tomzhu on 2017/7/12.
- * a treenode implementation for basicTree.
- * it holds a children chain.
+ * a tree node implementation for basicTree. it holds a children chain.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BasicTreeNode<E> extends TreeNode<E> {
 
@@ -22,6 +25,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
     /**
      * create a basicTreeNode with given value and without children , sibling , parent.
+     *
      * @param value
      */
     public BasicTreeNode(E value) {
@@ -31,7 +35,8 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * create a basictreenode with given value and parent.
+     * create a basicTreeNode with given value and parent.
+     *
      * @param value
      * @param parent
      */
@@ -41,23 +46,8 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * create a basictreenode with given value , sibling , firstchild.
-     * @param value
-     * @param leftSibling
-     * @param rightSibling
-     * @param firstChild
-     */
-    public BasicTreeNode(E value , BasicTreeNode<E> leftSibling , BasicTreeNode<E> rightSibling ,
-                         BasicTreeNode firstChild) {
-        this.value = value;
-        this.leftSibling = leftSibling;
-        this.rightSibling = rightSibling;
-        this.lastChild = this.firstChild = firstChild;
-        this.childrenSize = firstChild == null ? 0 : 1;
-    }
-
-    /**
-     * create
+     * create a basicTreeNode with given value, parent, first child
+     *
      * @param value
      * @param parent
      * @param firstChild
@@ -71,8 +61,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * create a treenode with specific value , parentnode , left sibling node , right sibling node , and first child
+     * create a basicTreeNode with specific value , parent node , left sibling node , right sibling node , and first child
      * node
+     *
      * @param value
      * @param parent
      * @param leftSibling
@@ -90,15 +81,14 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * return whether this ndoe has left sibling node, if yes, return true, otherwise false.
-     * @return
+     * @return whether this node has left sibling node.
      */
     public boolean hasLeftSibling() {
         return this.leftSibling != null;
     }
 
     /**
-     * return whether this node has right sibling node, if yes , return true , otherwise false.
+     * return whether this node has right sibling node.
      * @return
      */
     public boolean hasRightSibling() {
@@ -106,18 +96,17 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * return whether this node is the root node, if yes, return true, otherwise false.
-     * @return
+     * @return whether this node is the root node.
      */
     public boolean isRoot() {
         return this.parent == null;
     }
 
     /**
-     * create a new node using the specific value and add it to the current node as child
-     * then return the added node.
+     * create a new node using the specific value and add it to the current node as child then return the added node.
+     *
      * @param value
-     * @return
+     * @return the added node.
      */
     public BasicTreeNode<E> addChild(E value) {
         BasicTreeNode<E> node = new BasicTreeNode<E>(value , this);
@@ -136,7 +125,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     /**
      * add the node as child to current node and returned the added node.
      * @param node
-     * @return
+     * @return the added node
      */
     public BasicTreeNode<E> addChild(BasicTreeNode<E> node) {
         if (hasChildren()) {
@@ -153,11 +142,12 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
     /**
      * add a child node to the current node using specific value
-     * in specific location i which is left from right and start at 0.
-     * throw @see{com.tomzhu.list.MyNotSupportException} when the location i is not reliable.
+     * in specific location <tt>i</tt> which is left from right and start at 0.
+     * throw {@link MyNotSupportException} when the location <tt>i</tt> is not reliable.
+     *
      * @param i
      * @param value
-     * @return
+     * @return the added node
      * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addChild(int i , E value) throws MyNotSupportException {
@@ -182,11 +172,12 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * add a child node to the current node in specific location i which is left from right and start at 0.
-     * throw @see{com.tomzhu.list.MyNotSupportException} when the location i is not reliable.
+     * add a child node to the current node in specific location <tt>i</tt> which is left from right and start at 0.
+     * throw {@link MyNotSupportException} when the location <tt>i</tt> is not reliable.
+     *
      * @param i
      * @param node
-     * @return
+     * @return the added node
      * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addChild(int i , BasicTreeNode<E> node) throws MyNotSupportException {
@@ -212,10 +203,10 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
 
     /**
-     * add the nodes to the current node as children and return the
-     * current node.
+     * add the nodes to the current node as children and return the current node.
+     *
      * @param nodes
-     * @return
+     * @return the current node
      */
     public BasicTreeNode<E> addChildren(BasicTreeNode<E>[] nodes) {
         for(BasicTreeNode<E> n : nodes)
@@ -224,10 +215,10 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * create nodes using values and add the nodes to the current node as children , then return the
-     * current node.
+     * create nodes using values and add the nodes to the current node as children , then return the current node.
+     *
      * @param values
-     * @return
+     * @return the current node
      */
     public BasicTreeNode<E> addChildren(E[] values) {
         for(E v : values)
@@ -236,8 +227,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * return whether this node is it's parent's first child.
-     * @return
+     * @return whether this node is it's parent's first child.
      */
     public boolean isFirstChild() {
         if (isRoot())
@@ -247,8 +237,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * return whether this node is it's parent's last child.
-     * @return
+     * @return whether this node is it's parent's last child.
      */
     public boolean isLastChild() {
         if (isRoot())
@@ -260,8 +249,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     /**
      * create a new BasicTreeNode using the specific value and add it to the current node as it's left sibling.
      * then return the added node.
+     *
      * @param value
-     * @return
+     * @return the added node
      */
     public BasicTreeNode<E> addLeftSibling(E value) throws MyNotSupportException {
         if (this.hasLeftSibling())
@@ -274,10 +264,10 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * add the parameter node to the current node as it's left sibling.
-     * then return the added node.
+     * add the parameter node to the current node as it's left sibling. then return the added node.
+     *
      * @param node
-     * @return
+     * @return the added node
      */
     public BasicTreeNode<E> addLeftSibling(BasicTreeNode<E> node) throws MyNotSupportException {
         if (this.hasLeftSibling() || node.hasRightSibling()) {
@@ -296,8 +286,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     /**
      * create a new basicTreeNode using the current value and add it to the current node as it's right sibling.
      * then return the node.
+     *
      * @param value
-     * @return
+     * @return added node
      */
     public BasicTreeNode<E> addRightSibling(E value) throws MyNotSupportException {
         if (this.hasRightSibling())
@@ -310,10 +301,10 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * add the parameter node to the current node as it's right sibling.
-     * then return the node.
+     * add the parameter node to the current node as it's right sibling. then return the node.
+     *
      * @param node
-     * @return
+     * @return added node
      */
     public BasicTreeNode<E> addRightSibling(BasicTreeNode<E> node) throws MyNotSupportException {
         if (this.hasRightSibling() || node.hasLeftSibling()) {
@@ -330,49 +321,43 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * return the left sibling of the current node
-     * @return
+     * @return the left sibling of the current node
      */
     public BasicTreeNode<E> getLeftSibling() {
         return this.leftSibling;
     }
 
     /**
-     * return the right sibling of the current node
-     * @return
+     * @return the right sibling of the current node
      */
     public BasicTreeNode<E> getRightSibling() {
         return this.rightSibling;
     }
 
     /**
-     * return parent of the current node
-     * @return
+     * @return parent of the current node
      */
     public BasicTreeNode<E> getParent() {
         return this.parent;
     }
 
     /**
-     * return the first child of the current node
-     * @return
+     * @return the first child of the current node
      */
     public BasicTreeNode<E> getFirstChild() {
         return this.firstChild;
     }
 
     /**
-     * return the right child of the current node
-     * @return
+     * @return the right child of the current node
      */
     public BasicTreeNode<E> getLastChild() {
         return this.lastChild;
     }
 
     /**
-     * return the children as array of the current node, which the order is based on the parameter
+     * @return the children as array of the current node, which the order is based on the parameter
      * leftToRight , if it is true , then the order is left to right, otherwise inverted.
-     * @return
      */
     public BasicTreeNode<E>[] getChilds(boolean leftToRight) {
         if (!hasChildren())
@@ -404,8 +389,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
      * get the i-th child of the current node.
      * return null if the index i is beyond the size. the support
      * index is like array from 0 to (children size - 1).
+     *
      * @param i
-     * @return
+     * @return the i-th child of current node
      */
     public BasicTreeNode<E> getChild(int i) {
         if (i >= this.childrenSize || i < 0) {
@@ -423,10 +409,11 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
 
     /**
-     * check whether the node has the specific child node "child", if yes, return true, otherwise return
-     * false. a simple method is just checking "child.parent == this" , although user can use this strategy
+     * check whether the node has the specific child node <tt>child</tt>, if yes, return true, otherwise return
+     * false. a simple method is just checking {@ccode child.parent == this} , although user can use this strategy
      * for simplify and performance , the child will not be added to the parent
-     * because user can call "child.parent = this ".
+     * because user can call {@code child.parent = this}.
+     *
      * @param child
      * @return
      */
@@ -454,8 +441,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     /**
      * remove the last child of the current node from left to right.
      * then return the removed child. if the current node doesn't have children,
-     * throw @see{MyNosuchElementException}
-     * @return
+     * throw {@link MyNosuchElementException}
+     *
+     * @return the removed child
      * @exception MyNosuchElementException
      */
     public BasicTreeNode<E> removeLastChild() throws MyNosuchElementException {
@@ -477,8 +465,9 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     /**
      * remove the first child of the current node from left to right.
      * then return the remove child and if the current node doesn't have children,
-     * throw @see{MyNosuchElementException}
-     * @return
+     * throw {@link MyNosuchElementException}
+     *
+     * @return the removed first child
      */
     public BasicTreeNode<E> removeFirstChild() throws MyNosuchElementException {
         if (hasChildren()) {
@@ -497,10 +486,11 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * remove the specific child at spefic locatoin and return the removed node. if the location "i" is
-     * not reliable, then throw @see{MyNosuchElementException}
+     * remove the specific child at location <tt>i</tt> and return the removed node. if the location <tt>i</tt> is
+     * not reliable, then throw {@link MyNosuchElementException}
+     *
      * @param i
-     * @return
+     * @return the removed i-th child.
      */
     public BasicTreeNode<E> removeChild(int i) throws MyNosuchElementException {
         if (i < 0 || i >= this.childrenSize)
@@ -519,11 +509,12 @@ public class BasicTreeNode<E> extends TreeNode<E> {
     }
 
     /**
-     * remove the spefic child "child". but when the child is not the child of the current node,
-     * return null, otherwise return the remove child. @see{MyNosuchElementException} is not
-     * possible to throw in any situation. so, there can be optimized.
+     * remove the child node <tt>child</tt>. but when the child is not the child of the current node,
+     * return <tt>null</tt>, otherwise return the remove child. {@link MyNosuchElementException} is not possible
+     * to throw.
+     *
      * @param child
-     * @return
+     * @return the removed child
      * @throws MyNosuchElementException
      */
     public BasicTreeNode<E> removeChild(BasicTreeNode<E> child) throws MyNosuchElementException {
@@ -536,7 +527,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
     /**
      * remove all children nodes and return the current node.
-     * @return
+     * @return the current node.
      */
     public BasicTreeNode<E> clearChildren() {
         this.firstChild = this.lastChild = null;

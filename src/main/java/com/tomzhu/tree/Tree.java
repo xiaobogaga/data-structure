@@ -1,8 +1,10 @@
 package com.tomzhu.tree;
 
 /**
- * Created by tomzhu on 2017/7/12.
  * a simple tree interface.
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public interface Tree {
 

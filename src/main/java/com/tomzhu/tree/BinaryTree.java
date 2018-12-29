@@ -1,7 +1,12 @@
 package com.tomzhu.tree;
 
 /**
- * Created by tomzhu on 17-7-15.
+ * simple binary tree implementation
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BinaryTree<E> implements Tree {
 
@@ -24,69 +29,62 @@ public class BinaryTree<E> implements Tree {
     }
 
     /**
-     * check whether this tree is empty(only when root is null).
-     * @return
+     * @return whether this tree is empty
      */
     public boolean isEmpty() {
         return this.root == null;
     }
 
+    /**
+     * @return the root node of this tree
+     */
     public BinaryTreeNode<E> getRoot() {
         return  this.root;
     }
 
     /**
-     * return whether this node has left sibling.
      * @param node
-     * @return
+     * @return whether this node has left sibling.
      */
     public boolean hasLeftChild(BinaryTreeNode<E> node) {
         return node.hasLeftChild();
     }
 
     /**
-     * return whether this node has right child.
      * @param node
-     * @return
+     * @return whether this node has right child.
      */
     public boolean hasRightChild(BinaryTreeNode<E> node) {
         return node.hasRightChild();
     }
 
     /**
-     * return whether this node is the root node.
      * @param node
-     * @return
+     * @return whether this node is the root node.
      */
     public boolean isRoot(BinaryTreeNode<E> node) {
         return node.isRoot();
     }
 
-//    public boolean isFirstChild() {
-//        return
-//    }
-//
-//    public boolean isLastChild() {
-//        return false;
-//    }
-
     /**
-     * add the left child using specific "value" to the current node.
+     * add the left child using specific <tt>value</tt> to the current node.
      * and return the added node.
+     *
      * @param node
      * @param value
-     * @return
+     * @return the added node
      */
     public BinaryTreeNode<E> addLeftChild(BinaryTreeNode<E> node , E value) {
         return node.addLeftChild(value);
     }
 
     /**
-     * add the right child using specific "value" to the current node.
+     * add the right child using specific <tt>value</tt> to the current node.
      * and return the added node
+     *
      * @param node
      * @param value
-     * @return
+     * @return the added node
      */
     public BinaryTreeNode<E> addRightChild(BinaryTreeNode<E> node , E value) {
         return node.addRightChild(value);
@@ -95,9 +93,10 @@ public class BinaryTree<E> implements Tree {
     /**
      * add the leftChild node to the current node as its left child.
      * and return the added node
+     *
      * @param node
      * @param leftChild
-     * @return
+     * @return the added node
      */
     public BinaryTreeNode<E> addLeftChild(BinaryTreeNode<E> node , BinaryTreeNode<E> leftChild) {
         return node.addLeftChild(leftChild);
@@ -106,9 +105,10 @@ public class BinaryTree<E> implements Tree {
     /**
      * add the rightChild node to the current node as its right child
      * and return the added node.
+     *
      * @param node
      * @param rightChild
-     * @return
+     * @return the added node
      */
     public BinaryTreeNode<E> addRightChild(BinaryTreeNode<E> node ,
                                            BinaryTreeNode<E> rightChild) {
@@ -116,18 +116,16 @@ public class BinaryTree<E> implements Tree {
     }
 
     /**
-     * return the left child of the current node , return null if it doesn't have left child.
      * @param node
-     * @return
+     * @return the left child of the current node , return <tt>null</tt> if it doesn't have left child.
      */
     public BinaryTreeNode<E> getLeftChild(BinaryTreeNode<E> node) {
         return node.getLeftChild();
     }
 
     /**
-     * return the right child of the current node , return null if it doesn't have right child.
      * @param node
-     * @return
+     * @return the right child of the current node , return <tt>null</tt> if it doesn't have right child.
      */
     public BinaryTreeNode<E> getRightChild(BinaryTreeNode<E> node) {
         return node.getRightChild();
@@ -136,8 +134,9 @@ public class BinaryTree<E> implements Tree {
     /**
      * remove the children node of the current node
      * and then return the current node.
+     *
      * @param node
-     * @return
+     * @return the current node
      */
     public BinaryTreeNode<E> clearChildren(BinaryTreeNode<E> node) {
         return node.clearChildren();
@@ -145,19 +144,21 @@ public class BinaryTree<E> implements Tree {
 
     /**
      * remove and return the left child of current node.
-     * return null if current node doesn't have left child.
+     * return <tt>null</tt> if current node doesn't have left child.
+     *
      * @param node
-     * @return
+     * @return return the left child of current node and return <tt>null</tt> if current node doesn't have left child.
      */
     public BinaryTreeNode<E> removeLeftChild(BinaryTreeNode<E> node) {
         return node.removeLeftChild();
     }
 
     /**
-     * remove  and return the right child of current node
-     * return null if current node doesn't have right child.
+     * remove and return the right child of current node
+     * return <tt>null</tt> if current node doesn't have right child.
+     *
      * @param node
-     * @return
+     * @return the right child of current node return <tt>null</tt> if current node doesn't have right child.
      */
     public BinaryTreeNode<E> removeRightChild(BinaryTreeNode<E> node) {
         return node.removeRightChild();
@@ -165,9 +166,8 @@ public class BinaryTree<E> implements Tree {
 
 
     /**
-     * return whether the node has children nodes.
      * @param node
-     * @return
+     * @return whether the node has children nodes.
      */
     public boolean hasChildren(BinaryTreeNode<E> node) {
         return node.hasChildren();

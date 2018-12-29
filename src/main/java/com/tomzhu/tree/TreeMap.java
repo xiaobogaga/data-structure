@@ -6,8 +6,6 @@ package com.tomzhu.tree;
  */
 public class TreeMap<E extends Comparable<E>, V> {
 
-    // java.util.TreeMap
-
     class Entry implements Comparable<Entry> {
         E key;
         V value;
