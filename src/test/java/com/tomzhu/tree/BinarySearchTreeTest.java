@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  */
 public class BinarySearchTreeTest {
 
-    int size = 5;
+    int size = 1000;
     private BinarySearchTree tree;
 
 //    {
@@ -38,19 +38,22 @@ public class BinarySearchTreeTest {
     @Test
     public void insert() throws Exception {
         /**
-         inserting : -1682744412
-         inserting : -1975608872
-         inserting : -1696605931
-         trying : -1975608872
-         trying : -1696605931
+         inserting : -844718477  -844, 2018, -942, 1832, 164
+         inserting : 2018823543
+         inserting : -942839450
+         inserting : 1832127170
+         inserting : 164074544
+         trying : 2018823543
+         trying : -844718477
+         trying : 1832127170
          */
         tree = new BinarySearchTree();
-        int[] arr1 = new int[] {100, 10, 20};
-        int[] arr2 = new int[] {10, 20, 100};
-        for (int i = 0; i < 3; i++) tree.insert(arr1[i]);
+        int[] arr1 = new int[] {-844, 2018, -942, 1832, 164};
+        int[] arr2 = new int[] {2018, -844, 1832};
+        for (int i = 0; i < 5; i++) tree.insert(arr1[i]);
 
-        for (int i = 0; i < 3 ; i++) {
-            tree.remove(arr2[i]);
+        for (int i = 0; i < 5 ; i++) {
+            assertTrue(tree.remove(arr2[i]));
             assertFalse(tree.contains(arr2[i]));
         }
     }

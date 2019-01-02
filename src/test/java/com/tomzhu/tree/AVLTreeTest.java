@@ -14,30 +14,39 @@ import static org.junit.Assert.*;
 public class AVLTreeTest {
 
     private static AVLTree<Integer> tree;
-    int size = 7;
+    int size = 1000;
 
     @Test
     public void contains() throws Exception {
         /**
-         * inserting 1159769474
-         * inserting 425076822
-         * inserting -59947419
-         * inserting 836443500
-         * inserting 1429722747
-         * inserting 681043646
-         * inserting -836095107
-         * removing : 425076822
-         * removing : 1159769474
-         * removing : 836443500
-         * removing : -836095107
+         inserting -1819809584 -1819, 1979, 1548, -463, 1029, 491, 220, 1128, 1462, -1086, 1191, 825, -1075, -64, -2027
+         inserting 1979286919
+         inserting 1548905930
+         inserting -463593194
+         inserting 1029555040
+         inserting 491017514
+         inserting 220029634
+         inserting 1128919825
+         inserting 1462327558
+         inserting -1086744216
+         inserting 1191628043
+         inserting 825925168
+         inserting -1075980160
+         inserting -64420876
+         inserting -2027568271
+         removing : -463593194
+         removing : 825925168
          */
 
         tree = new AVLTree<>();
-        int[] arr1 = new int[] {1159, 425, -599, 836, 1429, 681, -836};
-        for (int i = 0; i < size; i++) tree.insert(arr1[i]);
-        int[] arr2 = new int[] {425, 1159, 836, -836};
-        int size2 = 4;
+        int[] arr1 = new int[] {-1819, 1979, 1548, -463, 1029, 491, 220, 1128,
+                1462, -1086, 1191, 825, -1075, -64, -2027};
+        for (int i = 0; i < size; i++)
+            tree.insert(arr1[i]);
+        int[] arr2 = new int[] {-463, 825};
+        int size2 = 5;
         for (int i = 0; i < size2; i++) {
+            System.out.println("removing " + arr2[i]);
             assertTrue(tree.remove(arr2[i]));
             assertFalse(tree.contains(arr2[i]));
         }
@@ -61,7 +70,7 @@ public class AVLTreeTest {
         for (int i = 0; i < size;) {
             int k = rand.nextInt();
             if (maps.containsKey(k)) continue;
-            System.out.println("inserting " + k);
+            // System.out.println("inserting " + k);
             maps.put(k, k);
             hashMap.put(k, k);
             tree.insert(k);
@@ -75,7 +84,7 @@ public class AVLTreeTest {
 
         // testing remove.
         for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
-            System.out.println("removing : " + entry.getKey());
+            // System.out.println("removing : " + entry.getKey());
             assertTrue(tree.remove(entry.getKey()));
             assertFalse(tree.contains(entry.getKey()));
         }

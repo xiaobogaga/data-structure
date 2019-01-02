@@ -186,7 +186,7 @@ public class AVLTree<E extends Comparable<E>> {
         rchild.setParent(parent.getParent());
         parent.setParent(rchild);
         setHeight(parent);
-        setHeight(parent.getrChild());
+        setHeight(rchild);
         checkRoot(parent, rchild, grandPa);
     }
 
@@ -275,7 +275,7 @@ public class AVLTree<E extends Comparable<E>> {
                     }
                 }
                 // balance finish
-                break;
+                // break;
             } else {
                 // balanced.
                 setHeight(parent);
@@ -308,29 +308,27 @@ public class AVLTree<E extends Comparable<E>> {
             while (min.getlChildl() != null) {
                 min = min.getlChildl();
             }
-            if (parent.getlChildl() == node) {
-                parent.setlChildl(min);
-            } else {
-                parent.setrChild(min);
-            }
-            if (node.getlChildl() != min) {
+            if (parent.getlChildl() == node) parent.setlChildl(min);
+            else parent.setrChild(min);
+
+            if (min.getParent() != node) {
+
+                min.getParent().setlChildl(min.getrChild());
+                if (min.getrChild() != null) min.getrChild().setParent(min.getParent());
                 min.setlChildl(node.getlChildl());
+                if (node.getlChildl() != null) node.getlChildl().setParent(min);
+                min.setrChild(node.getrChild());
+                if (node.getrChild() != null) node.getrChild().setParent(min);
+                AVLTreeNode<E> n = min.getParent();
+                min.setParent(parent);
+                return n;
+            } else {
+                if (node.getlChildl() != null) node.getlChildl().setParent(min);
+                min.setlChildl(node.getlChildl());
+                min.setParent(parent);
+                // we need to reset the height from [min to node] location.
+                return min;
             }
-            min.setrChild(node.getrChild());
-
-            if (node.getlChildl() != min) {
-                node.getlChildl().setParent(min);
-            }
-
-            if (node.getrChild() != null) {
-                node.getrChild().setParent(min);
-            }
-
-            AVLTreeNode<E> prevParent = min;
-            min.setParent(parent);
-
-            // we need to reset the height from [min to node] location.
-            return prevParent;
         }
 
         // help gc
