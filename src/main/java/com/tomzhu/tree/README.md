@@ -49,7 +49,7 @@ tree.addRightChild(tree.getRoot(), 3);
 
 ## Search Tree
 
-Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree are both search trees.
+Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree, BTree are both search trees.
 they exposed similar methods like `insert(E ele)`, `remove(E ele)`, `contains(Ele e)`.
 
 **Usage**

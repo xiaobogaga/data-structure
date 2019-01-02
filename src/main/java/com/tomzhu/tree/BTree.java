@@ -5,11 +5,15 @@ import java.util.LinkedList;
 /**
  * a simple implementation of btree. this btree cannot save duplicate item
  * so must promise that no duplicate item exist. if really want to save duplicate item
- * , you'd better change this implementation. the simpliest way may be add a property implies the
+ * , you'd better change this implementation. a simply way may be add a property implies the
  * times of the data.
+ *
+ * @param <E> the type of element.
+ * @author tomzhu
+ * @since 1.7
  */
 
-public class BTree<E extends Comparable<E>> implements Tree{
+public class BTree<E extends Comparable<E>> implements Tree {
 
     /**
      * set the mid node element size
@@ -21,13 +25,19 @@ public class BTree<E extends Comparable<E>> implements Tree{
      */
     private int Leaf_L = 5;
 
+    /**
+     * a Node holder
+     */
     class Node {
         boolean isLeaf;
         LinkedList<E> leafData; // for leaf
         Node parent;
         LinkedList<KeyItem> midNodeData;
-        public Node() {}
-        public Node(boolean isLeaf , LinkedList<E> leafData , Node parent , LinkedList<KeyItem> midNodeData) {
+
+        public Node() {
+        }
+
+        public Node(boolean isLeaf, LinkedList<E> leafData, Node parent, LinkedList<KeyItem> midNodeData) {
             this.isLeaf = isLeaf;
             this.leafData = leafData;
             this.parent = parent;
@@ -35,10 +45,16 @@ public class BTree<E extends Comparable<E>> implements Tree{
         }
     }
 
+    /**
+     * a key Item holder.
+     */
     class KeyItem {
         E key;
         Node child;
-        public KeyItem() {}
+
+        public KeyItem() {
+        }
+
         public KeyItem(E key, Node child) {
             this.key = key;
             this.child = child;
@@ -59,15 +75,31 @@ public class BTree<E extends Comparable<E>> implements Tree{
 
     private Node root;
 
-    public BTree() {}
+    /**
+     * construct a empty btree.
+     */
+    public BTree() {
+    }
 
+    /**
+     * construct a btree with a initial element
+     *
+     * @param element
+     */
     public BTree(E element) {
         LinkedList<E> leafData = new LinkedList<E>();
         leafData.add(element);
         this.root = new Node(true, leafData, null, null);
     }
 
-    public BTree(int mid_M , int leaf_L , E element) {
+    /**
+     * construct a btree with specific <tt>mid_m</tt>, <tt>leaf_l</tt> parameters and initial element.
+     *
+     * @param mid_M
+     * @param leaf_L
+     * @param element
+     */
+    public BTree(int mid_M, int leaf_L, E element) {
         this.Mid_M = mid_M;
         this.Leaf_L = leaf_L;
         LinkedList<E> leafData = new LinkedList<E>();
@@ -78,8 +110,9 @@ public class BTree<E extends Comparable<E>> implements Tree{
 
     /**
      * check whether contain the specific element.
+     *
      * @param element
-     * @return
+     * @return <tt>true</tt> if found, <tt>false</tt> otherwise
      */
     public boolean contains(E element) {
         Node node = root;
@@ -95,7 +128,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
                         node = item.child;
                         break;
                     }
-                    i ++;
+                    i++;
                 }
             }
         }
@@ -104,11 +137,11 @@ public class BTree<E extends Comparable<E>> implements Tree{
 
 
     /**
-     * return the maximum element in this tree. return null
-     * if the tree has no nodes.
-     * @return
+     * return the maximum element in this tree. return <tt>null</tt> if the tree has no nodes.
+     *
+     * @return the maximum element in this tree.
      */
-    public E findMax() {
+    public E getMax() {
         Node node = root;
         while (node != null) {
             if (node.isLeaf) {
@@ -121,11 +154,11 @@ public class BTree<E extends Comparable<E>> implements Tree{
     }
 
     /**
-     * return the minimun element in this tree, return null
-     * if the tree is null.
-     * @return
+     * return the minimum element in this tree, return <tt>null</tt> if the tree is empty.
+     *
+     * @return the minimum element in this tree
      */
-    public E findMin() {
+    public E getMin() {
         Node node = root;
         while (node != null) {
             if (node.isLeaf) {
@@ -143,12 +176,12 @@ public class BTree<E extends Comparable<E>> implements Tree{
             if (e.compareTo(element) >= 0) {
                 break;
             }
-            i ++;
+            i++;
         }
-        list.add(i , element);
+        list.add(i, element);
     }
 
-    private void insertElementToNodeListInOrder(LinkedList<KeyItem> list , KeyItem item) {
+    private void insertElementToNodeListInOrder(LinkedList<KeyItem> list, KeyItem item) {
         if (item.child.isLeaf) {
             item.key = item.child.leafData.getFirst();
         } else {
@@ -159,7 +192,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
             if (keyItem.key == null || keyItem.key.compareTo(item.key) > 0) {
                 break;
             }
-            i ++;
+            i++;
         }
         E key = item.key;
         item.key = list.get(i).key;
@@ -176,7 +209,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
     }
 
 
-    private void insertElementAndSplit(Node node , Object element) {
+    private void insertElementAndSplit(Node node, Object element) {
         if (node == null) {
             // split root node
             if (this.root.isLeaf) {
@@ -184,8 +217,8 @@ public class BTree<E extends Comparable<E>> implements Tree{
                 Node e = (Node) element;
                 Node prevRoot = this.root;
                 list.add(new KeyItem(e.leafData.getFirst(), prevRoot));
-                list.add(new KeyItem(null , e));
-                this.root = new Node(false , null , null, list);
+                list.add(new KeyItem(null, e));
+                this.root = new Node(false, null, null, list);
                 prevRoot.parent = this.root;
                 e.parent = this.root;
             } else {
@@ -193,8 +226,8 @@ public class BTree<E extends Comparable<E>> implements Tree{
                 Node e = (Node) element;
                 Node prevRoot = this.root;
                 list.add(new KeyItem(getMinEle(e), prevRoot));
-                list.add(new KeyItem(null , e));
-                this.root = new Node(false , null , null, list);
+                list.add(new KeyItem(null, e));
+                this.root = new Node(false, null, null, list);
                 prevRoot.parent = this.root;
                 e.parent = this.root;
             }
@@ -212,24 +245,24 @@ public class BTree<E extends Comparable<E>> implements Tree{
                     i++;
                 }
                 Node newNode = new Node(true, leafNode, node.parent, null);
-                this.insertElementAndSplit(node.parent , newNode);
+                this.insertElementAndSplit(node.parent, newNode);
             }
         } else {
             // first add.
-            KeyItem item = new KeyItem(null , (Node) element);
-            this.insertElementToNodeListInOrder(node.midNodeData , item);
+            KeyItem item = new KeyItem(null, (Node) element);
+            this.insertElementToNodeListInOrder(node.midNodeData, item);
             // must check whether to split a midNode
             if (node.midNodeData.size() > Mid_M) {
                 // must split
                 LinkedList<KeyItem> midNodeData = new LinkedList<KeyItem>();
-                Node newNode = new Node(false, null, node.parent , midNodeData);
-                int start = Mid_M / 2 + 1 , i = 0, length = node.midNodeData.size() - start;
+                Node newNode = new Node(false, null, node.parent, midNodeData);
+                int start = Mid_M / 2 + 1, i = 0, length = node.midNodeData.size() - start;
                 KeyItem temp;
                 while (i < length) {
                     temp = node.midNodeData.remove(start);
                     temp.child.parent = newNode;
                     midNodeData.add(temp);
-                    i ++;
+                    i++;
                 }
                 node.midNodeData.getLast().key = null;
                 this.insertElementAndSplit(node.parent, newNode);
@@ -242,21 +275,24 @@ public class BTree<E extends Comparable<E>> implements Tree{
 
 
     /**
-     * insert an element to this tree.
+     * insert an element to this tree. return <tt>true</tt> if success and return <tt>false</tt> if duplicate items.
+     *
      * @param element
+     * @return <tt>true</tt> if success and <tt>false</tt> if duplicate items.
      */
-    public void insert(E element) {
+    public boolean insert(E element) {
+        if (!isEmpty()) if (this.contains(element)) return false;
         if (root == null) {
             LinkedList<E> data = new LinkedList<E>();
             data.add(element);
-            this.root = new Node(true , data, null , null);
-            return;
+            this.root = new Node(true, data, null, null);
+            return true;
         }
         Node node = root;
         while (node != null) {
             if (node.isLeaf) {
-                this.insertElementAndSplit(node , element);
-                return;
+                this.insertElementAndSplit(node, element);
+                return true;
             } else {
                 int i = 0;
                 for (KeyItem item : node.midNodeData) {
@@ -265,17 +301,19 @@ public class BTree<E extends Comparable<E>> implements Tree{
                         node = item.child;
                         break;
                     }
-                    i ++;
+                    i++;
                 }
             }
         }
+        return true;
     }
 
     /**
-     * try to remove an element from this tree, if success , return  true
-     * otherwise false implies that the tree doesn't have the element.
+     * try to remove an element from this tree, if success , return <tt>true</tt>
+     * otherwise return <tt>false<tt> and this implies that the tree doesn't have the element.
+     *
      * @param element
-     * @return
+     * @return true if success, false if not found
      */
     public boolean remove(E element) {
         Node node = this.root;
@@ -298,7 +336,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
                         // keyItem = item;
                         break;
                     }
-                    i ++;
+                    i++;
                 }
             }
         }
@@ -321,13 +359,6 @@ public class BTree<E extends Comparable<E>> implements Tree{
                     // need promote to leaf node.
                     KeyItem item = node.midNodeData.getFirst();
                     // node.isLeaf = item.child.isLeaf;
-//                    if (node.isLeaf) {
-//                        node.midNodeData = null;
-//                        node.leafData = item.child.leafData;
-//                    } else {
-//                        node.leafData = null;
-//                        node.midNodeData = item.child.midNodeData;
-//                    }
                     this.root = item.child;
                     this.root.parent = null;
                 }
@@ -335,7 +366,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
             return;
         }
         if (node.isLeaf) {
-            if (node.leafData.size() < Math.ceil(Leaf_L / 2.0) ) {
+            if (node.leafData.size() < Math.ceil(Leaf_L / 2.0)) {
                 // do adaption
                 doAdaption(node);
             } else {
@@ -361,7 +392,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
                     // it is the node.
                     break;
                 }
-                i ++;
+                i++;
             }
 
             // we can attempt to adapt child from left or right node.
@@ -410,7 +441,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
                     // it is the node.
                     break;
                 }
-                i ++;
+                i++;
             }
 
             // we can attempt to adapt child from left or right node.
@@ -426,7 +457,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
                 if (rightNeighbor.child.midNodeData.size() <= Math.ceil(Mid_M / 2.0)) {
                     // need do mix
                     node.parent.midNodeData.remove(i + 1);
-                    doMix(nodeItem , rightNeighbor);
+                    doMix(nodeItem, rightNeighbor);
                     checkAdaption(node.parent);
                 } else {
                     // get the minimum from rightNeighbor
@@ -457,7 +488,7 @@ public class BTree<E extends Comparable<E>> implements Tree{
         }
     }
 
-    private void doMix(KeyItem leftNode , KeyItem rightNode) {
+    private void doMix(KeyItem leftNode, KeyItem rightNode) {
         // mix two nodeItem
         if (leftNode.child.isLeaf) {
             // for leaf node
@@ -516,5 +547,13 @@ public class BTree<E extends Comparable<E>> implements Tree{
             }
         }
         System.out.println("PrintBtree end <--");
+    }
+
+
+    /**
+     * @return whether this tree is empty.
+     */
+    public boolean isEmpty() {
+        return this.root == null;
     }
 }

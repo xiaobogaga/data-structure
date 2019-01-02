@@ -1,13 +1,21 @@
 package com.tomzhu.tree;
 
 /**
+ * a keyd red black tree implementation. since a red black tree only can holding keys, but instead red black
+ * tree can hold key value pairs. and {@link HashMap} based on this implementation.
  *
  * @param <K> the key type
  * @param <V> the value type
  *
+ * @author tomzhu
+ * @since 1.7
  */
 public class KeydRedBlackTree<K extends Comparable<K>, V> extends RedBlackTree {
 
+    /**
+     * @param key
+     * @return whether this tree contains the key. return <tt>true</tt> if found, return <tt>false</tt> otherwise.
+     */
     public boolean containsKey(K key) {
         Node r = this.root;
         int z;
@@ -23,6 +31,11 @@ public class KeydRedBlackTree<K extends Comparable<K>, V> extends RedBlackTree {
         return false;
     }
 
+    /**
+     * try to remove a key-value pair. return true if success and false otherwise.
+     * @param key
+     * @return true if success and false if not found.
+     */
     public boolean removeByKey(K key) {
         if (isEmpty())
             return false;
@@ -70,10 +83,22 @@ public class KeydRedBlackTree<K extends Comparable<K>, V> extends RedBlackTree {
         }
     }
 
+    /**
+     * insert a key value pair. and if a same key already exist, just replacing the value with new value.
+     *
+     * @param key
+     * @param value
+     * @param hash
+     * @return <tt>true</tt> if success and <tt>false</tt> if found duplicate items.
+     */
     public boolean insert(K key, V value, int hash) {
         return insert(new Entry<K, V>(key, value, hash));
     }
 
+    /**
+     * @param key
+     * @return the value associated with the key key.
+     */
     public V get(K key) {
         Node r = this.root;
         int z;

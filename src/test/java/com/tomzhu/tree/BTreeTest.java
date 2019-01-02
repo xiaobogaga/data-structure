@@ -3,6 +3,7 @@ package com.tomzhu.tree;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -12,40 +13,11 @@ import static org.junit.Assert.*;
  */
 public class BTreeTest {
 
-    private BTree<Integer> btree = new BTree<Integer>();
+    private BTree<Integer> tree = new BTree<Integer>();
+    private int size = 1000;
 
     @Test
     public void contains() throws Exception {
-        btree.insert(1);
-        btree.insert(2);
-        btree.insert(3);
-        btree.insert(4);
-        btree.insert(5);
-        btree.insert(6);
-        btree.insert(7);
-        btree.insert(8);
-        btree.insert(9);
-        btree.insert(10);
-        btree.insert(11);
-        btree.insert(12);
-        btree.insert(13);
-        btree.insert(14);
-        btree.insert(15);
-        btree.insert(16);
-        btree.insert(17);
-        // btree.PrintTree();
-        btree.insert(18);
-        btree.PrintTree();
-
-        int i = 18;
-        while (i >= 1) {
-            if (i == 9)
-                System.out.println("catch it");
-            btree.remove(i);
-            System.out.println("remove key : " + i);
-            btree.PrintTree();
-            i --;
-        }
 
     }
 
@@ -61,28 +33,46 @@ public class BTreeTest {
 
     @Test
     public void insert() throws Exception {
-        int i = 0, size = 30;
-        int from = 0, end = 100;
-        HashMap<Integer, Boolean> maps = new HashMap<Integer, Boolean>();
-        // randomly insert element to the btree, and see result.
+        tree = new BTree<>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
         Random rand = new Random(System.currentTimeMillis());
-        while (i < size) {
-            int key = rand.nextInt(end);
-            if (maps.containsKey(key)) {
-                // continue
-            } else {
-                maps.put(key , true);
-                // System.out.println("aftere insert key : " + key);
-                btree.insert(key);
-                i ++;
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            // System.out.println("inserting : " + k);
+            maps.put(k, k);
+            hashMap.put(k, k);
+            tree.insert(k);
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            if (i != 0 && i % 5 == 0) {
+                Object[] arr = hashMap.values().toArray();
+                int l = rand.nextInt();
+                if (l < 0) l = -l;
+                int removedK = (Integer) arr[l % arr.length];
+                hashMap.remove(removedK);
+                maps.remove(removedK);
+                assertTrue(tree.contains(removedK));
+                tree.remove(removedK);
+                assertFalse(tree.contains(removedK));
+                assertEquals(tree.getMin(), maps.firstKey());
+                assertEquals(tree.getMax(), maps.lastKey());
             }
+            i ++;
         }
-        btree.PrintTree();
-        for (Integer key : maps.keySet()) {
-            System.out.println("remove key : " + key);
-            btree.remove(key);
-            btree.PrintTree();
+        assertFalse(tree.isEmpty());
+
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) assertTrue(tree.contains(entry.getKey()));
+
+        // testing remove.
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            // System.out.println("trying : " + entry.getKey());
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
         }
+        assertTrue(tree.isEmpty());
     }
 
     @Test
