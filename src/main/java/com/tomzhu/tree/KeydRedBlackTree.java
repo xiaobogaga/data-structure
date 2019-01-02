@@ -1,5 +1,11 @@
 package com.tomzhu.tree;
 
+/**
+ *
+ * @param <K> the key type
+ * @param <V> the value type
+ *
+ */
 public class KeydRedBlackTree<K extends Comparable<K>, V> extends RedBlackTree {
 
     public boolean containsKey(K key) {

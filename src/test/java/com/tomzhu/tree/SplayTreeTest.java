@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class SplayTreeTest {
 
     private SplayTree<Integer> tree;
-    int size = 3;
+    int size = 100;
 
 //    {
 //        tree = new SplayTree<>();
@@ -24,6 +24,10 @@ public class SplayTreeTest {
 
     @Test
     public void getRoot() throws Exception {
+        tree = new SplayTree<>();
+        tree.insert(213);
+        tree.insert(-19);
+        tree.getMin();
     }
 
     @Test

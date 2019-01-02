@@ -1,12 +1,8 @@
 package com.tomzhu.tree;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 /**
- * Created by tomzhu on 18-3-25.
  * a simple implementation of btree. this btree cannot save duplicate item
  * so must promise that no duplicate item exist. if really want to save duplicate item
  * , you'd better change this implementation. the simpliest way may be add a property implies the

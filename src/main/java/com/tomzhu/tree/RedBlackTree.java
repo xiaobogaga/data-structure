@@ -6,7 +6,10 @@ import java.util.Stack;
 /**
  * a simple red-black tree implementation.
  *
+ * @param <E> the type of element
+ *
  * @author tomzhu.
+ * @since 1.7
  */
 public class RedBlackTree<E extends Comparable<E>>{
 
@@ -144,6 +147,10 @@ public class RedBlackTree<E extends Comparable<E>>{
         return true;
     }
 
+    /**
+     * only used by {@link KeydRedBlackTree}
+     * @param n
+     */
     protected void insertForRehash(Node n) {
         Node r = this.root;
         if (isEmpty()) {
@@ -276,10 +283,8 @@ public class RedBlackTree<E extends Comparable<E>>{
     }
 
     /**
-     * verify whether this tree contains the specific element.
-     *
      * @param ele
-     * @return
+     * @return whether this tree contains the specific element.
      */
     public boolean contains(E ele) {
         Node r = this.root;
@@ -304,7 +309,7 @@ public class RedBlackTree<E extends Comparable<E>>{
     }
 
     /**
-     * @return the min element of this tree, null if empty.
+     * @return the min element of this tree, <tt>null</tt> if empty.
      */
     public E getMin() {
         if (isEmpty())
@@ -316,7 +321,7 @@ public class RedBlackTree<E extends Comparable<E>>{
     }
 
     /**
-     * @return the max element of this tree, null if empty.
+     * @return the max element of this tree, <tt>null</tt> if empty.
      */
     public E getMax() {
         if (isEmpty())

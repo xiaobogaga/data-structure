@@ -1,11 +1,24 @@
 package com.tomzhu.tree;
 
 /**
- * Created by tomzhu on 18-4-5.
- * a simple map implementation based on binary search tree.
+ * a simple map implementation based on binary search tree. Actually, in
+ * {@link java.util.TreeMap}, it is based on red-black tree, here we just use binary search tree.
+ * generally, this is more time-consumed but changing to red-black tree is very simple. another issue
+ * is that java treeMap provides an ordered travel based on comparator. but this treeMap doesn't consider
+ * this for simplify. Actually, it is really easy implemented, we can own them by a in order travel
+ * on binary search tree.
+ *
+ * @param <E> the key type
+ * @param <V> the value type
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class TreeMap<E extends Comparable<E>, V> {
 
+    /**
+     * simple entry class.
+     */
     class Entry implements Comparable<Entry> {
         E key;
         V value;
@@ -50,20 +63,27 @@ public class TreeMap<E extends Comparable<E>, V> {
 
     private BinarySearchTree<Entry> tree;
 
+    /**
+     * construct a treeMap.
+     */
     public TreeMap() {
         this.tree = new BinarySearchTree<Entry>();
     }
 
     /**
-     * check whether this tree contains the element.
      * @param key
-     * @return
+     * @return whether this tree contains the element.
      */
     public boolean contains(E key) {
         // this is really ugly
         return this.tree.contains(new Entry(key, null));
     }
 
+    /**
+     * insert a key, value to this treeMap.
+     * @param key
+     * @param value
+     */
     public void insert(E key, V value) {
         this.tree.insert(new Entry(key , value));
     }
@@ -71,7 +91,7 @@ public class TreeMap<E extends Comparable<E>, V> {
     /**
      * remove a item specified by key from this map.
      * @param key
-     * @return
+     * @return true if found, false otherwise.
      */
     public boolean remove(E key) {
         if (this.contains(key)) {

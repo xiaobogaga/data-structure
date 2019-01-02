@@ -1,9 +1,13 @@
 package com.tomzhu.tree;
 
-import com.tomzhu.string.BitMap;
-
 /**
  * a simple hashMap implementation like {@link java.util.HashMap} based on {@link KeydRedBlackTree}
+ *
+ * @param <K> the key type
+ * @param <V> the value type
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class HashMap<K extends Comparable<K>, V> {
 
@@ -13,16 +17,30 @@ public class HashMap<K extends Comparable<K>, V> {
 
     private KeydRedBlackTree<K, V>[] holders;
 
+    /**
+     * construct a default hashMap with initial capacity 16 and load factor 0.75f
+     */
     public HashMap() {
         this.capacity = 16;
         initSaver();
     }
 
+    /**
+     * construct a hashMap with specific initial capacity and default load factor 0.75f
+     *
+     * @param capacity
+     */
     public HashMap(int capacity) {
         this.capacity = capacity <= 0 ? 16 : sizeFor(capacity);
         initSaver();
     }
 
+    /**
+     * construct a hashMap with specific capacity and load factor.
+     *
+     * @param capacity
+     * @param loadFactor
+     */
     public HashMap(int capacity, float loadFactor) {
         this.capacity = capacity <= 0 ? 16 : sizeFor(capacity);
         this.loadFactor = loadFactor;
@@ -49,6 +67,12 @@ public class HashMap<K extends Comparable<K>, V> {
         return h ^ (h >>> 16);
     }
 
+    /**
+     * try to remove a key-value pair by key.
+     *
+     * @param key
+     * @return true if succeed, false if not found such key.
+     */
     public boolean remove(K key) {
         int hashCode = hash(key);
         int loc = hashCode & (this.capacity - 1);
@@ -57,10 +81,17 @@ public class HashMap<K extends Comparable<K>, V> {
         return ans;
     }
 
+    /**
+     * add a key value to this hashMap. true if no duplicated items found and false if found duplicated keys,
+     * and then the value would be replaced by new value.
+     *
+     * @param key
+     * @param value
+     * @return
+     */
     public boolean put(K key, V value) {
         int hashCode = hash(key);
         int loc = hashCode & (this.capacity - 1);
-        // System.out.println("inserting " + key + " with hashCode : " + hashCode);
         boolean ans = false;
         if (this.holders[loc] == null) this.holders[loc] = new KeydRedBlackTree<K, V>();
         if ( (ans = this.holders[loc].insert(key, value, hashCode)) ) {
@@ -73,6 +104,11 @@ public class HashMap<K extends Comparable<K>, V> {
         return ans;
     }
 
+    /**
+     * try to get the value of key on this hashMap. return <tt>null</tt> if not found
+     * @param key
+     * @return the associated value and return <tt>null</tt> if not found.
+     */
     public V get(K key) {
         int hashCode = hash(key);
         int loc = hashCode & (this.capacity - 1);
@@ -80,20 +116,35 @@ public class HashMap<K extends Comparable<K>, V> {
         return this.holders[loc].get(key);
     }
 
+    /**
+     * @param key
+     * @return whether hashMap contains such key.
+     */
     public boolean contains(K key) {
         int hashCode = hash(key);
         int loc = hashCode & (this.capacity - 1);
         return this.holders[loc] != null && this.holders[loc].containsKey(key);
     }
 
+    /**
+     * @return the size of hashMap
+     */
     public int getSize() {
         return this.size;
     }
 
+    /**
+     * @return the load factor
+     */
     public float getLoadFactor() {
         return this.loadFactor;
     }
 
+    /**
+     * set load factor
+     *
+     * @param loadFactor
+     */
     public void setLoadFactor(float loadFactor) {
         this.loadFactor = loadFactor;
     }

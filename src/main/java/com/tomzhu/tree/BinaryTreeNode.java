@@ -248,9 +248,7 @@ public class BinaryTreeNode<E> extends TreeNode<E> {
      * @param leftChild
      */
     public void setLeftChild(BinaryTreeNode<E> leftChild) {
-        if (leftChild == null)
-            return;
-        leftChild.parent = this;
+        // if (leftChild != null) leftChild.parent = this;
         this.childrenSize += this.hasLeftChild() ? 0 : 1;
         this.leftChild = leftChild;
     }
@@ -260,9 +258,7 @@ public class BinaryTreeNode<E> extends TreeNode<E> {
      * @param rightChild
      */
     public void setRightChild(BinaryTreeNode<E> rightChild) {
-        if (rightChild == null)
-            return;
-        rightChild.parent = this;
+        // if (rightChild != null) rightChild.parent = this;
         this.childrenSize += this.hasRightChild() ? 0 : 1;
         this.rightChild = rightChild;
     }
