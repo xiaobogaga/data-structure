@@ -18,12 +18,12 @@ public class BTree<E extends Comparable<E>> implements Tree {
     /**
      * set the mid node element size
      */
-    private int Mid_M = 5;
+    private int Mid_M = 2;
 
     /**
      * set the leaf node element size.
      */
-    private int Leaf_L = 5;
+    private int Leaf_L = 2;
 
     /**
      * a Node holder
@@ -76,7 +76,7 @@ public class BTree<E extends Comparable<E>> implements Tree {
     private Node root;
 
     /**
-     * construct a empty btree.
+     * construct a empty btree with default <tt>mid_m/tt> and <tt>leaf_l</tt> parameters
      */
     public BTree() {
     }

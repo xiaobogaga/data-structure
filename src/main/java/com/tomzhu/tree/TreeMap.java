@@ -102,5 +102,15 @@ public class TreeMap<E extends Comparable<E>, V> {
         }
     }
 
+    /**
+     * try to get the associated value of key. return <tt>null</tt> if not found.
+     *
+     * @param key
+     * @return the founded value and <tt>null</tt> if not found.
+     */
+    public V get(E key) {
+        Entry ans = this.tree.get(new Entry(key, null));
+        return ans == null ? null : ans.value;
+    }
 
 }

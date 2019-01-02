@@ -71,8 +71,40 @@ tree.remove(10)
 //   9
 ```
 
-## BTree
-
 ## TreeMap and TreeSet
+UnLike java TreeMap and TreeSet, the provided TreeMap and TreeSet is based on
+binary search tree, and it can be easily changed to red-black tree. TreeMap
+and TreeSet has similar features as java TreeMap and TreeSet, that is the key
+order travel for TreeMap and unique property of TreeSet. TreeMap provides
+`insert(E k, V v)`, `contains(E ele)`, `remove(E ele)` methods and TreeSet
+has `add(E ele)`, `remove(E ele)`, `contains(E ele)`.
+
+**Usage**
+
+```java
+TreeMap<Integer, Integer> treeMap = new TreeMap<Integer, Integer> ();
+treeMap.insert(1, 1);
+treeMap.insert(2, 2);
+treeMap.contains(1); // return true
+treeMap.remove(1);
+
+TreeSet<Integer> treeSet = new TreeSet<Integer> ();
+treeSet.add(1);
+treeSet.contains(1); // return true
+treeSet.remove(2);
+```
 
 ## HashMap
+Like java HashMap, the hashMap implementation here is based on red-black tree,
+but we make their implementation seperate. More detail could be found at source
+code. HashMap provides some basic functions like `contains(K k)`, `put(K k, V v)`,
+`remove(K k)`, `get(K k)`.
+
+**Usage**
+
+```java
+HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer> ()
+hashMap.put(1, 2);
+hashMap.contains(1); // return true
+hashMap.get(1); // return 2
+```

@@ -254,4 +254,23 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
         return this.root;
     }
 
+    /**
+     * only used by {@link TreeMap}
+     * @param ele
+     * @return
+     */
+    E get(E ele) {
+        BinaryTreeNode<E> node = this.root;
+        while (node != null) {
+            if (node.getValue().compareTo(ele) == 0) {
+                return node.getValue();
+            } else if (node.getValue().compareTo(ele) > 0) {
+                node = node.getLeftChild();
+            } else {
+                node = node.getRightChild();
+            }
+        }
+        return null;
+    }
+
 }
