@@ -538,7 +538,7 @@ public class RedBlackTree<E extends Comparable<E>>{
               if (r.next != null) r.next.prev = null;
               else this.tail = null;
             }
-            r.prev.next = r.next;
+            if (r.prev != null) r.prev.next = r.next;
             if (r.next != null) r.next.prev = r.prev;
             else this.tail = r.prev;
 

@@ -262,4 +262,20 @@ public class BinaryTreeNode<E> extends TreeNode<E> {
         this.childrenSize += this.hasRightChild() ? 0 : 1;
         this.rightChild = rightChild;
     }
+
+    void setLeftChildWithParent(BinaryTreeNode<E> leftChild) {
+        if (leftChild != null) leftChild.parent = this;
+        this.childrenSize += this.hasLeftChild() ? 0 : 1;
+        this.leftChild = leftChild;
+    }
+
+    /**
+     * set the current node's right child.
+     * @param rightChild
+     */
+    void setRightChildWithParent(BinaryTreeNode<E> rightChild) {
+        if (rightChild != null) rightChild.parent = this;
+        this.childrenSize += this.hasRightChild() ? 0 : 1;
+        this.rightChild = rightChild;
+    }
 }

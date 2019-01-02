@@ -199,26 +199,26 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
                     // node has one child
                     if (node.childrenSize == 1) {
                         if (node.getParent().getLeftChild() == node) {
-                            node.getParent().setLeftChild(node.getLeftChild() == null ?
+                            node.getParent().setLeftChildWithParent(node.getLeftChild() == null ?
                             node.getRightChild() : node.getLeftChild());
                         } else {
-                            node.getParent().setRightChild(node.getRightChild() == null ?
+                            node.getParent().setRightChildWithParent(node.getRightChild() == null ?
                             node.getLeftChild() : node.getRightChild());
                         }
                     } else { // has two children, we replace the removing node with
                              // the smallest child in the node's right subtree.
                         BinaryTreeNode<E> min = searchMin(node.getRightChild());
                         if (min.hasChildren()) { // must have a right child.
-                            min.getParent().setLeftChild(min.getRightChild());
-                        }
+                            min.getParent().setLeftChildWithParent(min.getRightChild());
+                        } else min.getParent().setLeftChild(null);
                         if (node.getParent().getLeftChild() == node) {
-                            node.getParent().setLeftChild(min);
+                            node.getParent().setLeftChildWithParent(min);
                         } else {
-                            node.getParent().setRightChild(min);
+                            node.getParent().setRightChildWithParent(min);
                         }
                         min.childrenSize = 0;
-                        min.setLeftChild(node.getLeftChild());
-                        min.setRightChild(node.getRightChild() == min ? null : node.getRightChild());
+                        min.setLeftChildWithParent(node.getLeftChild());
+                        min.setRightChildWithParent(node.getRightChild() == min ? null : node.getRightChild());
                     }
 
                 } else {

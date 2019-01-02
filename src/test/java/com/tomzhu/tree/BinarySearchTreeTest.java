@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  */
 public class BinarySearchTreeTest {
 
-    int size = 100;
+    int size = 5;
     private BinarySearchTree tree;
 
 //    {
@@ -37,18 +37,37 @@ public class BinarySearchTreeTest {
 
     @Test
     public void insert() throws Exception {
+        /**
+         inserting : -1682744412
+         inserting : -1975608872
+         inserting : -1696605931
+         trying : -1975608872
+         trying : -1696605931
+         */
+        tree = new BinarySearchTree();
+        int[] arr1 = new int[] {100, 10, 20};
+        int[] arr2 = new int[] {10, 20, 100};
+        for (int i = 0; i < 3; i++) tree.insert(arr1[i]);
+
+        for (int i = 0; i < 3 ; i++) {
+            tree.remove(arr2[i]);
+            assertFalse(tree.contains(arr2[i]));
+        }
     }
 
     @Test
     public void remove() throws Exception {
         tree = new BinarySearchTree();
         java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
         Random rand = new Random(System.currentTimeMillis());
         assertTrue(tree.isEmpty());
         for (int i = 0; i < size;) {
             int k = rand.nextInt();
             if (maps.containsKey(k)) continue;
+            // System.out.println("inserting : " + k);
             maps.put(k, k);
+            hashMap.put(k, k);
             tree.insert(k);
             assertEquals(tree.getMin(), maps.firstKey());
             assertEquals(tree.getMax(), maps.lastKey());
@@ -56,10 +75,11 @@ public class BinarySearchTreeTest {
         }
         assertFalse(tree.isEmpty());
 
-        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) assertTrue(tree.contains(entry.getKey()));
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) assertTrue(tree.contains(entry.getKey()));
 
         // testing remove.
-        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            // System.out.println("trying : " + entry.getKey());
             assertTrue(tree.remove(entry.getKey()));
             assertFalse(tree.contains(entry.getKey()));
         }

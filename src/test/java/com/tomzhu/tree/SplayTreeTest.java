@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 public class SplayTreeTest {
 
     private SplayTree<Integer> tree;
-    int size = 100;
+    int size = 1000;
 
 //    {
 //        tree = new SplayTree<>();
@@ -34,6 +34,7 @@ public class SplayTreeTest {
     public void contains() throws Exception {
         tree = new SplayTree<>();
         java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
         Random rand = new Random(System.currentTimeMillis());
         assertTrue(tree.isEmpty());
         for (int i = 0; i < size;) {
@@ -41,6 +42,7 @@ public class SplayTreeTest {
             if (maps.containsKey(k)) continue;
            // System.out.println("inserting " + k);
             maps.put(k, k);
+            hashMap.put(k, k);
             tree.insert(k);
             assertEquals(tree.getMin(), maps.firstKey());
             assertEquals(tree.getMax(), maps.lastKey());
@@ -48,10 +50,10 @@ public class SplayTreeTest {
         }
         assertFalse(tree.isEmpty());
 
-        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) assertTrue(tree.contains(entry.getKey()));
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) assertTrue(tree.contains(entry.getKey()));
 
         // testing remove.
-        for (Map.Entry<Integer, Integer> entry : maps.entrySet()) {
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
             assertTrue(tree.remove(entry.getKey()));
             assertFalse(tree.contains(entry.getKey()));
         }

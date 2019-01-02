@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -43,8 +44,12 @@ public class RedBlackTreeTest {
         i = 0;
         while (i < size) {
             assertEquals(arr[i], (int) redBlackTree.getMin());
-            assertTrue(redBlackTree.remove((Integer) arr[i]));
             i ++;
+        }
+
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            assertTrue(redBlackTree.remove(entry.getKey()));
+            assertFalse(redBlackTree.contains(entry.getKey()));
         }
         assertTrue(redBlackTree.isEmpty());
 

@@ -291,21 +291,20 @@ public class AVLTree<E extends Comparable<E>> {
      */
     private AVLTreeNode doRemoveNode(AVLTreeNode<E> node) {
         AVLTreeNode<E> parent = node.getParent();
+        // first, if only has one child, just do promote with child node.
         if (node.getlChildl() == null) {
-            if (parent.getlChildl() == node) {
-                parent.setlChildl(node.getrChild());
-                if (node.getrChild() != null) {
-                    node.getrChild().setParent(parent);
-                }
-            } else {
-                parent.setrChild(node.getrChild());
-                if (node.getrChild() != null) {
-                    node.getrChild().setParent(parent);
-                }
-            }
+            if (parent.getlChildl() == node) parent.setlChildl(node.getrChild());
+            else parent.setrChild(node.getrChild());
+            if (node.getrChild() != null) node.getrChild().setParent(parent);
+            return parent;
+        } else if (node.getrChild() == null) {
+            if (parent.getlChildl() == node) parent.setlChildl(node.getlChildl());
+            else parent.setrChild(node.getlChildl());
+            if (node.getlChildl() != null) node.getlChildl().setParent(parent);
             return parent;
         } else {
-            AVLTreeNode<E> min = node.getlChildl();
+            // replace with the smallest node on the right subtree of node.
+            AVLTreeNode<E> min = node.getrChild();
             while (min.getlChildl() != null) {
                 min = min.getlChildl();
             }
