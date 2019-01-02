@@ -2,10 +2,8 @@ package com.tomzhu.tree;
 
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.*;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -14,59 +12,57 @@ import static org.junit.Assert.*;
  */
 public class RedBlackTreeTest {
 
-    private RedBlackTree<Integer> redBlackTree;
+    private RedBlackTree<Integer> tree;
 
     private int size = 1000;
 
-    private HashMap<Integer, Integer> map;
+    private HashMap<Integer, Integer> hashMap;
+
+    private java.util.TreeMap<Integer, Integer> treeMap;
 
 
     @Test
     public void insert() throws Exception {
-        redBlackTree = new RedBlackTree<Integer>();
-        map = new HashMap<Integer, Integer>();
-        int i = 0;
-        assertTrue(redBlackTree.isEmpty());
-        while (i < size) {
-            int v = (int) (Math.random() * 100000);
-            if (!map.containsKey(v)) {
-                map.put(v, v);
-                redBlackTree.insert(v);
-                i++;
+        tree = new RedBlackTree<>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
+        Random rand = new Random(System.currentTimeMillis());
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            // System.out.println("inserting " + k);
+            maps.put(k, k);
+            hashMap.put(k, k);
+            tree.insert(k);
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            if (i != 0 && i % 5 == 0) {
+                Object[] arr = hashMap.values().toArray();
+                int l = rand.nextInt();
+                if (l < 0) l = -l;
+                int removedK = (Integer) arr[l % arr.length];
+                hashMap.remove(removedK);
+                maps.remove(removedK);
+                assertTrue(tree.contains(removedK));
+                tree.remove(removedK);
+                assertFalse(tree.contains(removedK));
+                assertEquals(tree.getMin(), maps.firstKey());
+                assertEquals(tree.getMax(), maps.lastKey());
             }
-        }
-        assertFalse(redBlackTree.isEmpty());
-        Set<Integer> sets = map.keySet();
-        Object[] arr = sets.toArray();
-        for (Object t : arr)
-            assertTrue(redBlackTree.contains((Integer) t));
-        Arrays.sort(arr);
-        i = 0;
-        while (i < size) {
-            assertEquals(arr[i], (int) redBlackTree.getMin());
             i ++;
         }
+        assertFalse(tree.isEmpty());
 
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            assertTrue(redBlackTree.remove(entry.getKey()));
-            assertFalse(redBlackTree.contains(entry.getKey()));
-        }
-        assertTrue(redBlackTree.isEmpty());
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) assertTrue(tree.contains(entry.getKey()));
 
-        i = 0;
-        for (Integer t : map.keySet())
-            redBlackTree.insert(t);
-        assertFalse(redBlackTree.isEmpty());
-        i = 0;
-        while (i < size) {
-            assertTrue(redBlackTree.contains((Integer) arr[i++]));
+        // testing remove.
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            // System.out.println("removing : " + entry.getKey());
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
         }
-        i = size - 1;
-        while (i >= 0) {
-            assertEquals(arr[i], (int) redBlackTree.getMax());
-            assertTrue(redBlackTree.remove((Integer) arr[i]));
-            i --;
-        }
+        assertTrue(tree.isEmpty());
     }
 
     @Test
