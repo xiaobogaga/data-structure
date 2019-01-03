@@ -2,6 +2,12 @@ package com.tomzhu.hash;
 
 /**
  * a simple extensible hash table implementation.
+ *
+ * @param <K> the type of key
+ * @param <V> the type of value
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class ExtensibleHashTable<K, V> {
 
@@ -279,10 +285,8 @@ public class ExtensibleHashTable<K, V> {
     }
 
     /**
-     * check whether this map contains the key.
-     *
      * @param key
-     * @return
+     * @return whether this map contains the key.
      */
     public boolean contains(K key) {
         int l = hash(key) & (this.directory.bucketSize - 1);
@@ -311,10 +315,10 @@ public class ExtensibleHashTable<K, V> {
 
 
     /**
-     * try to remove an key from this map, return false if not found.
+     * try to remove an key from this map, return <tt>false</tt> if not found.
      *
      * @param key
-     * @return
+     * @return <tt>true</tt> if success and <tt>false</tt> if no such key found.
      */
     public boolean remove(K key) {
         int l = hash(key) & (this.directory.bucketSize - 1);
@@ -328,6 +332,22 @@ public class ExtensibleHashTable<K, V> {
             }
         }
         return false;
+    }
+
+    /**
+     * try to get the associated value for key and return <tt>null</tt> if no such key found
+     *
+     * @param key
+     * @return the associated value if found, and <tt>null</tt> if no such key exists
+     */
+    public V get(K key) {
+        int l = hash(key) & (this.directory.bucketSize - 1);
+        Bucket b = this.directory.buckets[l];
+        for (Entry e : b.entries) {
+            if (e != null && e.key.equals(key))
+                return e.value;
+        }
+        return null;
     }
 
     /**

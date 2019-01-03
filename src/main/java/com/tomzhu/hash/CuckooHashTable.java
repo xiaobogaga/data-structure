@@ -11,10 +11,20 @@ import java.util.Random;
  * for 2 hash table, the load factor is 0.4;
  * for 4 hash table, the load factor is 0.8;
  *
- * so this hash table created by a 
+ * so this hash table created by a initial capacity and a hash type which specifics how many hash table this cuckoo
+ * hashing would use.
+ *
+ * @param <K> the type of key
+ * @param <V> the type of value
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class CuckooHashTable<K, V> {
 
+    /**
+     * a cuckoo hash table type holder.
+     */
     public enum HashTableType {
         TWO, FOUR
     }
@@ -31,7 +41,7 @@ public class CuckooHashTable<K, V> {
     private int allowableRehashes = 16;
 
     /**
-     * construct a cuckoo hash table with 2 hash function.
+     * construct a cuckoo hash table with 2 hash function and initial capacity 17.
      */
     public CuckooHashTable() {
         this.tables = new Object[2][this.capacity];
@@ -64,10 +74,8 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * return a following primer for bound.
-     *
      * @param bound
-     * @return
+     * @return a following primer for bound.
      */
     private int nextPrime(int bound) {
         bound = (bound & 1) == 0 ? bound + 1 : bound;
@@ -78,10 +86,8 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * test whether the given number is a primer.
-     *
      * @param tester
-     * @return
+     * @return whether the given number is a primer.
      */
     private boolean isPrime(int tester) {
         int p = (int) Math.sqrt(tester);
@@ -93,16 +99,22 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * try to insert a key, value pair to t his hash table. return <tt>false</tt> if a same key is already existed.
-     * and return <tt>true</tt> if success
+     * try to insert a key, value pair to t his hash table. if a same key exists, the previous value would be replaced
      *
      * @param key
      * @param value
-     * @return true if success, false for duplicate keys.
      */
-    public boolean insert(K key, V value) {
-        if (contains(key))
-            return false;
+    public void insert(K key, V value) {
+        // do replacing
+        for (int i = 0; i < this.k; i++) {
+            int h = this.hashFunctions[i].hash(key);
+            Object o = this.tables[i][h % this.capacity];
+            if (o != null && ((Entry) o).key.equals(key)) {
+                ((Entry) o).value = value;
+                return;
+            }
+        }
+        // add
         Entry o = new Entry(key, value);
         Entry temp;
         int pos = 0;
@@ -120,7 +132,7 @@ public class CuckooHashTable<K, V> {
                     if (this.size >= this.capacity * this.loadFactor) {
                         expand();
                     }
-                    return true;
+                    return;
                 } else {
                     this.tables[pos][l] = o;
                     o = temp;
@@ -136,6 +148,9 @@ public class CuckooHashTable<K, V> {
         }
     }
 
+    /**
+     * expand capacity
+     */
     private void expand() {
         this.capacity = nextPrime( (int) (this.capacity / this.loadFactor) );
         boolean success = false;
@@ -241,6 +256,23 @@ public class CuckooHashTable<K, V> {
             }
         }
         return false;
+    }
+
+    /**
+     * try to get the associated value for the key. return <tt>null</tt> if not found.
+     *
+     * @param key
+     * @return the associated value and <tt>null</tt> if no such key exists
+     */
+    public V get(K key) {
+        for (int i = 0; i < this.k; i++) {
+            int h = this.hashFunctions[i].hash(key);
+            Object o = this.tables[i][h % this.capacity];
+            if (o != null && ((Entry) o).key.equals(key)) {
+                return ((Entry) o).value;
+            }
+        }
+        return null;
     }
 
     /**

@@ -1,9 +1,17 @@
 package com.tomzhu.hash;
 
 /**
- * a simple quadratic probing hash tbale implementation where h(i) = i^2.
+ * a simple quadratic probing hash table implementation where h(i) = i^2.
  * the load factor is less than 0.5, Unlike the linear probing, the table size for quadratic probing
- * must be a prime, so there is always a next prime procedure when the load factor is exceeded.
+ * must be a prime, so there is always a next prime procedure when the load factor is exceeded. Also,
+ * here the lazy deletion is also used.
+ *
+ * @param <K> the type of key
+ * @param <V> the type of value
+ *
+ * @see HashTableByLinearProbing
+ * @author tomzhu
+ * @since 1.7
  */
 public class HashTableByQuadraticProbing<K, V> {
 
@@ -12,6 +20,9 @@ public class HashTableByQuadraticProbing<K, V> {
     private int capacity = 17;
     private Entry[] obs;
 
+    /**
+     * a simple key value pair holder
+     */
     class Entry {
 
         private K key;
@@ -47,7 +58,8 @@ public class HashTableByQuadraticProbing<K, V> {
     }
 
     /**
-     * insert a pair to this hashMap.
+     * insert a pair to this hashMap. if a same key exists, the previous value would be replaced
+     *
      * @param key
      * @param value
      */
@@ -123,10 +135,9 @@ public class HashTableByQuadraticProbing<K, V> {
     }
 
     /**
-     * check whether this map holds the element.
-     * return true if exist, return false otherwise.
      * @param key
-     * @return
+     * @return whether this map holds the element, return <tt>true</tt> if exist,
+     * return <tt>false</tt> otherwise.
      */
     public boolean contains(K key) {
         int h = hash(key);
@@ -136,20 +147,20 @@ public class HashTableByQuadraticProbing<K, V> {
         while (true) {
             if (this.obs[i] == null) {
                 return false;
-            } else if (this.obs[i].key.equals(key) && !this.obs[i].isDeleted) {
-                return true;
-            } else if (this.obs[i].key.equals(key))
+            } else if (this.obs[i].key.equals(key) && this.obs[i].isDeleted) {
                 return false;
+            } else if (this.obs[i].key.equals(key))
+                return true;
             start ++;
             i = (t + start * start) % capacity;
         }
     }
 
     /**
-     * try to remove a pair from this map, return true if success, return false if
-     * not found.
+     * try to remove a pair from this map, return <tt>true</tt> if success, return <tt>false</tt> if not found.
+     *
      * @param key
-     * @return
+     * @return <tt>true</tt> if success and <tt>false</tt> if such key not found
      */
     public boolean remove(K key) {
         int h = hash(key);
@@ -157,12 +168,35 @@ public class HashTableByQuadraticProbing<K, V> {
         int i = t;
         int start = 1;
         while (true) {
-            if (this.obs[i] == null) {
+            if (this.obs[i] == null || (this.obs[i].key.equals(key) && this.obs[i].isDeleted) ) {
                 return false;
             } else if (this.obs[i].key.equals(key)) {
                 this.obs[i].markDeleted();
                 return true;
             }
+            start ++;
+            i = (t + start * start) % capacity;
+        }
+    }
+
+    /**
+     * try to get and return the associated value for key, return <tt>null</tt> if no such key.
+     *
+     * @param key
+     * @return
+     */
+    public V get(K key) {
+        int h = hash(key);
+        int t = h % this.capacity;
+        int i = t;
+        int start = 1;
+        while (true) {
+            if (this.obs[i] == null) {
+                return null;
+            } else if (this.obs[i].key.equals(key) && this.obs[i].isDeleted) {
+                return null;
+            } else if (this.obs[i].key.equals(key))
+                return this.obs[i].value;
             start ++;
             i = (t + start * start) % capacity;
         }

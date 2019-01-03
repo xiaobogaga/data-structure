@@ -25,7 +25,7 @@ public class TreeMapTest {
     public void insert() throws Exception {
         treeMap = new TreeMap<>();
         java.util.TreeMap<Integer, Integer> treeMap2 = new java.util.TreeMap<>();
-        Random rand = new Random();
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(treeMap.isEmpty());
         for (int i = 0; i < size; ) {
             int k = rand.nextInt();

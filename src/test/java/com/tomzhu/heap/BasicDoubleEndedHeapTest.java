@@ -3,6 +3,7 @@ package com.tomzhu.heap;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -27,6 +28,7 @@ public class BasicDoubleEndedHeapTest {
         minHeap = new
                 BasicDoubleEndedHeap<Integer>(BasicDoubleEndedHeap.HeapType.MINHEAP);
         arr = new int[size];
+        Random rand = new Random(System.currentTimeMillis());
         int[] arr2 = new int[size];
         assertTrue(minHeap.isEmpty());
         assertNull(minHeap.getMax());
@@ -35,7 +37,7 @@ public class BasicDoubleEndedHeapTest {
         assertFalse(minHeap.isMaxHeap());
         int i = 0;
         while (i < size) {
-            arr[i] = (int) (Math.random() * 100000);
+            arr[i] = (int) (rand.nextDouble() * 100000);
             minHeap.insert(arr[i++]);
         }
        // System.out.println(Arrays.toString(arr));
@@ -66,6 +68,7 @@ public class BasicDoubleEndedHeapTest {
         maxHeap = new
                 BasicDoubleEndedHeap<Integer>(BasicDoubleEndedHeap.HeapType.MAXHEAP);
         arr = new int[size];
+        Random rand = new Random(System.currentTimeMillis());
         int[] arr2 = new int[size];
         assertTrue(maxHeap.isEmpty());
         assertNull(maxHeap.getMax());
@@ -74,7 +77,7 @@ public class BasicDoubleEndedHeapTest {
         assertFalse(maxHeap.isMinHeap());
         int i = 0;
         while (i < size) {
-            arr[i] = (int) (Math.random() * 100000);
+            arr[i] = (int) (rand.nextDouble() * 100000);
             maxHeap.insert(arr[i++]);
         }
         System.arraycopy(arr, 0, arr2, 0, size);

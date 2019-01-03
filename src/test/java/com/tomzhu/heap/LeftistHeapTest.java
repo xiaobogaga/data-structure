@@ -3,6 +3,7 @@ package com.tomzhu.heap;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -34,9 +35,10 @@ public class LeftistHeapTest {
     public void removeMax() throws Exception {
         leftistHeap = new LeftistHeap<Integer>(LeftistHeap.HeapType.MAXHEAP);
         arrs = new int[size];
+        Random rand = new Random(System.currentTimeMillis());
         int i = 0;
         while (i < size)
-            arrs[i++] = (int) (Math.random() * 100000);
+            arrs[i++] = (int) (rand.nextDouble() * 100000);
         for(int t : arrs)
             leftistHeap.insert(t);
         Arrays.sort(arrs);
@@ -53,9 +55,10 @@ public class LeftistHeapTest {
     public void insert() throws Exception {
         leftistHeap = new LeftistHeap<Integer>(LeftistHeap.HeapType.MINHEAP);
         arrs = new int[size];
+        Random rand = new Random(System.currentTimeMillis());
         int i = 0;
         while (i < size)
-            arrs[i++] = (int) (Math.random() * 100000);
+            arrs[i++] = (int) (rand.nextDouble() * 100000);
         for(int t : arrs)
             leftistHeap.insert(t);
         Arrays.sort(arrs);
@@ -73,19 +76,19 @@ public class LeftistHeapTest {
                 new LeftistHeap<Integer>(LeftistHeap.HeapType.MINHEAP);
         LeftistHeap<Integer> leftistHeap2 =
                 new LeftistHeap<Integer>(LeftistHeap.HeapType.MINHEAP);
-
+        Random rand = new Random(System.currentTimeMillis());
         int[] arr1 = new int[size + 10];
         int[] arr2 = new int[size];
 
         int i = 0;
         while (i < (size + 10)) {
-            arr1[i] = (int) (Math.random() * 10000);
+            arr1[i] = (int) (rand.nextDouble() * 10000);
             leftistHeap1.insert(arr1[i++]);
         }
 
         i = 0;
         while (i < size) {
-            arr2[i] = (int) (Math.random() * 10000000);
+            arr2[i] = (int) (rand.nextDouble() * 10000000);
             leftistHeap2.insert(arr2[i++]);
         }
 

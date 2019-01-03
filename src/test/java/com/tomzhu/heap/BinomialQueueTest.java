@@ -3,6 +3,7 @@ package com.tomzhu.heap;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -24,12 +25,13 @@ public class BinomialQueueTest {
         this.size = 1000;
         this.arr = new int[this.size];
         this.minHeap = new BinomialQueue<Integer>(BinomialQueue.HeapType.MINHEAP);
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(minHeap.isEmpty());
         assertFalse(minHeap.isMaxHeap());
         assertTrue(minHeap.isMinHeap());
         int i = 0;
         while (i < size) {
-            arr[i] = (int) (Math.random() * 100000);
+            arr[i] = (int) (rand.nextDouble() * 100000);
             this.minHeap.insert(arr[i++]);
         }
         Arrays.sort(arr);
@@ -46,12 +48,13 @@ public class BinomialQueueTest {
         this.size = 100;
         this.arr = new int[this.size];
         this.maxHeap = new BinomialQueue<Integer>(BinomialQueue.HeapType.MAXHEAP);
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(maxHeap.isEmpty());
         assertFalse(maxHeap.isMinHeap());
         assertTrue(maxHeap.isMaxHeap());
         int i = 0;
         while (i < size) {
-            arr[i] = (int) (Math.random() * 100000);
+            arr[i] = (int) (rand.nextDouble() * 100000);
             this.maxHeap.insert(arr[i++]);
         }
         Arrays.sort(arr);

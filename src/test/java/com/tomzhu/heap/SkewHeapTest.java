@@ -3,6 +3,7 @@ package com.tomzhu.heap;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -43,12 +44,13 @@ public class SkewHeapTest {
     public void removeMin() throws Exception {
         arrs = new int[size];
         minSkewHeap = new SkewHeap<Integer>(SkewHeap.HeapType.MINHEAP);
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(minSkewHeap.isEmpty());
         assertTrue(minSkewHeap.isMinHeap());
         assertFalse(minSkewHeap.isMaxHeap());
         int i = 0;
         while (i < size) {
-            arrs[i] = (int) (Math.random() * 100000);
+            arrs[i] = (int) (rand.nextDouble() * 100000);
             minSkewHeap.insert(arrs[i++]);
         }
         Arrays.sort(arrs);
@@ -65,12 +67,13 @@ public class SkewHeapTest {
     public void removeMax() throws Exception {
         arrs = new int[size];
         maxSkewHeap = new SkewHeap<Integer>(SkewHeap.HeapType.MAXHEAP);
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(maxSkewHeap.isEmpty());
         assertTrue(maxSkewHeap.isMaxHeap());
         assertFalse(maxSkewHeap.isMinHeap());
         int i = 0;
         while (i < size) {
-            arrs[i] = (int) (Math.random() * 100000);
+            arrs[i] = (int) (rand.nextDouble() * 100000);
             maxSkewHeap.insert(arrs[i++]);
         }
         Arrays.sort(arrs);
@@ -89,19 +92,19 @@ public class SkewHeapTest {
                 new SkewHeap<Integer>(SkewHeap.HeapType.MINHEAP);
         SkewHeap<Integer> skewHeap2 =
                 new SkewHeap<Integer>(SkewHeap.HeapType.MINHEAP);
-
+        Random rand = new Random(System.currentTimeMillis());
         int[] arr1 = new int[size + 10];
         int[] arr2 = new int[size];
 
         int i = 0;
         while (i < (size + 10)) {
-            arr1[i] = (int) (Math.random() * 10000);
+            arr1[i] = (int) (rand.nextDouble() * 10000);
             skewHeap1.insert(arr1[i++]);
         }
 
         i = 0;
         while (i < size) {
-            arr2[i] = (int) (Math.random() * 10000000);
+            arr2[i] = (int) (rand.nextDouble() * 10000000);
             skewHeap2.insert(arr2[i++]);
         }
 

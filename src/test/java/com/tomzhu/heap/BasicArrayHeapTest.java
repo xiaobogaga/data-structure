@@ -3,6 +3,7 @@ package com.tomzhu.heap;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -14,21 +15,23 @@ import static org.junit.Assert.*;
  */
 public class BasicArrayHeapTest {
 
-    private BasicArrayHeap<Integer> minHeap =
-            new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MINHEAP);
+    private BasicArrayHeap<Integer> minHeap;
 
-    private BasicArrayHeap<Integer> maxHeap =
-            new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MAXHEAP);
+    private BasicArrayHeap<Integer> maxHeap;
 
     private int size = 200;
 
-    private Integer[] eles = new Integer[size];
+    private Integer[] eles;
 
     @Test
     public void buildHeap() throws Exception {
+        maxHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MAXHEAP);
+        minHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MINHEAP);
+        eles = new Integer[size];
+        Random rand = new Random(System.currentTimeMillis());
         int i = 0;
         while (i < size) {
-            eles[i++] = (int) (Math.random() * 1000000);
+            eles[i++] = (int) (rand.nextDouble() * 1000000);
         }
         minHeap = BasicArrayHeap.buildHeap(eles, BasicArrayHeap.HeapType.MINHEAP);
         maxHeap = BasicArrayHeap.buildHeap(eles, BasicArrayHeap.HeapType.MAXHEAP);
@@ -59,9 +62,13 @@ public class BasicArrayHeapTest {
 
     @Test
     public void getMax() throws Exception {
+        maxHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MAXHEAP);
+        minHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MINHEAP);
+        eles = new Integer[size];
+        Random rand = new Random(System.currentTimeMillis());
         int i = 0;
         while (i < size) {
-            eles[i] = (int) (Math.random() * 1000000);
+            eles[i] = (int) (rand.nextDouble() * 1000000);
             minHeap.insert(eles[i]);
             maxHeap.insert(eles[i++]);
         }
@@ -76,9 +83,13 @@ public class BasicArrayHeapTest {
 
     @Test
     public void getMin() throws Exception {
+        maxHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MAXHEAP);
+        minHeap = new BasicArrayHeap<Integer>(BasicArrayHeap.HeapType.MINHEAP);
+        eles = new Integer[size];
+        Random rand = new Random(System.currentTimeMillis());
         int i = 0;
         while (i < size) {
-            eles[i] = (int) (Math.random() * 1000000);
+            eles[i] = (int) (rand.nextDouble() * 1000000);
             minHeap.insert(eles[i]);
             maxHeap.insert(eles[i++]);
         }

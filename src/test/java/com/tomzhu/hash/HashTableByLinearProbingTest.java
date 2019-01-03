@@ -2,6 +2,9 @@ package com.tomzhu.hash;
 
 import org.junit.Test;
 
+import java.util.Map;
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
@@ -9,37 +12,73 @@ import static org.junit.Assert.*;
  */
 public class HashTableByLinearProbingTest {
 
-    private HashTableByLinearProbing<Integer, Integer> probingHashTable =
-            new HashTableByLinearProbing<Integer, Integer>(45, 0.5f);
-    private int[] arrs;
-    {
-        int i = 0;
-        int size = 1000;
-        this.arrs = new int[size];
-        while (i < size) {
-            arrs[i] = (int) (Math.random() * Integer.MAX_VALUE);
-            probingHashTable.insert(arrs[i], arrs[i]);
-            i ++;
-        }
-    }
+    private HashTableByLinearProbing<Integer, Integer> probingHashTable;
+
+    private int size = 1000;
+
+    private java.util.HashMap<Integer, Integer> hashMap;
 
     @Test
     public void insert() throws Exception {
+        hashMap = new java.util.HashMap<>();
+        probingHashTable = new HashTableByLinearProbing<Integer, Integer>(45, 0.5f);
+        Random rand = new Random(System.currentTimeMillis());
+        for (int i = 0; i < size;) {
+            if (i != 0 && i % 5 == 0) {
+                // testing replacing.
+                Object[] arr = hashMap.keySet().toArray();
+                int loc = rand.nextInt();
+                if (loc < 0) loc = -loc;
+                int k = (int) arr[loc % arr.length];
+                assertTrue(probingHashTable.contains(k));
+                assertEquals(probingHashTable.get(k), hashMap.get(k));
+                int newV = rand.nextInt();
+                hashMap.put(k, newV);
+                probingHashTable.insert(k, newV);
+                assertTrue(probingHashTable.contains(k));
+                assertEquals((int) probingHashTable.get(k), newV);
+                i ++;
+            } else if (i != 0 && i % 4 == 0) {
+                // testing remove
+                Object[] arr = hashMap.keySet().toArray();
+                int loc = rand.nextInt();
+                if (loc < 0) loc = -loc;
+                int k = (int) arr[loc % arr.length];
+                assertTrue(probingHashTable.contains(k));
+                assertEquals(probingHashTable.get(k), hashMap.get(k));
+                hashMap.remove(k);
+                assertTrue(probingHashTable.remove(k));
+                assertFalse(probingHashTable.contains(k));
+                i ++;
+            } else {
+                //  testing add.
+                int k = rand.nextInt();
+                if (hashMap.containsKey(k)) {
+                    assertTrue(probingHashTable.contains(k));
+                    assertEquals(probingHashTable.get(k), hashMap.get(k));
+                    continue;
+                }
+                assertFalse(probingHashTable.contains(k));
+                int v = rand.nextInt();
+                hashMap.put(k, v);
+                probingHashTable.insert(k, v);
+                i ++;
+            }
+        }
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            assertTrue(probingHashTable.contains(entry.getKey()));
+            assertEquals(probingHashTable.get(entry.getKey()), entry.getValue());
+        }
+
     }
 
     @Test
     public void contains() throws Exception {
-        for (int i : arrs) {
-            assertTrue(this.probingHashTable.contains(i));
-        }
+
     }
 
     @Test
     public void remove() throws Exception {
-        for (int i : arrs) {
-            this.probingHashTable.remove(i);
-            assertFalse(this.probingHashTable.contains(i));
-        }
     }
 
 }

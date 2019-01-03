@@ -3,30 +3,31 @@ package com.tomzhu.hash;
 import com.tomzhu.list.MyNosuchElementException;
 import com.tomzhu.list.MyNotSupportException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * A simple hash table implementation using seperate Chain.
+ * A simple hash table implementation using separate Chain.
  * The chain is a list which holds collision elements, actually the chain could be
  * a binary search tree | red-black tree or even a hash table which can construct a
  * multi-level hash table.
  *
- * For hash  table, the load factor is very important since it controls when to extend the hash
- * table and when to perform rehash procedure, for seperate chain strategy, the load factor can be larger than
- * the probing method. In jdk, the default setting of load factor for {@link java.util.HashMap} is 0.75
+ * For hash table, the load factor is very important since it controls when to extend the hash
+ * table and when to perform rehash procedure, for separate chain strategy, in jdk,
+ * the default setting of load factor for {@link java.util.HashMap} is 0.75
  * and so are we.
  *
  * @see java.util.HashMap
  * @author tomzhu
+ * @since 1.7
  */
-public class HashTableBySeperateChain<K, V> {
+public class HashTableBySeparateChain<K, V> {
 
     private int length = 1 << 4; // default 16.
     private Object[] chains;
     private float loadFactor = 0.75f;
     private int size = 0;
 
+    /**
+     * a simple key value pair hodler
+     */
     private class Node {
         private K key;
         private V value;
@@ -66,20 +67,20 @@ public class HashTableBySeperateChain<K, V> {
     /**
      * initialize a default hash table, with load factor is 0.75, and initialized length is 16.
      */
-    public HashTableBySeperateChain() {
+    public HashTableBySeparateChain() {
         chains = new Object[length];
     }
 
     /**
-     * initialize a hash table by initialCapacity and load factor.
+     * initialize a hash table by initialCapacity and load factor. and load factor must be larger than 0.
+     *
      * @param initialCapacity
      * @param loadFactor
      */
-    public HashTableBySeperateChain(int initialCapacity, float loadFactor) {
+    public HashTableBySeparateChain(int initialCapacity, float loadFactor) {
         this.length = initialCapacity <= 1 ? 1 << 4 : sizeFor(initialCapacity);
         // load factor must range for [0, 1].
-        if (loadFactor > 0 && loadFactor < 1)
-            this.loadFactor = loadFactor;
+        this.loadFactor = loadFactor;
         this.chains = new Object[this.length];
     }
 
@@ -99,7 +100,8 @@ public class HashTableBySeperateChain<K, V> {
 
 
     /**
-     * insert an key-value pair.
+     * insert an key-value pair. if a same key exists, the previous value would be replaced
+     *
      * @param key
      * @param value
      */
@@ -111,7 +113,7 @@ public class HashTableBySeperateChain<K, V> {
             this.size++;
         } else {
             // iterator the chain to find the element.
-            if (this.chains[i] instanceof HashTableBySeperateChain.KeydList) {
+            if (this.chains[i] instanceof HashTableBySeparateChain.KeydList) {
                 KeydList list = (KeydList) this.chains[i];
                 if (list.insert(key, value, h)) {
                     this.size++;
@@ -145,7 +147,7 @@ public class HashTableBySeperateChain<K, V> {
             while (i < obs.length) {
                 if (obs[i] == null) {
                     // ignore
-                } else if (obs[i] instanceof HashTableBySeperateChain.Node) {
+                } else if (obs[i] instanceof HashTableBySeparateChain.Node) {
                     newArr[((Node)obs[i]).hash & (this.length - 1)] = obs[i];
                 } else {
                     // must be a list, since these list would be seperate two list node, lets see.
@@ -185,15 +187,16 @@ public class HashTableBySeperateChain<K, V> {
 
     /**
      * remove a key-value pair from this map.
+     *
      * @param key
-     * @return true if success, false if doesn't have this key.
+     * @return <tt>true</tt> if success, <tt>false</tt> if doesn't have this key.
      */
     public boolean remove(K key) {
         int i = hash(key) & (this.length - 1);
         if (this.chains[i] == null)
             return false;
         // iterator the chain to find the element.
-        if (this.chains[i] instanceof HashTableBySeperateChain.KeydList) {
+        if (this.chains[i] instanceof HashTableBySeparateChain.KeydList) {
             KeydList list = (KeydList) this.chains[i];
             if(list.remove(key)){
                 this.size--;
@@ -212,20 +215,40 @@ public class HashTableBySeperateChain<K, V> {
     }
 
     /**
-     * check whether this map has the key.
      * @param key
-     * @return
+     * @return whether this map has the key.
      */
     public boolean contains(K key) {
         int i = hash(key) & (this.length - 1);
         if (this.chains[i] == null)
             return false;
         // iterator the chain to find the element.
-        if (this.chains[i] instanceof HashTableBySeperateChain.KeydList) {
+        if (this.chains[i] instanceof HashTableBySeparateChain.KeydList) {
             KeydList list = (KeydList) this.chains[i];
             return list.contains(key);
         } else {
             return ((Node) this.chains[i]).key.equals(key);
+        }
+    }
+
+    /**
+     * try to get the associated value for the specific key. return <tt>null</tt> if no such key found.
+     *
+     * @param key
+     * @return the associated value
+     */
+    public V get(K key) {
+        int i = hash(key) & (this.length - 1);
+        if (this.chains[i] == null)
+            return null;
+        // iterator the chain to find the element.
+        if (this.chains[i] instanceof HashTableBySeparateChain.KeydList) {
+            KeydList list = (KeydList) this.chains[i];
+            KeydList.LNode<Node> n = list.get(key);
+            return n == null ? null : ((Node) n.value).value;
+        } else {
+            if (((Node) this.chains[i]).key.equals(key)) return ((Node) this.chains[i]).value;
+            else return null;
         }
     }
 
@@ -241,6 +264,9 @@ public class HashTableBySeperateChain<K, V> {
         return h < 0 ? -h : h;
     }
 
+    /**
+     * a list can holding nodes.
+     */
     private class KeydList {
 
         private int hash;
@@ -287,6 +313,9 @@ public class HashTableBySeperateChain<K, V> {
             this.hash = hash;
         }
 
+        /**
+         * @return whether this list is empty
+         */
         public boolean isEmpty() {
             return this.head == null;
         }
@@ -342,8 +371,10 @@ public class HashTableBySeperateChain<K, V> {
         /**
          * used by HashTable, insert a node by (k,v) to this list, if has the k, will replace the
          * previous key by new v.
+         *
          * @param k
          * @param v
+         * @return <tt>true</tt> if success and <tt>false</tt> if just replacing previous value.
          */
         public boolean insert(K k, V v, int hash) {
             if (isEmpty()) {
@@ -407,6 +438,15 @@ public class HashTableBySeperateChain<K, V> {
                 }
                 return temp.value;
             }
+        }
+
+        public LNode get(K key) {
+            LNode<Node> temp = head;
+            while (temp != null) {
+                if (temp.value.key.equals(key)) return temp;
+                temp = temp.after;
+            }
+            return null;
         }
 
         /**
@@ -483,8 +523,9 @@ public class HashTableBySeperateChain<K, V> {
 
         /**
          * used by HashTable, remove a node by key.
+         *
          * @param key
-         * @return
+         * @return return <tt>true</tt> if success and return <tt>false</tt> if list is empty or no such key found.
          */
         public boolean remove(K key) {
             if (isEmpty())
@@ -510,9 +551,8 @@ public class HashTableBySeperateChain<K, V> {
         }
 
         /**
-         * check the list if it has the key node.
          * @param key
-         * @return
+         * @return whether the list if it has the key node.
          */
         public boolean contains(K key) {
             LNode<Node> temp = this.head;
@@ -525,22 +565,11 @@ public class HashTableBySeperateChain<K, V> {
         }
 
         /**
-         * clear the list.
-         */
-        public void clear() {
-            this.size = 0;
-            this.head = null;
-        }
-
-        /**
-         * return the current size of the list.
-         * @return
+         * @return the current size of the list.
          */
         public int getSize() {
             return this.size;
         }
-
-
 
     }
 

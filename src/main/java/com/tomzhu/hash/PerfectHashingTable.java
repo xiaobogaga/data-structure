@@ -6,6 +6,16 @@ import java.util.Random;
  * a simple perfect hashing table implementation.
  * perfect hashing table is a location table without collision. Perfect Hashing is used in this scenario where
  * the all key-value pair are known in advance.
+ *
+ * for PerfectHashingTable, a general use procedure is that: first adding all key-value pairs to
+ * this hash table, then call {@code build} method to create a collision-free hash table. after built,
+ * the insert method cannot be called.
+ *
+ * @param <K> the type of key
+ * @param <V> the type of value
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class PerfectHashingTable<K, V> {
 
@@ -157,14 +167,14 @@ public class PerfectHashingTable<K, V> {
             this.value = value;
         }
 
-        public void setHashFunction(HashFunction hashFunction) {
-            this.hashFunction = hashFunction;
-        }
         public void setLocation(int location) {
             this.location = location;
         }
     }
 
+    /**
+     * a simple class represents Hash Functions
+     */
     class HashFunction {
         private int a;
         private int b;
@@ -186,6 +196,10 @@ public class PerfectHashingTable<K, V> {
 
     }
 
+    /**
+     * @param tableSize
+     * @return a hash Function.
+     */
     public HashFunction hashFamily(int tableSize) {
         int a = randA.nextInt(prime - 1);
         int b = randB.nextInt(prime - 1);
@@ -193,9 +207,8 @@ public class PerfectHashingTable<K, V> {
     }
 
     /**
-     * verify whether this map holds this key element. return false if not found.
      * @param key
-     * @return
+     * @return whether this map holds this key element
      */
     public boolean contains(K key) {
         int l = hashFunction.hash(key);
@@ -210,9 +223,10 @@ public class PerfectHashingTable<K, V> {
     }
 
     /**
-     * try to remove a key-value pair from this map, return false if not found.
+     * try to remove a key-value pair from this map, return <tt>false</tt> if not found.
+     *
      * @param key
-     * @return
+     * @return <tt>true</tt> if success and <tt>false</tt> if such key not found
      */
     public boolean remove(K key) {
         int l = hashFunction.hash(key);
@@ -227,6 +241,26 @@ public class PerfectHashingTable<K, V> {
             }
         } else {
             return false;
+        }
+    }
+
+    /**
+     * try to get the associated value for the key. and return <tt>null</tt> if no such
+     * key found
+     *
+     * @param key
+     * @return
+     */
+    public V get(K key) {
+        int l = hashFunction.hash(key);
+        if (this.chains[l] != null) {
+            PerfectHashingTable<K, V> secondaryChain = ((PerfectHashingTable)this.chains[l]);
+            int l2 = secondaryChain.hashFunction.hash(key);
+            return (secondaryChain.chains[l2] != null &&
+                    ((Entry) secondaryChain.chains[l2]).key.equals(key)) ?
+                    ((Entry) secondaryChain.chains[l2]).value: null;
+        } else {
+            return null;
         }
     }
 

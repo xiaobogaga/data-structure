@@ -3,7 +3,13 @@ package com.tomzhu.hash;
 /**
  * a simple hopscotch hash table implementation.
  * <p>
- * The hop information is holded by the hop variable.
+ * The hop information is maintained by the hop variable.
+ *
+ * @param <K> the type of key
+ * @param <V> the type of value
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class HopscotchHashTable<K, V> {
 
@@ -78,7 +84,7 @@ public class HopscotchHashTable<K, V> {
     }
 
     /**
-     * insert the key-value pair to current map.
+     * insert the key-value pair to current map. if a same key exists, the previous value would be replaced
      *
      * @param key
      * @param value
@@ -282,10 +288,8 @@ public class HopscotchHashTable<K, V> {
     }
 
     /**
-     * verify whether the current table contains the key.
-     *
      * @param key
-     * @return
+     * @return whether the current table contains the key.
      */
     public boolean contains(K key) {
         int l = hash(key) & (this.capacity - 1);
@@ -305,10 +309,33 @@ public class HopscotchHashTable<K, V> {
     }
 
     /**
-     * remove the key-value pair from current map, return false if not found.
+     * try to get the associated value for key. return <tt>null</tt> if no such key exists
      *
      * @param key
-     * @return
+     * @return the associated value. and <tt>null</tt> if no such key exists
+     */
+    public V get(K key) {
+        int l = hash(key) & (this.capacity - 1);
+        TableItem item = this.tables[l];
+        if (item == null || item.hop == 0)
+            return null;
+        int i = 0;
+        while (i < this.hopSize) {
+            if (((item.hop >>> i) & 1) == 1) {
+                int t = (l + i) & (this.capacity - 1);
+                if (this.tables[t].entry.key.equals(key))
+                    return this.tables[t].entry.value;
+            }
+            i++;
+        }
+        return null;
+    }
+
+    /**
+     * remove the key-value pair from current map, return <tt>false</tt> if not found.
+     *
+     * @param key
+     * @return <tt>true</tt> if success and <tt>false</tt> if such key not found
      */
     public boolean remove(K key) {
         int l = hash(key) & (this.capacity - 1);

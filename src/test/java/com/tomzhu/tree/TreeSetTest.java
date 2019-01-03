@@ -21,7 +21,7 @@ public class TreeSetTest {
     public void contains() throws Exception {
         treeSet = new TreeSet<>();
         java.util.TreeSet<Integer> treeSet2 = new java.util.TreeSet<>();
-        Random rand = new Random();
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(treeSet.isEmpty());
         for (int i = 0; i < size; ) {
             int k = rand.nextInt();
