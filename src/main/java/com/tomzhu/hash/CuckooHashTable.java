@@ -6,10 +6,12 @@ import java.util.Random;
  * a simple cuckoo hashing table implementation. if the data sets are known in advance, then
  * cuckoo hashing could be a perfect hashing table.
  * <p>
- * this implementation allows multiple hash table and correspondingly hash functions but either
- * 2 or 4 since more hash table has less contributions to the load factor.
+ * this implementation allows multiple hash table and correspondingly multiple hash functions. but either
+ * 2 or 4 are allowed, since more hash table has less contributions to the load factor.
  * for 2 hash table, the load factor is 0.4;
  * for 4 hash table, the load factor is 0.8;
+ *
+ * so this hash table created by a 
  */
 public class CuckooHashTable<K, V> {
 
@@ -39,7 +41,7 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * construct a cuckoo hash table by given parameter.
+     * construct a cuckoo hash table by given parameters.
      *
      * @param initialCapacity
      * @param hashTableType
@@ -90,6 +92,14 @@ public class CuckooHashTable<K, V> {
         return true;
     }
 
+    /**
+     * try to insert a key, value pair to t his hash table. return <tt>false</tt> if a same key is already existed.
+     * and return <tt>true</tt> if success
+     *
+     * @param key
+     * @param value
+     * @return true if success, false for duplicate keys.
+     */
     public boolean insert(K key, V value) {
         if (contains(key))
             return false;
@@ -201,10 +211,8 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * verify whether this table contains the key.
-     *
      * @param key
-     * @return
+     * @return whether this table contains the key.
      */
     public boolean contains(K key) {
         for (int i = 0; i < this.k; i++) {
@@ -218,7 +226,7 @@ public class CuckooHashTable<K, V> {
     }
 
     /**
-     * try to remove a key-value pair from table, return false if not found.
+     * try to remove a key-value pair from table, return <tt>false</tt> if not found.
      *
      * @param key
      * @return

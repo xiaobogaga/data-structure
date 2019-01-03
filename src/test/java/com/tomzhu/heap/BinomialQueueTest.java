@@ -7,7 +7,10 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 /**
- * @author tomzhu.
+ * testing {@link BinomialQueue}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BinomialQueueTest {
 

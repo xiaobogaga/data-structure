@@ -1,8 +1,12 @@
 package com.tomzhu.heap;
 
 /**
- * @author tomzhu.
- *         a simple leftist heap implementation.
+ * a simple leftist heap implementation.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class LeftistHeap<E extends Comparable<E>> {
 
@@ -10,6 +14,10 @@ public class LeftistHeap<E extends Comparable<E>> {
     private Node root;
     private HeapType heapType;
 
+    /**
+     * construct a leftist heap with specific heap type
+     * @param heapType
+     */
     public LeftistHeap(HeapType heapType) {
         this.heapType = heapType;
     }
@@ -52,7 +60,7 @@ public class LeftistHeap<E extends Comparable<E>> {
     }
 
     /**
-     * @return the min element of this heap, return null if empty or is a max heap.
+     * @return the min element of this heap, return <tt>null</tt> if empty or is a max heap.
      */
     public E getMin() {
         E ret = (this.size == 0 || heapType == HeapType.MAXHEAP ? null : this.root.ele);
@@ -60,9 +68,9 @@ public class LeftistHeap<E extends Comparable<E>> {
     }
 
     /**
-     * remove the min element.
+     * remove and return the min element.
      *
-     * @return the min element if not empty, return null if is empty or is max heap.
+     * @return the min element if not empty, return <tt>null</tt> if is empty or is max heap.
      */
     public E removeMin() {
         if (isMaxHeap())
@@ -76,16 +84,16 @@ public class LeftistHeap<E extends Comparable<E>> {
     }
 
     /**
-     * @return the max element of this heap, return null if empty or is a min heap.
+     * @return the max element of this heap, return <tt>null</tt> if empty or is a min heap.
      */
     public E getMax() {
         return this.size == 0 || heapType == HeapType.MINHEAP ? null : this.root.ele;
     }
 
     /**
-     * remove the max element.
+     * remove and return the max element.
      *
-     * @return the max element of this heap, return null if is empty or is min heap.
+     * @return the max element of this heap, return <tt>null</tt> if is empty or is min heap.
      */
     public E removeMax() {
         if (isMinHeap())

@@ -7,7 +7,10 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 /**
+ * testing {@link BasicArrayHeap}
+ *
  * @author tomzhu
+ * @since 1.7
  */
 public class BasicArrayHeapTest {
 

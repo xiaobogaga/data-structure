@@ -7,7 +7,10 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 /**
- * @author tomzhu.
+ * testing {@link SkewHeap}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class SkewHeapTest {
 

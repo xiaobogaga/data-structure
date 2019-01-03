@@ -68,7 +68,7 @@ For a detailed api documentation, please ref here.
 
 * [Tree](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/tree)
 
-* [Heap]()
+* [Heap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/heap)
 
 * [Hash]()
 

@@ -1,7 +1,12 @@
 package com.tomzhu.heap;
 
 /**
+ * a simple skew heap implementation
+ *
+ * @param <E> the type of element
+ *
  * @author tomzhu.
+ * @since 1.7
  */
 public class SkewHeap<E extends Comparable<E>> {
 
@@ -35,7 +40,7 @@ public class SkewHeap<E extends Comparable<E>> {
     }
 
     /**
-     * construct a skew heap.
+     * construct a skew heap with specific heap type
      *
      * @param heapType
      */
@@ -55,14 +60,14 @@ public class SkewHeap<E extends Comparable<E>> {
     }
 
     /**
-     * @return the min element of this heap.
+     * @return the min element of this heap and return <tt>null</tt> if is empty or is a max heap
      */
     public E getMin() {
         return (isEmpty() || isMaxHeap()) ? null : this.root.ele;
     }
 
     /**
-     * @return whether this heap is min heap.
+     * @return whether this heap is min heap
      */
     public boolean isMinHeap() {
         return this.heapType == HeapType.MINHEAP;
@@ -76,14 +81,14 @@ public class SkewHeap<E extends Comparable<E>> {
     }
 
     /**
-     * @return the max element of this heap.
+     * @return the max element of this heap and return <tt>null</tt> if is empty or is a min heap
      */
     public E getMax() {
         return (isMinHeap() || isEmpty()) ? null : this.root.ele;
     }
 
     /**
-     * remove the min element from this heap and return, return null if empty or is a max heap.
+     * remove the min element from this heap and return, return <tt>null</tt> if empty or is a max heap.
      *
      * @return
      */
@@ -97,7 +102,7 @@ public class SkewHeap<E extends Comparable<E>> {
     }
 
     /**
-     * return the max element from this heap and return, return null if empty or is a min heap.
+     * return the max element from this heap and return, return <tt>null</tt> if empty or is a min heap.
      *
      * @return
      */
@@ -190,7 +195,7 @@ public class SkewHeap<E extends Comparable<E>> {
     }
 
     /**
-     * @return whether the heap is emtpy.
+     * @return whether the heap is empty.
      */
     public boolean isEmpty() {
         return this.size == 0;

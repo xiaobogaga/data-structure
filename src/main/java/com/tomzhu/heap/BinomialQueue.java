@@ -3,7 +3,10 @@ package com.tomzhu.heap;
 /**
  * a simple binomial queue implementation.
  *
+ * @param <E> the type of element
+ *
  * @author tomzhu.
+ * @since 1.7
  */
 public class BinomialQueue<E extends Comparable<E>> {
 
@@ -57,6 +60,8 @@ public class BinomialQueue<E extends Comparable<E>> {
     }
 
     /**
+     * construct a binomialQueue with specific heap type and tree size
+     *
      * @param heapType
      * @param treeSize
      */
@@ -75,7 +80,7 @@ public class BinomialQueue<E extends Comparable<E>> {
     }
 
     /**
-     * @return the min element of this heap, return null if is empty or is a max heap.
+     * @return the min element of this heap, return <tt>null</tt> if is empty or is a max heap.
      */
     public E getMin() {
         return (isEmpty() || isMaxHeap()) ? null : this.trees[fetchTarget()].root.ele;
@@ -120,7 +125,7 @@ public class BinomialQueue<E extends Comparable<E>> {
     }
 
     /**
-     * @return the max element of this heap, return null if is empty or is a min heap.
+     * @return the max element of this heap, return <tt>null</tt> if is empty or is a min heap.
      */
     public E getMax() {
         return (isMinHeap() || isEmpty()) ? null : this.trees[fetchTarget()].root.ele;
@@ -128,6 +133,7 @@ public class BinomialQueue<E extends Comparable<E>> {
 
     /**
      * remove this tree's root and construct a new forest using it's children.
+     *
      * @param tree
      * @return
      */
@@ -149,8 +155,9 @@ public class BinomialQueue<E extends Comparable<E>> {
     }
 
     /**
-     * remove the min element from this heap.
-     * @return the min element, null if empty or is max heap.
+     * remove and return the min element from this heap.
+     *
+     * @return the min element, <tt>null</tt> if empty or is max heap.
      */
     public E removeMin() {
         if (isEmpty() || isMaxHeap())
@@ -165,8 +172,9 @@ public class BinomialQueue<E extends Comparable<E>> {
     }
 
     /**
-     * remove the max element from this heap.
-     * @return the max element, null if empty or is min heap.
+     * remove and return the max element from this heap.
+     *
+     * @return the max element, <tt>null</tt> if empty or is min heap.
      */
     public E removeMax() {
         if (isEmpty() || isMinHeap())

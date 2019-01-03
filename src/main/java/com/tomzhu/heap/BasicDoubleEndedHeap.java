@@ -1,9 +1,14 @@
 package com.tomzhu.heap;
 
-import java.util.logging.Level;
-
 /**
- * a simple min-max or max-min heap.
+ * a simple min-max or max-min heap. A double ended heap can be seen as a union
+ * of min heap and max heap. it supports {@code getMax} and {@code getMin} operations
+ * with constant time overhead. see {@link } for the original paper of this structure.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BasicDoubleEndedHeap<E extends Comparable<E>> {
 
@@ -37,8 +42,7 @@ public class BasicDoubleEndedHeap<E extends Comparable<E>> {
     }
 
     /**
-     * get the min element of this heap.
-     * @return the min element of this heap, return null if isEmpty.
+     * @return the min element of this heap, return <tt>null</tt> if isEmpty.
      */
     public E getMin() {
         if (isEmpty())
@@ -59,8 +63,7 @@ public class BasicDoubleEndedHeap<E extends Comparable<E>> {
     }
 
     /**
-     * get the max element of this heap.
-     * @return the max element of this heap, return null if empty.
+     * @return the max element of this heap, return <tt>null</tt> if empty.
      */
     public E getMax() {
         if (isEmpty())
@@ -204,8 +207,9 @@ public class BasicDoubleEndedHeap<E extends Comparable<E>> {
     }
 
     /**
-     * remove and return the min element of this heap, return null if empty.
-     * @return
+     * remove and return the min element of this heap, return <tt>null</tt> if empty.
+     *
+     * @return the minimum element of this heap
      */
     public E removeMin() {
         if (isEmpty())
@@ -242,8 +246,9 @@ public class BasicDoubleEndedHeap<E extends Comparable<E>> {
     }
 
     /**
-     * remove and return the max element of this heap, return null if empty.
-     * @return
+     * remove and return the max element of this heap, return <tt>null</tt> if empty.
+     *
+     * @return the maximum element of this heap
      */
     public E removeMax() {
         if (isEmpty())
@@ -370,30 +375,26 @@ public class BasicDoubleEndedHeap<E extends Comparable<E>> {
         LevelType type = ((int) ( Math.floor(Math.log(this.size + 1) / Math.log(2)) ) & 1) == 0 ? (isMinHeap() ?
                 LevelType.MINLEVEL : LevelType.MAXLEVEL) : (isMaxHeap() ? LevelType.MINLEVEL :
                 LevelType.MAXLEVEL);
-       // System.out.println(type);
         percolateUp(this.size, type);
         this.size++;
     }
 
     /**
-     * verify whether this heap is emtpy.
-     * @return
+     * @return whether this heap is emtpy.
      */
     public boolean isEmpty() {
         return this.size == 0;
     }
 
     /**
-     * verify whether is a max heap.
-     * @return
+     * @return whether this heap is a max heap
      */
     public boolean isMaxHeap() {
         return this.heapType == HeapType.MAXHEAP;
     }
 
     /**
-     * verify whether is a min heap.
-     * @return
+     * @return whether this heap is a min heap
      */
     public boolean isMinHeap() {
         return this.heapType == HeapType.MINHEAP;

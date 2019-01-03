@@ -3,7 +3,12 @@ package com.tomzhu.heap;
 import java.util.Arrays;
 
 /**
- * a simple heap implementation based on heap which can be max heap or min heap.
+ * a simple heap implementation based on array which can be max heap or min heap.
+ *
+ * @param <E> the type of element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BasicArrayHeap<E extends Comparable<E>> {
 
@@ -28,6 +33,11 @@ public class BasicArrayHeap<E extends Comparable<E>> {
         this.arrs = new Object[this.capacity + 1];
     }
 
+    /**
+     * construct a head with specific heap type and initial capacity.
+     * @param heapType
+     * @param initialCapacity
+     */
     private BasicArrayHeap(HeapType heapType, int initialCapacity) {
         this.heapType = heapType;
         this.capacity = initialCapacity;
@@ -36,7 +46,10 @@ public class BasicArrayHeap<E extends Comparable<E>> {
 
     /**
      * building a heap using data within O(N) time.
-     * @return
+     *
+     * @param eles the elements
+     * @param heapType heap type
+     * @return the built heap
      */
     public static <T extends Comparable<T>> BasicArrayHeap buildHeap(T[] eles, HeapType heapType) {
         BasicArrayHeap<T> arrayHeap = new BasicArrayHeap<T>(heapType, eles.length);
@@ -86,16 +99,14 @@ public class BasicArrayHeap<E extends Comparable<E>> {
     }
 
     /**
-     * verify whether is a max heap
-     * @return
+     * @return whether this heap is a max heap
      */
     public boolean isMaxHeap() {
         return this.heapType == HeapType.MAXHEAP;
     }
 
     /**
-     * verify whether is a min heap.
-     * @return
+     * @return whether this heap is a min heap
      */
     public boolean isMinHeap() {
         return this.heapType == HeapType.MINHEAP;
@@ -132,18 +143,16 @@ public class BasicArrayHeap<E extends Comparable<E>> {
     }
 
     /**
-     * return the max element of this heap, only supports {@link HeapType}.MAXHEAP.
-     * return null if is empty or is a min heap.
-     * @return
+     * @return the max element of this heap, only supports {@link HeapType}.MAXHEAP. return
+     * <tt>null</tt> if is empty or is a min heap.
      */
     public E getMax() {
         return (this.isMinHeap() || this.isEmpty()) ? null : (E) this.arrs[1];
     }
 
     /**
-     * return the min element of this heap. only supports {@link HeapType}.MINHEAP.
-     * return null if is empty or is a max heap.
-     * @return
+     * @return the min element of this heap. only supports {@link HeapType}.MINHEAP.
+     * return <tt>null</tt> if is empty or is a max heap.
      */
     public E getMin() {
         return (this.isMaxHeap() || this.isEmpty()) ? null : (E) this.arrs[1];
@@ -151,8 +160,9 @@ public class BasicArrayHeap<E extends Comparable<E>> {
 
     /**
      * remove the min element from this heap and return.
-     * return null if is max heap or isEmpty.
-     * @return
+     * return <tt>null</tt> if is max heap or isEmpty.
+     *
+     * @return the min element.
      */
     public E removeMin() {
         if (this.isMaxHeap() || isEmpty())
@@ -165,8 +175,9 @@ public class BasicArrayHeap<E extends Comparable<E>> {
 
     /**
      * return the max element from this heap and return.
-     * return null if is min heap or isEmpty.
-     * @return
+     * return <tt>null</tt> if is min heap or isEmpty.
+     *
+     * @return the max element
      */
     public E removeMax() {
         if (this.isMinHeap() || isEmpty())
@@ -178,22 +189,20 @@ public class BasicArrayHeap<E extends Comparable<E>> {
     }
 
     /**
-     * get the current heap size.
-     * @return
+     * @return the size of current heap
      */
     public int getSize() {
         return this.size - 1;
     }
 
     /**
-     * verify whether this heap is empty.
-     * @return
+     * @return whether this heap is empty.
      */
     public boolean isEmpty() {
         return this.size == 1;
     }
 
-    public void printInternalArrs() {
+    void printInternalArrs() {
         System.out.println(Arrays.toString(this.arrs));
     }
 
