@@ -1,6 +1,7 @@
 package com.tomzhu.tree;
 
 import org.junit.Test;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,36 +10,74 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 18-3-25.
+ * testing {@link BTree}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BTreeTest {
 
     private BTree<Integer> tree = new BTree<Integer>();
-    private int size = 5;
+    private int size = 100;
 
     @Test
     public void contains() throws Exception {
 
         /**
-         * -1780816805
-         * -1731509307
-         * 744054917
-         * -1290271866
-         * -2068017508
+         inserting : 1321407825
+         inserting : -907868213
+         inserting : -743077739
+         inserting : 196761683
+         inserting : 2323411
+
+         , 1321407825, -907868213, -743077739, 196761683, 2323411
+
+         removing : -743077739, 2323411, 1321407825, -907868213
          */
-        int[] arr1 = new int[] {-1780816805, -1731509307, 744054917, -1290271866, -2068017508};
+        int[] arr1 = new int[] {1321407825, -907868213, -743077739, 196761683, 2323411};
+        int[] arr2 = new int[] {-743077739, 2323411, 1321407825, -907868213, 196761683};
         tree = new BTree<>();
         for (int i = 0; i < size; i++) {
-            tree.PrintTree();
             tree.insert(arr1[i]);
-            System.out.println();
         }
+        tree.PrintTree();
+        for (int i = 0; i < size; i++) {
+
+            System.out.println();
+            System.out.println("removing : " + arr2[i]);
+            System.out.println();
+            tree.PrintTree();
+            System.out.println();
+
+            assertTrue(tree.contains(arr2[i]));
+            assertTrue(tree.remove(arr2[i]));
+            assertFalse(tree.contains(arr2[i]));
+        }
+
+        tree.PrintTree();
 
     }
 
 
     @Test
     public void findMax() throws Exception {
+        tree = new BTree<>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
+        Random rand = new Random(System.currentTimeMillis());
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            assertFalse(tree.contains(k));
+            maps.put(k, k);
+            hashMap.put(k, k);
+            tree.insert(k);
+            assertTrue(tree.contains(k));
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            i ++;
+        }
     }
 
     @Test
@@ -56,14 +95,14 @@ public class BTreeTest {
         for (int i = 0; i < size;) {
             int k = rand.nextInt();
             if (maps.containsKey(k)) continue;
-            System.out.println();
-            System.out.println("inserting : " + k);
-            System.out.println();
+//            System.out.println();
+//            System.out.println("inserting : " + k);
+//            System.out.println();
 
             maps.put(k, k);
             hashMap.put(k, k);
             tree.insert(k);
-            tree.PrintTree();
+            // tree.PrintTree();
             assertEquals(tree.getMin(), maps.firstKey());
             assertEquals(tree.getMax(), maps.lastKey());
             if (i != 0 && i % 5 == 0) {
@@ -72,15 +111,15 @@ public class BTreeTest {
                 if (l < 0) l = -l;
                 int removedK = (Integer) arr[l % arr.length];
 
-                System.out.println();
-                System.out.println("removing : " + removedK);
-                System.out.println();
+//                System.out.println();
+//                System.out.println("removing : " + removedK);
+//                System.out.println();
 
                 hashMap.remove(removedK);
                 maps.remove(removedK);
                 assertTrue(tree.contains(removedK));
                 tree.remove(removedK);
-                tree.PrintTree();
+                // tree.PrintTree();
                 assertFalse(tree.contains(removedK));
                 assertEquals(tree.getMin(), maps.firstKey());
                 assertEquals(tree.getMax(), maps.lastKey());
@@ -90,13 +129,14 @@ public class BTreeTest {
         assertFalse(tree.isEmpty());
 
         for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
-            System.out.println("searching : " + entry.getKey());
+            // System.out.println("searching : " + entry.getKey());
             assertTrue(tree.contains(entry.getKey()));
         }
 
         // testing remove.
         for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
-            System.out.println("removing : " + entry.getKey());
+            // System.out.println("removing : " + entry.getKey());
+            assertTrue(tree.contains(entry.getKey()));
             assertTrue(tree.remove(entry.getKey()));
             assertFalse(tree.contains(entry.getKey()));
         }
@@ -105,7 +145,39 @@ public class BTreeTest {
 
     @Test
     public void remove() throws Exception {
+        tree = new BTree<>();
+        java.util.TreeMap<Integer, Integer> maps = new java.util.TreeMap<Integer, Integer> ();
+        java.util.HashMap<Integer, Integer> hashMap = new java.util.HashMap<>();
+        Random rand = new Random(System.currentTimeMillis());
+        assertTrue(tree.isEmpty());
+        for (int i = 0; i < size;) {
+            int k = rand.nextInt();
+            if (maps.containsKey(k)) continue;
+            assertFalse(tree.contains(k));
 
+            // System.out.println("inserting : " + k);
+
+            maps.put(k, k);
+            hashMap.put(k, k);
+            tree.insert(k);
+            assertTrue(tree.contains(k));
+            assertEquals(tree.getMin(), maps.firstKey());
+            assertEquals(tree.getMax(), maps.lastKey());
+            i ++;
+        }
+
+        //tree.PrintTree();
+
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            // System.out.println("removing : " + entry.getKey());
+            // System.out.println();
+            // System.out.println();
+            // tree.PrintTree();
+            //System.out.println();
+            assertTrue(tree.remove(entry.getKey()));
+            assertFalse(tree.contains(entry.getKey()));
+        }
+        assertTrue(tree.isEmpty());
     }
 
 }

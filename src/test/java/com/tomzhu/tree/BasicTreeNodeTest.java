@@ -8,6 +8,9 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 /**
  * testing {@link BasicTreeNode}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BasicTreeNodeTest {
 

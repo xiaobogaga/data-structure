@@ -8,7 +8,10 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 18-3-19.
+ * testing {@link SplayTree}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class SplayTreeTest {
 

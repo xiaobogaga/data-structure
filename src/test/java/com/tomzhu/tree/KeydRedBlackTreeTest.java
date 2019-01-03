@@ -9,7 +9,10 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * used for testing {@link KeydRedBlackTree}
+ * testing {@link KeydRedBlackTree}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class KeydRedBlackTreeTest {

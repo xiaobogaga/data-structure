@@ -8,7 +8,10 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 /**
+ * testing {@link RedBlackTree}
+ *
  * @author tomzhu.
+ * @since 1.7
  */
 public class RedBlackTreeTest {
 

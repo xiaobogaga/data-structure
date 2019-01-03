@@ -9,6 +9,9 @@ import static org.junit.Assert.*;
 
 /**
  * testing {@link BasicTree}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class BasicTreeTest {

@@ -18,12 +18,12 @@ public class BTree<E extends Comparable<E>> implements Tree {
     /**
      * set the mid node element size
      */
-    private int Mid_M = 2;
+    private int Mid_M = 5;
 
     /**
      * set the leaf node element size.
      */
-    private int Leaf_L = 2;
+    private int Leaf_L = 5;
 
     /**
      * a Node holder
@@ -123,7 +123,7 @@ public class BTree<E extends Comparable<E>> implements Tree {
                 // if not leaf
                 int i = 0;
                 for (KeyItem item : node.midNodeData) {
-                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) <= 0) {
+                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) < 0) {
                     } else {
                         node = item.child;
                         break;
@@ -181,43 +181,46 @@ public class BTree<E extends Comparable<E>> implements Tree {
         list.add(i, element);
     }
 
-    private void insertElementToNodeListInOrder(LinkedList<KeyItem> list, KeyItem item) {
-        if (item.child.isLeaf) {
-            item.key = item.child.leafData.getFirst();
-        } else {
-            item.key = item.child.midNodeData.getFirst().key;
-        }
+    private void insertElementToNodeListInOrder(LinkedList<KeyItem> list,
+                                                KeyItem item, E max1) {
         int i = 0;
         for (KeyItem keyItem : list) {
-            if (keyItem.key == null || keyItem.key.compareTo(item.key) > 0) {
+            if (keyItem.key.compareTo(item.key) >= 0) {
                 break;
             }
             i++;
         }
-        E key = item.key;
-        item.key = list.get(i).key;
-        list.get(i).key = key;
+        list.get(i).key = max1;
         list.add(i + 1, item);
+    }
+
+    private E getMaxEle(Node node) {
+        if (node.isLeaf) {
+            return node.leafData.getLast();
+        } else {
+            return node.midNodeData.getLast().key;
+        }
     }
 
     private E getMinEle(Node node) {
         if (node.isLeaf) {
             return node.leafData.getFirst();
         } else {
-            return getMinEle(node.midNodeData.getFirst().child);
+            return node.midNodeData.getFirst().key;
         }
     }
 
 
-    private void insertElementAndSplit(Node node, Object element) {
+    private void insertElementAndSplit(Node node, Object element, E max1, E max2) {
         if (node == null) {
+
             // split root node
             if (this.root.isLeaf) {
                 LinkedList<KeyItem> list = new LinkedList<KeyItem>();
                 Node e = (Node) element;
                 Node prevRoot = this.root;
-                list.add(new KeyItem(e.leafData.getFirst(), prevRoot));
-                list.add(new KeyItem(null, e));
+                list.add(new KeyItem(prevRoot.leafData.getLast(), prevRoot));
+                list.add(new KeyItem(e.leafData.getLast(), e));
                 this.root = new Node(false, null, null, list);
                 prevRoot.parent = this.root;
                 e.parent = this.root;
@@ -225,13 +228,15 @@ public class BTree<E extends Comparable<E>> implements Tree {
                 LinkedList<KeyItem> list = new LinkedList<KeyItem>();
                 Node e = (Node) element;
                 Node prevRoot = this.root;
-                list.add(new KeyItem(getMinEle(e), prevRoot));
-                list.add(new KeyItem(null, e));
+                list.add(new KeyItem(max1, prevRoot));
+                list.add(new KeyItem(max2, e));
                 this.root = new Node(false, null, null, list);
                 prevRoot.parent = this.root;
                 e.parent = this.root;
             }
+
         } else if (node.isLeaf) {
+
             // when we add an element to node, it may exceed the maximum size of
             // a leaf node can contain. when this happened, need split.
             // just add, but we must keep the data is in order.
@@ -245,12 +250,15 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     i++;
                 }
                 Node newNode = new Node(true, leafNode, node.parent, null);
-                this.insertElementAndSplit(node.parent, newNode);
+                this.insertElementAndSplit(node.parent, newNode, node.leafData.getLast(),
+                        newNode.leafData.getLast());
             }
+
         } else {
+
             // first add.
-            KeyItem item = new KeyItem(null, (Node) element);
-            this.insertElementToNodeListInOrder(node.midNodeData, item);
+            KeyItem item = new KeyItem(max2, (Node) element);
+            this.insertElementToNodeListInOrder(node.midNodeData, item, max1);
             // must check whether to split a midNode
             if (node.midNodeData.size() > Mid_M) {
                 // must split
@@ -264,11 +272,12 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     midNodeData.add(temp);
                     i++;
                 }
-                node.midNodeData.getLast().key = null;
-                this.insertElementAndSplit(node.parent, newNode);
+                this.insertElementAndSplit(node.parent, newNode, getMaxEle(node),
+                        getMaxEle(newNode));
             } else {
                 // doesn't need split
             }
+
         }
 
     }
@@ -291,13 +300,14 @@ public class BTree<E extends Comparable<E>> implements Tree {
         Node node = root;
         while (node != null) {
             if (node.isLeaf) {
-                this.insertElementAndSplit(node, element);
+                this.insertElementAndSplit(node, element, null, null);
                 return true;
             } else {
                 int i = 0;
                 for (KeyItem item : node.midNodeData) {
-                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) <= 0) {
+                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) < 0) {
                     } else {
+                        if (item.key.compareTo(element) <= 0) item.key = element; // update with larger value.
                         node = item.child;
                         break;
                     }
@@ -330,10 +340,9 @@ public class BTree<E extends Comparable<E>> implements Tree {
             } else {
                 int i = 0;
                 for (KeyItem item : node.midNodeData) {
-                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) <= 0) {
+                    if (i < node.midNodeData.size() - 1 && item.key.compareTo(element) < 0) {
                     } else {
                         node = item.child;
-                        // keyItem = item;
                         break;
                     }
                     i++;
@@ -355,10 +364,13 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     this.root = null;
                 }
             } else {
+                if (node.midNodeData.size() == 0) {
+                    this.root = null;
+                    return;
+                }
                 if (node.midNodeData.size() < 2) {
                     // need promote to leaf node.
                     KeyItem item = node.midNodeData.getFirst();
-                    // node.isLeaf = item.child.isLeaf;
                     this.root = item.child;
                     this.root.parent = null;
                 }
@@ -383,6 +395,14 @@ public class BTree<E extends Comparable<E>> implements Tree {
     }
 
     private void doAdaption(Node node) {
+
+        if (node.parent.midNodeData.size() == 1) {
+            // oops, only has one node
+            node.parent.midNodeData.remove(0);
+            checkAdaption(node.parent);
+            return;
+        }
+
         // this node need adapt a node from it's neighborhood.
         if (node.isLeaf) {
             // find two neighbor
@@ -413,7 +433,7 @@ public class BTree<E extends Comparable<E>> implements Tree {
                 } else {
                     E ele = rightNeighbor.child.leafData.getFirst();
                     rightNeighbor.child.leafData.removeFirst();
-                    nodeItem.key = rightNeighbor.child.leafData.getFirst();
+                    nodeItem.key = ele;
                     node.leafData.addLast(ele);
                 }
             } else {
@@ -425,9 +445,8 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     checkAdaption(node.parent);
                 } else {
                     // adapt the max from left neighbor
-                    E ele = leftNeighbor.child.leafData.getLast();
-                    leftNeighbor.child.leafData.removeLast();
-                    leftNeighbor.key = ele;
+                    E ele = leftNeighbor.child.leafData.removeLast();
+                    leftNeighbor.key = leftNeighbor.child.leafData.getLast();
                     node.leafData.addFirst(ele);
                 }
             }
@@ -461,12 +480,10 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     checkAdaption(node.parent);
                 } else {
                     // get the minimum from rightNeighbor
-                    KeyItem temp = rightNeighbor.child.midNodeData.getFirst();
-                    rightNeighbor.child.midNodeData.removeFirst();
-                    nodeItem.key = this.getMinEle(rightNeighbor.child);
-                    nodeItem.child.midNodeData.getLast().key = this.getMinEle(temp.child);
-                    temp.key = null;
-                    temp.child.parent = nodeItem.child.midNodeData.getFirst().child.parent;
+                    KeyItem temp = rightNeighbor.child.midNodeData.removeFirst();
+                    nodeItem.key = temp.key;
+                    // todo
+                    temp.child.parent = node;
                     nodeItem.child.midNodeData.addLast(temp);
                 }
             } else {
@@ -476,12 +493,10 @@ public class BTree<E extends Comparable<E>> implements Tree {
                     doMix(leftNeighbor, nodeItem);
                     checkAdaption(node.parent);
                 } else {
-                    KeyItem keyItem = leftNeighbor.child.midNodeData.getLast();
-                    leftNeighbor.child.midNodeData.removeLast();
-                    leftNeighbor.key = this.getMinEle(keyItem.child);
-                    leftNeighbor.child.midNodeData.getLast().key = null;
-                    keyItem.key = this.getMinEle(nodeItem.child.midNodeData.getFirst().child);
-                    keyItem.child.parent = nodeItem.child.midNodeData.getFirst().child.parent;
+                    KeyItem keyItem = leftNeighbor.child.midNodeData.removeLast();
+                    leftNeighbor.key = leftNeighbor.child.midNodeData.getLast().key;
+                    // todo
+                    keyItem.child.parent = node;
                     nodeItem.child.midNodeData.addFirst(keyItem);
                 }
             }
@@ -498,10 +513,10 @@ public class BTree<E extends Comparable<E>> implements Tree {
             // when mixed, we should set the parent node
             leftNode.key = rightNode.key;
         } else {
-            leftNode.child.midNodeData.getLast().key = getMinEle(rightNode.child);
+            // leftNode.child.midNodeData.getLast().key = rightNode.key;
             for (KeyItem item : rightNode.child.midNodeData) {
                 // must set parent of item
-                item.child.parent = leftNode.child.midNodeData.getFirst().child.parent;
+                item.child.parent =  leftNode.child;
                 leftNode.child.midNodeData.addLast(item);
             }
             leftNode.key = rightNode.key;

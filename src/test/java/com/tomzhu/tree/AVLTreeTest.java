@@ -9,7 +9,10 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 18-3-18.
+ * testing {@link AVLTree}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class AVLTreeTest {
 

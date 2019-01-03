@@ -73,9 +73,9 @@ tree.remove(10)
 
 ## TreeMap and TreeSet
 UnLike java TreeMap and TreeSet, the provided TreeMap and TreeSet is based on
-binary search tree, and it can be easily changed to red-black tree. TreeMap
-and TreeSet has similar features as java TreeMap and TreeSet, that is the key
-order travel for TreeMap and unique property of TreeSet. TreeMap provides
+binary search tree, and it can be easily changed to red-black tree. TreeSet provides
+unique property of elements, however, for simplify, I don't consider provide
+iteration method for treeMap, although it is very simple. TreeMap provides
 `insert(E k, V v)`, `contains(E ele)`, `remove(E ele)` methods and TreeSet
 has `add(E ele)`, `remove(E ele)`, `contains(E ele)`.
 
@@ -96,7 +96,7 @@ treeSet.remove(2);
 
 ## HashMap
 Like java HashMap, the hashMap implementation here is based on red-black tree,
-but we make their implementation seperate. More detail could be found at source
+but we make their implementation separate. More detail could be found at source
 code. HashMap provides some basic functions like `contains(K k)`, `put(K k, V v)`,
 `remove(K k)`, `get(K k)`.
 
@@ -108,3 +108,5 @@ hashMap.put(1, 2);
 hashMap.contains(1); // return true
 hashMap.get(1); // return 2
 ```
+
+see [api doc]() for more information

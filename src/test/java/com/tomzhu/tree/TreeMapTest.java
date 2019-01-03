@@ -2,44 +2,63 @@ package com.tomzhu.tree;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 18-6-26.
+ * testing {@link TreeMap}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class TreeMapTest {
 
-    private TreeMap<Integer, Integer> treeMap = new TreeMap<Integer, Integer>();
-
-    {
-        treeMap.insert(1, 1);
-        treeMap.insert(2, 2);
-        treeMap.insert(10, 10);
-        treeMap.insert(5, 5);
-        treeMap.insert(3, 3);
-        treeMap.insert(8, 8);
-    }
-
+    private TreeMap<Integer, Integer> treeMap;
+    private int size = 1000;
 
     @Test
     public void contains() throws Exception {
-        assertTrue(treeMap.contains(3));
-        assertTrue(treeMap.contains(8));
-        assertTrue(treeMap.contains(1));
-        assertFalse(treeMap.contains(9));
     }
 
     @Test
     public void insert() throws Exception {
-
+        treeMap = new TreeMap<>();
+        java.util.TreeMap<Integer, Integer> treeMap2 = new java.util.TreeMap<>();
+        Random rand = new Random();
+        assertTrue(treeMap.isEmpty());
+        for (int i = 0; i < size; ) {
+            int k = rand.nextInt();
+            if (treeMap2.containsKey(k)) continue;
+            treeMap2.put(k, k);
+            assertFalse(treeMap.contains(k));
+            assertTrue(treeMap.insert(k, k));
+            assertTrue(treeMap.contains(k));
+            if (i != 0 && i % 5 == 0) {
+                // testing remove.
+                Object[] arr = treeMap2.keySet().toArray();
+                int loc = rand.nextInt();
+                if (loc < 0) loc = -loc;
+                int k2 = (int) arr[loc % arr.length];
+                treeMap2.remove(k2);
+                assertTrue(treeMap.contains(k2));
+                assertTrue(treeMap.remove(k2));
+                assertFalse(treeMap.contains(k2));
+            }
+            i ++;
+        }
+        assertFalse(treeMap.isEmpty());
+        Object[] arr = treeMap2.keySet().toArray();
+        for (Object i : arr) {
+            assertEquals(treeMap2.get(i), treeMap.get((int) i));
+            assertTrue(treeMap.contains((int) i));
+            assertTrue(treeMap.remove((int) i));
+            assertFalse(treeMap.contains((int) i));
+        }
     }
 
     @Test
     public void remove() throws Exception {
-        treeMap.insert(100, 100);
-        assertTrue(treeMap.contains(100));
-        treeMap.remove(10);
-        assertFalse(treeMap.contains(10));
     }
 
 

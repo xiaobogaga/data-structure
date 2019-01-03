@@ -54,4 +54,11 @@ public class TreeSet<E extends Comparable<E>> {
         return this.tree.remove(element);
     }
 
+    /**
+     * @return whether this set is empty
+     */
+    public boolean isEmpty() {
+        return this.tree.isEmpty();
+    }
+
 }

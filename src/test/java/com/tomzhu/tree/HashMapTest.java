@@ -8,14 +8,17 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * a simple test for hashMap.
+ * testing {@link HashMap}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class HashMapTest {
 
     java.util.HashMap<Integer, Integer> hashMap1;
     HashMap<Integer, Integer> hashMap2;
-    int size = 10000;
+    int size = 1000;
     int initCapacity = 16;
 
     @Test
@@ -49,6 +52,7 @@ public class HashMapTest {
         //  testing
         assertEquals(hashMap1.size(), hashMap2.getSize());
         for (Map.Entry<Integer, Integer> entry : hashMap1.entrySet()) {
+            assertEquals(entry.getValue(), hashMap2.get(entry.getKey()));
             assertTrue(hashMap2.contains(entry.getKey()));
             assertTrue(hashMap2.remove(entry.getKey()));
             assertFalse(hashMap2.contains(entry.getKey()));

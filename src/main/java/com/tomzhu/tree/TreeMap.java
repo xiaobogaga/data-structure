@@ -83,9 +83,10 @@ public class TreeMap<E extends Comparable<E>, V> {
      * insert a key, value to this treeMap.
      * @param key
      * @param value
+     * @return <tt>true</tt> if success and <tt>false</tt> if just replace the previous value
      */
-    public void insert(E key, V value) {
-        this.tree.insert(new Entry(key , value));
+    public boolean insert(E key, V value) {
+        return this.tree.insert(new Entry(key , value));
     }
 
     /**
@@ -112,5 +113,13 @@ public class TreeMap<E extends Comparable<E>, V> {
         Entry ans = this.tree.get(new Entry(key, null));
         return ans == null ? null : ans.value;
     }
+
+    /**
+     * @return whether this TreeMap is empty.
+     */
+    public boolean isEmpty() {
+        return this.tree.isEmpty();
+    }
+
 
 }
