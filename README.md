@@ -46,10 +46,9 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **HashTable**</p>
 **BPlusTree**
 
-# Motivations
+# Features
 
-The reason I build this project is for learning. Most of class provides
-few but really necessary functions, the benefit about this is that it
+Most of class provides few but really necessary functions, the benefit about this is that it
 can make code clean, more readable and more extensible. I also make
 data structures separate, For example, hashmap could be built on
 red-black tree array and this is what java hashmap does, but it turns
@@ -74,6 +73,6 @@ For a detailed api documentation, please [ref here]().
 
 * [Hash](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/hash)
 
-* [BitMap]()
+* [BitMap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/bitmap)
 
-* [External]()
+* [External](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/external)

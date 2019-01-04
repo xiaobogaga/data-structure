@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
 /**
  * testing {@link BitMap}
  *
- * @author tomzhu.
+ * @author tomzhu
+ * @since 1.7
  */
 public class BitMapTest {
 

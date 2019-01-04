@@ -61,7 +61,7 @@ public class BitMap {
      * @return whether the bit at specific location <tt>i</tt> is set as 1.
      */
     public boolean isSet(int i) {
-        return (bits[i >>> 6] & (1l << (i & (64 - 1)))) > 0;
+        return (bits[i >>> 6] & (1l << (i & (64 - 1)))) != 0;
     }
 
     /**

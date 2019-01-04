@@ -1,7 +1,6 @@
 package com.tomzhu.tree;
 
 import com.tomzhu.heap.BasicArrayHeap;
-import com.tomzhu.tree.Treap;
 import org.junit.Test;
 
 import java.util.HashMap;
