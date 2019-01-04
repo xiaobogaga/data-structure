@@ -73,7 +73,6 @@ public class ExtensibleHashTableTest {
 
     @Test
     public void contains() throws Exception {
-
     }
 
     @Test

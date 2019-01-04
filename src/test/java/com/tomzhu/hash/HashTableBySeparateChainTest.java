@@ -76,7 +76,6 @@ public class HashTableBySeparateChainTest {
 
     @org.junit.Test
     public void remove() throws Exception {
-
     }
 
     @org.junit.Test

@@ -75,12 +75,10 @@ public class HashTableByQuadraticProbingTest {
 
     @Test
     public void contains() throws Exception {
-
     }
 
     @Test
     public void remove() throws Exception {
-
     }
 
 }

@@ -77,7 +77,6 @@ public class HashTableByLinearProbingTest {
 
     @Test
     public void contains() throws Exception {
-
     }
 
     @Test

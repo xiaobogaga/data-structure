@@ -75,6 +75,5 @@ public class CuckooHashTableTest {
 
     @Test
     public void remove() {
-
     }
 }
