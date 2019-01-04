@@ -1,15 +1,20 @@
-package com.tomzhu.random;
+package com.tomzhu.tree;
 
 import com.tomzhu.heap.BasicArrayHeap;
+import com.tomzhu.tree.Treap;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
 /**
- * @tomzhu.
+ * testing {@link Treap}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class TreapTest {
 
@@ -48,6 +53,7 @@ public class TreapTest {
 
         map = new HashMap<Integer, Integer>();
         prioMap = new HashMap<Integer, Integer>();
+        Random rand = new Random(System.currentTimeMillis());
         size = 1000;
         int i = 0;
         assertTrue(minTreap.isEmpty());
@@ -57,19 +63,19 @@ public class TreapTest {
         assertFalse(minTreap.isMaxHeap());
         assertFalse(maxTreap.isMinHeap());
         while (i < size) {
-            int key = (int) (Math.random() * 10000000);
-            int priority = (int) (Math.random() * 1000);
+            int key = (int) (rand.nextDouble() * 10000000);
+            int priority = (int) (rand.nextDouble() * 1000);
             if (!map.containsKey(key) && !prioMap.containsKey(priority)) {
                 map.put(key, priority);
                 prioMap.put(priority, key);
+                assertFalse(minTreap.contains(key));
+                assertFalse(maxTreap.contains(key));
                 minTreap.insert(key, priority);
                 maxTreap.insert(key, priority);
+                assertTrue(minTreap.contains(key));
+                assertTrue(maxTreap.contains(key));
                 minHeap.insert(new Entry(key, priority));
                 maxHeap.insert(new Entry(key, priority));
-             //   System.out.println(minTreap);
-             //   System.out.println("------");
-             //   System.out.println(maxTreap);
-             //   System.out.println(i);
                 i ++;
             }
         }

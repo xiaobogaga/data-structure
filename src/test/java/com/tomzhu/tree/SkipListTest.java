@@ -1,13 +1,18 @@
-package com.tomzhu.random;
+package com.tomzhu.tree;
 
+import com.tomzhu.tree.SkipList;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
 /**
+ * testing {@link SkipList}
+ *
  * @author tomzhu.
+ * @since 1.7
  */
 public class SkipListTest {
 
@@ -23,10 +28,11 @@ public class SkipListTest {
         skipList = new SkipList<Integer>(32);
         arr = new int[size];
         map = new HashMap<Integer, Integer>();
+        Random rand = new Random(System.currentTimeMillis());
         assertTrue(skipList.isEmpty());
         int i = 0, t = 0;
         while (i < size) {
-            t = (int) (Math.random() * 100000);
+            t = (int) (rand.nextDouble() * 100000);
             if (!map.containsKey(t)) {
                 arr[i] = t;
                 map.put(t, t);
@@ -39,9 +45,7 @@ public class SkipListTest {
             assertTrue(skipList.contains(z));
             assertTrue(skipList.remove(z));
         }
-
-       // assertTrue(skipList.isEmpty());
-
+        assertTrue(skipList.isEmpty());
     }
 
     @Test

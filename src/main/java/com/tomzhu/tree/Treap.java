@@ -1,7 +1,13 @@
-package com.tomzhu.random;
+package com.tomzhu.tree;
 
 /**
- * a simple treap structure implementation.
+ * a simple Treap structure implementation.
+ *
+ * @param <K> the type of element
+ * @param <P> the priority element
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
@@ -42,6 +48,7 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
 
     /**
      * construct a treap with given heapType.
+     *
      * @param heapType
      */
     public Treap(HeapType heapType) {
@@ -50,12 +57,11 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
 
     /**
      * insert an element key with given priority p.
+     *
      * @param key
      * @param p
      */
     public void insert(K key, P p) {
-       // System.out.println("[" + key + ", " + p + "]");
-
         if (isEmpty()) {
             this.root = new Node(key, p);
             this.size++;
@@ -182,6 +188,13 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
         return this.size == 0;
     }
 
+    /**
+     * try to remove and return the minimal element of this treap, return <tt>null</tt>
+     * if it is a max treap or is empty.
+     *
+     * @return the minimum element of this treap, return <tt>null</tt> if it is\
+     * empty or is a max treap.
+     */
     public K removeMin() {
         if (isEmpty() || isMaxHeap())
             return null;
@@ -190,6 +203,13 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
         return k;
     }
 
+    /**
+     * try to remove and return the maximum element of this treap. return <tt>null</tt>
+     * if it is a min treap or is empty.
+     *
+     * @return the maximum element of this treap, return <tt>null</tt> if it is\
+     * empty or is a min treap
+     */
     public K removeMax() {
         if (isEmpty() || isMinHeap())
             return null;
@@ -201,8 +221,9 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
 
     /**
      * remove an element.
+     *
      * @param key
-     * @return return true if success, return false if no such element.
+     * @return return <tt>true</tt> if success, return <tt>false</tt> if no such element.
      */
     public boolean remove(K key) {
         if (isEmpty())
@@ -430,14 +451,14 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
     }
 
     /**
-     * @return the min priority element of this heap with O(1), return null if empty or is a max heap.
+     * @return the min priority element of this heap with O(1), return <tt>null</tt> if empty or is a max heap.
      */
     public K getPriorityMin() {
         return (isMaxHeap() || isEmpty()) ? null : this.root.key;
     }
 
     /**
-     * @return the max priority element of this heap with O(1), return null if empty or is a min heap.
+     * @return the max priority element of this heap with O(1), return <tt>null</tt> if empty or is a min heap.
      */
     public K getPriorityMax() {
         return (isMinHeap() || isEmpty()) ? null : this.root.key;
@@ -469,8 +490,6 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
         }
         return build.toString();
     }
-
-
 
     public String toString() {
         return visitNode(this.root, 0);

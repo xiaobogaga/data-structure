@@ -1,4 +1,4 @@
-package com.tomzhu.string;
+package com.tomzhu.tree;
 
 /**
  * a basic trie implementation.
@@ -41,6 +41,9 @@ package com.tomzhu.string;
  * <p>
  * 1. we can use LinkedList instead of the pointer array with size 256.
  * 2. path compression strategy, for example: Patricia tree.
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class BasicStringTrie {

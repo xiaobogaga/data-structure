@@ -1,11 +1,12 @@
-package com.tomzhu.string;
+package com.tomzhu.tree;
 
 /**
- * @tomzhu.
- *
  * a simple tries implementation for numbers 0-9.
  *
  * for string, see {@link BasicStringTrie}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class BasicNumberTrie {
 

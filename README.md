@@ -19,7 +19,9 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Red-black tree** </p>
 **TreeMap** </p>
 **HashMap based on Red-black Tree** </p>
-**BTree**
+**BTree** </p>
+**Treap** </p>
+**Tries**
 
 * Heap: </p>
 **Basic Min-Heap** </p>
@@ -27,6 +29,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Skew Heap** </p>
 **Binomial Heap** </p>
 **DoubleEndedHeap** </p>
+**SkipList** </p>
 
 * Hash: </p>
 **Basic Hash Table by seperate chain** </p>
@@ -35,14 +38,8 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Cuckoo Hash Table** </p>
 **Hopscotch Hash Table** </p>
 **Extensible Hash Table** </p>
-**HashMap based on Extensible Hashing** </p>
 
-* Random: </p>
-**SkipList** </p>
-**Treap**
-
-* String: </p>
-**Tries** </p>
+* BitMap: </p>
 **BitMap**
 
 * External memory data structure(they can hold long key and long value): </p>
@@ -77,8 +74,6 @@ For a detailed api documentation, please [ref here]().
 
 * [Hash](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/hash)
 
-* [Random]()
-
-* [String]()
+* [BitMap]()
 
 * [External]()

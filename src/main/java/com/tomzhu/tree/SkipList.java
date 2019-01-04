@@ -1,9 +1,12 @@
-package com.tomzhu.random;
+package com.tomzhu.tree;
 
 /**
  * a simple skip list implementation.
+ *
+ * @param <E> the type of element
 
- * @author tomzhu.
+ * @author tomzhu
+ * @since 1.7
  */
 public class SkipList<E extends Comparable<E>> {
 
@@ -28,6 +31,7 @@ public class SkipList<E extends Comparable<E>> {
 
     /**
      * construct a skipList with max level.
+     *
      * @param MAX_LAVEL
      */
     public SkipList(int MAX_LAVEL) {
@@ -36,7 +40,9 @@ public class SkipList<E extends Comparable<E>> {
     }
 
     /**
-     * @param ele insert an element to this skipList.
+     * insert an element to this skipList, just return when a same element exists.
+     *
+     * @param ele
      */
     public void insert(E ele) {
         // set higher forwards.
@@ -44,8 +50,6 @@ public class SkipList<E extends Comparable<E>> {
 
         if (contains(ele))
             return;
-
-        // System.out.println("insert " + k + " level, ele : " + ele);
 
         Node n = new Node(ele, k + 1);
         while (k > this.level) {
@@ -116,9 +120,11 @@ public class SkipList<E extends Comparable<E>> {
     }
 
     /**
-     * remove an element from this skipList.
+     * remove an element from this skipList. return <tt>true/tt> if success and <tt>false</tt> if no such
+     * element exists
+     *
      * @param ele
-     * @return
+     * @return <tt>true</tt> if success and <tt>false</tt> otherwise
      */
     public boolean remove(E ele) {
         if (isEmpty())

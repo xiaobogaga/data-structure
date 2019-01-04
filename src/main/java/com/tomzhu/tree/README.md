@@ -10,6 +10,10 @@ a group of tree-liked data structure implementations, including:
 * TreeMap : a tree map implementation based on binary search tree
 * TreeSet : a tree set implementation based on binary search tree
 * HashMap : a hash map implementation based on red black tree.
+* SkipList : a skip list implementation
+* Treap : treap implementation.
+* BasicNumberTrie and BasicStringTrie: trie implementation.
+
 
 ## basic tree and binary tree.
 
@@ -49,8 +53,14 @@ tree.addRightChild(tree.getRoot(), 3);
 
 ## Search Tree
 
-Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree, BTree are both search trees.
+Binary Search Tree, AVL tree, Splay Tree, Red-Black Tree, BTree, SkipList, Treap are both search trees.
 they exposed similar methods like `insert(E ele)`, `remove(E ele)`, `contains(Ele e)`.
+
+although SkipList is not a search tree, but it turns out it is very similar to
+binary search tree, no matter in time overhead for searching and its hierarchy
+structure.
+
+Treap is beyond binary search trees by supporting a heap order on priority property
 
 **Usage**
 
@@ -110,3 +120,17 @@ hashMap.get(1); // return 2
 ```
 
 see [api doc]() for more information
+
+## BasicNumberTrie and BasicStringTrie
+they are both trie data structures while basicNumberTrie just saving numbers.
+they support basic methods like `insert(String ele)`, `remove(String ele)` and
+`contains(String ele)`.
+
+**Usage**
+
+```java
+BasicNumberTrie a = new BasicNumberTrie();
+a.insert(Integer.toString(100));
+a.contains(Integer.toString(100)); // return true.
+a.remove(Integer.toString(100));
+```
