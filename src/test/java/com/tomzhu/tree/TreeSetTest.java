@@ -1,9 +1,7 @@
 package com.tomzhu.tree;
 
 import org.junit.Test;
-
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 /**
@@ -53,7 +51,6 @@ public class TreeSetTest {
 
     @Test
     public void add() throws Exception {
-
     }
 
     @Test

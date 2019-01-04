@@ -33,7 +33,6 @@ public class TreapTest {
             this.k = k;
             this.p = p;
         }
-
         public int compareTo(Entry o) {
             return p.compareTo(o.p);
         }
