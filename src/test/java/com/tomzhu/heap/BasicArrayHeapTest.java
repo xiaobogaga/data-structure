@@ -52,7 +52,6 @@ public class BasicArrayHeapTest {
             assertEquals(this.eles[i--], maxHeap.removeMax());
         }
 
-
     }
 
     @Test

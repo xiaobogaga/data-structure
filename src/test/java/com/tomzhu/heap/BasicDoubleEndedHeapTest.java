@@ -55,7 +55,6 @@ public class BasicDoubleEndedHeapTest {
             minHeap.insert(arr2[i++]);
         }
 
-        // System.out.println("finish here");
         i = size - 1;
         while (i >= 0) {
             assertEquals(arr[i], (int) minHeap.getMax());

@@ -14,7 +14,6 @@ import static org.junit.Assert.*;
  * @since 1.7
  */
 public class BinomialQueueTest {
-
     private BinomialQueue<Integer> maxHeap;
     private BinomialQueue<Integer> minHeap;
     private int size;

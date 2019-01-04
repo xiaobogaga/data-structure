@@ -102,7 +102,6 @@ public class LeftistHeapTest {
             assertEquals(t, (int) leftistHeap1.getMin());
             assertEquals(t, (int) leftistHeap1.removeMin());
         }
-
     }
 
     @Test

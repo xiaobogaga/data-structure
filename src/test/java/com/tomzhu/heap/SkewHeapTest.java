@@ -107,7 +107,6 @@ public class SkewHeapTest {
             arr2[i] = (int) (rand.nextDouble() * 10000000);
             skewHeap2.insert(arr2[i++]);
         }
-
         skewHeap1.merge(skewHeap2);
 
         int[] arr3 = new int[2 * size + 10];
