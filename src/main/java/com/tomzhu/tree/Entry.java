@@ -16,6 +16,7 @@ public class Entry<K extends Comparable, V> implements Comparable<Entry> {
 
     /**
      * construct a key value pair.
+     *
      * @param key
      * @param value
      * @param hash

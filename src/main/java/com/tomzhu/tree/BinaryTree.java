@@ -14,6 +14,7 @@ public class BinaryTree<E> implements Tree {
 
     /**
      * create a binaryTree using specific value as the root node.
+     *
      * @param value
      */
     public BinaryTree(E value) {
@@ -22,6 +23,7 @@ public class BinaryTree<E> implements Tree {
 
     /**
      * create a binaryTree using specific root.
+     *
      * @param root
      */
     public BinaryTree(BinaryTreeNode<E> root) {

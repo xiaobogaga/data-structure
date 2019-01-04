@@ -39,6 +39,7 @@ public class BasicNumberTrie {
 
     /**
      * construct a number tries using the given numbers.
+     *
      * @param numbers a string array where each item is an char array of number[0-9].
      */
     public static BasicNumberTrie buildBasicNumberTries(String[] numbers) {
@@ -66,7 +67,8 @@ public class BasicNumberTrie {
     }
 
     /**
-     * remove a numbers .
+     * remove a numbers
+     *
      * @param numbers
      */
     public void remove(String numbers) {
@@ -84,6 +86,7 @@ public class BasicNumberTrie {
 
     /**
      * insert a numbers.
+     *
      * @param numbers
      */
     public void insert(String numbers) {

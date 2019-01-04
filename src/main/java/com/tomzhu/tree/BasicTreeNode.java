@@ -527,6 +527,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
     /**
      * remove all children nodes and return the current node.
+     *
      * @return the current node.
      */
     public BasicTreeNode<E> clearChildren() {

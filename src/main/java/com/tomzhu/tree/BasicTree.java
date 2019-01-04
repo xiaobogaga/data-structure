@@ -347,6 +347,7 @@ public class BasicTree<E> implements Tree {
 
     /**
      * clear the node's children and return the node.
+     *
      * @param node
      * @return node
      */

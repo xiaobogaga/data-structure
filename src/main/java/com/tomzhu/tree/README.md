@@ -11,7 +11,7 @@ a group of tree-liked data structure implementations, including:
 * TreeSet : a tree set implementation based on binary search tree
 * HashMap : a hash map implementation based on red black tree.
 * SkipList : a skip list implementation
-* Treap : treap implementation.
+* Treap : Treap implementation.
 * BasicNumberTrie and BasicStringTrie: trie implementation.
 
 

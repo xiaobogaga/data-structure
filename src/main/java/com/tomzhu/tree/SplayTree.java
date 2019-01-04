@@ -22,6 +22,7 @@ public class SplayTree<E extends Comparable<E>> implements Tree{
 
     /**
      * construct a splay tree with element as root.
+     *
      * @param element
      */
     public SplayTree(E element) {

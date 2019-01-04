@@ -256,6 +256,7 @@ public class BinarySearchTree<E extends Comparable<E>> implements Tree {
 
     /**
      * only used by {@link TreeMap}
+     *
      * @param ele
      * @return
      */

@@ -133,7 +133,4 @@ public class AVLTreeNode<E extends Comparable<E>> implements Tree{
                 ((rChild == null) ?  "null" : rChild.getElement());
     }
 
-
-
-
 }

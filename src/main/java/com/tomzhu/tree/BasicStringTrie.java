@@ -78,6 +78,7 @@ public class BasicStringTrie {
 
     /**
      * build a tries using string arrays ss.
+     *
      * @param ss
      * @return
      */
@@ -107,6 +108,7 @@ public class BasicStringTrie {
 
     /**
      * insert a string s to this tries.
+     *
      * @param s
      */
     public void insert(String s) {
@@ -124,6 +126,7 @@ public class BasicStringTrie {
 
     /**
      * remove a string s from this tries.
+     *
      * @param s
      */
     public void remove(String s) {

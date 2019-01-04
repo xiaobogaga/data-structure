@@ -7,5 +7,4 @@ package com.tomzhu.tree;
  * @since 1.7
  */
 public interface Tree {
-
 }

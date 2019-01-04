@@ -106,6 +106,7 @@ public class HashMap<K extends Comparable<K>, V> {
 
     /**
      * try to get the value of key on this hashMap. return <tt>null</tt> if not found
+     *
      * @param key
      * @return the associated value and return <tt>null</tt> if not found.
      */
@@ -209,6 +210,7 @@ public class HashMap<K extends Comparable<K>, V> {
             node2 = node2.next;
             this.holders[newLoc].insertForRehash(temp);
         }
+
     }
 
 }

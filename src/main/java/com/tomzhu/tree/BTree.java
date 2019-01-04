@@ -564,7 +564,6 @@ public class BTree<E extends Comparable<E>> implements Tree {
         System.out.println("PrintBtree end <--");
     }
 
-
     /**
      * @return whether this tree is empty.
      */

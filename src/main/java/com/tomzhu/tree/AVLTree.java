@@ -170,7 +170,6 @@ public class AVLTree<E extends Comparable<E>> {
         }
     }
 
-
     /**
      * for case 4, single right child rotation.
      * @param parent

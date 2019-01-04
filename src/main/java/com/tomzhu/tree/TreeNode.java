@@ -52,4 +52,5 @@ public abstract class TreeNode<E> {
      * @return the children array
      */
     public abstract TreeNode<E>[] getChilds(boolean leftToRight);
+
 }

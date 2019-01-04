@@ -16,6 +16,7 @@ public class BinaryTreeNode<E> extends TreeNode<E> {
 
     /**
      * construct a binary tree node using value.
+     *
      * @param value
      */
     public BinaryTreeNode(E value) {
@@ -275,6 +276,7 @@ public class BinaryTreeNode<E> extends TreeNode<E> {
 
     /**
      * set the current node's right child.
+     *
      * @param rightChild
      */
     void setRightChildWithParent(BinaryTreeNode<E> rightChild) {

@@ -102,6 +102,7 @@ public class Treap<K extends Comparable<K>, P extends Comparable<P>> {
 
     /**
      * adjust for insert procedure by bottom-up.
+     *
      * @param n
      */
     private void adjustForInsert(Node n) {
