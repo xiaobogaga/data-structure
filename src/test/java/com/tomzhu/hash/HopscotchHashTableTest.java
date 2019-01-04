@@ -9,11 +9,15 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
+ * testing {@link HopscotchHashTable}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class HopscotchHashTableTest {
 
     private HopscotchHashTable<Integer, Integer> hopscotchHashTable;
-    private int size = 100;
+    private int size = 10;
     private java.util.HashMap<Integer, Integer> hashMap;
 
 

@@ -3,6 +3,8 @@ package com.tomzhu.hash;
 import org.junit.Test;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
@@ -11,65 +13,73 @@ import static org.junit.Assert.*;
  */
 public class ExtensibleHashTableTest {
 
-    private ExtensibleHashTable<Integer, Integer> extensibleHashTable =
-            new ExtensibleHashTable<Integer, Integer>();
+    private ExtensibleHashTable<Integer, Integer> extensibleHashTable;
 
     private int size = 1000;
-    private HashMap<Integer, Integer> maps = new HashMap<Integer, Integer>();
+    private HashMap<Integer, Integer> hashMap;
 
     @Test
     public void insert() throws Exception {
+        hashMap = new HashMap<>();
+        extensibleHashTable = new ExtensibleHashTable<>();
+        Random rand = new Random(System.currentTimeMillis());
+        for (int i = 0; i < size;) {
+            if (i != 0 && i % 5 == 0) {
+                // testing replacing.
+                Object[] arr = hashMap.keySet().toArray();
+                int loc = rand.nextInt();
+                if (loc < 0) loc = -loc;
+                int k = (int) arr[loc % arr.length];
+                assertTrue(extensibleHashTable.contains(k));
+                assertEquals(extensibleHashTable.get(k), hashMap.get(k));
+                int newV = rand.nextInt();
+                hashMap.put(k, newV);
+                extensibleHashTable.insert(k, newV);
+                assertTrue(extensibleHashTable.contains(k));
+                assertEquals((int) extensibleHashTable.get(k), newV);
+                i ++;
+            } else if (i != 0 && i % 4 == 0) {
+                // testing remove
+                Object[] arr = hashMap.keySet().toArray();
+                int loc = rand.nextInt();
+                if (loc < 0) loc = -loc;
+                int k = (int) arr[loc % arr.length];
+                assertTrue(extensibleHashTable.contains(k));
+                assertEquals(extensibleHashTable.get(k), hashMap.get(k));
+                hashMap.remove(k);
+                assertTrue(extensibleHashTable.remove(k));
+                assertFalse(extensibleHashTable.contains(k));
+                i ++;
+            } else {
+                //  testing add.
+                int k = rand.nextInt();
+                if (hashMap.containsKey(k)) {
+                    assertTrue(extensibleHashTable.contains(k));
+                    assertEquals(extensibleHashTable.get(k), hashMap.get(k));
+                    continue;
+                }
+                assertFalse(extensibleHashTable.contains(k));
+                int v = rand.nextInt();
+                hashMap.put(k, v);
+                extensibleHashTable.insert(k, v);
+                i ++;
+            }
+        }
+        for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+            assertTrue(extensibleHashTable.contains(entry.getKey()));
+            assertEquals(extensibleHashTable.get(entry.getKey()), entry.getValue());
+        }
     }
 
     @Test
     public void contains() throws Exception {
-        int t = 0;
-        int testTimes = 1000;
-        while (t < testTimes) {
-            int i = 0;
-            System.out.println("test time : " + (t + 1));
-            while (i < size) {
-                int v = (int) (Math.random() * 1000000);
-                if (!maps.containsKey(v)) {
-                    extensibleHashTable.insert(v, v);
-                    maps.put(v, v);
-                    i++;
-                }
-            }
-            for (Integer key : maps.keySet()) {
-                assertTrue(extensibleHashTable.contains(key));
-            }
-            maps.clear();
-            extensibleHashTable = new ExtensibleHashTable<Integer, Integer>();
-            t ++;
-        }
+
     }
 
     @Test
     public void remove() throws Exception {
 
-        int t = 0;
-        int testTimes = 1000;
-        while (t < testTimes) {
-            int i = 0;
-            System.out.println("test time : " + (t + 1));
-            while (i < size) {
-                int v = (int) (Math.random() * 1000000);
-                if (!maps.containsKey(v)) {
-                    extensibleHashTable.insert(v, v);
-                    maps.put(v, v);
-                    i++;
-                }
-            }
 
-            for (Integer key : maps.keySet()) {
-                assertTrue(extensibleHashTable.remove(key));
-                assertFalse(extensibleHashTable.contains(key));
-            }
-
-            maps.clear();
-            t ++;
-        }
     }
 
 }

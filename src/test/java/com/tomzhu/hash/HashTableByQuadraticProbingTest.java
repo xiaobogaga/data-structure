@@ -9,7 +9,10 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by IIE on 2018/6/29.
+ * tesing {@link HashTableByQuadraticProbing}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class HashTableByQuadraticProbingTest {
 

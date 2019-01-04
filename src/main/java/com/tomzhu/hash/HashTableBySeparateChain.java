@@ -381,10 +381,6 @@ public class HashTableBySeparateChain<K, V> {
                 this.insertToHead(new Node(k, v, hash));
                 return true;
             }
-            if (this.head.value.key.equals(k)) {
-                this.head.value.value = v;
-                return false;
-            }
             LNode<Node> temp = this.head;
             while (temp != null) {
                 if (temp.value.key.equals(k)) {
@@ -516,6 +512,7 @@ public class HashTableBySeparateChain<K, V> {
                     }
                     temp.before.after = temp.after;
                     temp.after.before = temp.before;
+                    this.size --;
                     return temp.value;
                 }
             }
@@ -542,6 +539,7 @@ public class HashTableBySeparateChain<K, V> {
                     } else {
                         temp.before.after = temp.after;
                         temp.after.before = temp.before;
+                        this.size --;
                     }
                     return true;
                 }

@@ -8,6 +8,12 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+/**
+ * testing {@link CuckooHashTable}
+ *
+ * @author tomzhu
+ * @since 1.7
+ */
 public class CuckooHashTableTest {
 
     private CuckooHashTable<Integer, Integer> cuckooHashTable;

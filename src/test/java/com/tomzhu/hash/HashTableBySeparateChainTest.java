@@ -9,14 +9,17 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 2018/6/27.
+ * testing {@link HashTableBySeparateChain}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class HashTableBySeparateChainTest {
 
     private HashTableBySeparateChain<Integer, Integer> separateChainHashTable;
     private java.util.HashMap<Integer, Integer> hashMap;
-    private int size = 100;
+    private int size = 1000;
 
     @Test
     public void insert() throws Exception {

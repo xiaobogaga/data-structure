@@ -8,7 +8,10 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 /**
- * Created by tomzhu on 2018/6/29.
+ * testing {@link HashTableByLinearProbing}
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 public class HashTableByLinearProbingTest {
 
