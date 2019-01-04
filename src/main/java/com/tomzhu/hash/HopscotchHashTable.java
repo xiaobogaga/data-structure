@@ -24,6 +24,9 @@ public class HopscotchHashTable<K, V> {
             this.key = key;
             this.value = value;
         }
+        public String toString() {
+            return "[Entry : k : " + key + " , v : " + value + "]";
+        }
     }
 
     /**
@@ -36,6 +39,10 @@ public class HopscotchHashTable<K, V> {
         public TableItem(Entry entry, long hop) {
             this.entry = entry;
             this.hop = hop;
+        }
+        public String toString() {
+            return entry == null ? "[TableItem : null" + ", hop:" + hop  + "]" :
+                    ("[TableItem : " + entry.toString() + " , hop : " + hop + "]");
         }
     }
 
@@ -162,7 +169,8 @@ public class HopscotchHashTable<K, V> {
                                 (t <= l && (t + this.capacity - l) < this.hopSize)) {
                             // finished.
                             this.tables[t].entry = n;
-                            if (t > 1 && t - l < this.hopSize)
+                            // todo
+                            if (t > l)
                                 this.tables[l].hop |= (1 << (t - l));
                             else
                                 this.tables[l].hop |= (1 << (t + this.capacity - l));
@@ -263,7 +271,8 @@ public class HopscotchHashTable<K, V> {
                                 (t <= l && (t + this.capacity - l) < this.hopSize)) {
                             // finished.
                             newTables[t].entry = entry;
-                            if (t > 1 && t - l < this.hopSize)
+                            // todo
+                            if (t > l)
                                 newTables[l].hop |= (1 << (t - l));
                             else
                                 newTables[l].hop |= (1 << (t + this.capacity - l));
