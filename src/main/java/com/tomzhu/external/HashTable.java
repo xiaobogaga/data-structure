@@ -1,6 +1,7 @@
 package com.tomzhu.external;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.LongBuffer;
@@ -15,15 +16,21 @@ import java.io.RandomAccessFile;
  *
  * Note that this external memory hash table is just a sample for showing how an out-of-memory data structure
  * is implemented. This hash table uses mapped file to save data efficiently, it can only save long data as key, and
- * an offset+fileNo as value. Remember this is just a code template to show how to build a out-of-memory hash table.
- * If other key-value types are wanted, can simple change the code here.
+ * long type as value. and value must be positive integers.
+ *
+ * the collision resolution strategy here is linear probing. and another important issue is that
+ * this hash table must be built with a given size which defines how many elements this hash table
+ * can save at most, so we don't consider rehash here.
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class HashTable {
 
     private String PATH;
 
-    private String fileName = "metadata";
+    private String fileName = "/metadata";
 
     private RandomAccessFile mmapedFile;
 
@@ -33,15 +40,25 @@ public class HashTable {
 
     private LongBuffer buffer;
 
-    public static int size = 1024 * 1024 * 32 * 3; //这个究竟可以设置多大.
+    private int size = 1024 * 1024 * 12; //这个究竟可以设置多大.
 
-    public static long item_size = 8 * 2;
+    private static long item_size = 8 * 2;
 
-    public HashTable(String PATH) {
+    /**
+     * construct a hash table with the save path and maximum element size.
+     *
+     * @param PATH
+     * @param size
+     * @throws IOException
+     */
+    public HashTable(String PATH, int size) throws IOException {
         this.PATH = PATH;
+        this.size = size;
+        init();
     }
 
-    public void init() throws IOException {
+    private void init() throws IOException {
+
         File path = new File(this.PATH);
         if (!path.exists()) path.mkdirs();
         mmapedFile = new RandomAccessFile(new File(this.PATH + fileName), "rw");
@@ -51,74 +68,77 @@ public class HashTable {
         this.buffer = this.hashTable.asLongBuffer();
     }
 
-    public int hashCode(long key) {
+    private int hashCode(long key) {
         int ans = (int)(key ^ (key >>> 32));
         if (ans < 0) return -ans;
         return ans;
     }
 
-    public void addOrUpdate(long key, int offset, int fileNo) {
+    /**
+     * try to add a key value pair, if such key already exists, replace the previous value
+     *
+     * @param key
+     * @param value
+     */
+    public void addOrUpdate(long key, long value) {
         int loc = hashCode(key) % this.size;
-        long currentTime = System.currentTimeMillis();
         while (isUse(loc)) {
             if (match(loc, key)) {
-                update(loc, offset, fileNo);
+                update(loc, value);
                 return ;
             }
             loc = (loc + 1) % this.size;
         }
-        put(loc, key, offset, fileNo);
+        put(loc, key, value);
     }
 
-    private void update(int loc, int offset, int fileNo) {
+    /**
+     * try to remove and return the associate value for the key. return <tt>-1</tt>
+     * if no such key found.
+     *
+     * @param key
+     * @return the associated value
+     */
+    public long remove(long key) {
+        int loc = hashCode(key) % this.size;
+        while (isUse(loc)) {
+            if (match(loc, key)) {
+                long info = this.buffer.get(loc * 2 + 1);
+                put(loc, 0, 0);
+                return info;
+            }
+            loc = (loc + 1) % this.size;
+        }
+        return -1l;
+    }
+
+    private void update(int loc, long value) {
         loc = loc * 2;
-        buffer.put(loc + 1, wrap(offset, fileNo));
+        buffer.put(loc + 1, value);
     }
 
-    private static long wrap(int offset, int fileNo) {
-        long ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= ( ((long) ((offset >>> i) & 1)) << i);
-            ans |= ( ((long) ((fileNo >>> i) & 1)) << (32 + i));
-        }
-        return ans;
-    }
-
-    private static int unwrapOffset(long wrapper) {
-        int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= (((wrapper >>> i) & 1) << i);
-        }
-        return ans;
-    }
-
-    private static int unwrapFileNo(long wrapper) {
-        int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= (((wrapper >>> (i + 32) ) & 1) << i);
-        }
-        return ans;
-    }
-
-
-    public void put(int loc, long key, int offset, int fileNo) {
+    private void put(int loc, long key, long value) {
         loc = loc * 2;
         this.buffer.put(loc, key);
-        this.buffer.put(loc + 1, wrap(offset, fileNo));
+        this.buffer.put(loc + 1, value);
     }
 
-
     private boolean isUse(long loc) {
-        return unwrapFileNo(this.buffer.get( (int) (loc * 2 + 1) )) != 0;
+        return this.buffer.get( (int) (loc * 2 + 1) ) > 0;
     }
 
     private boolean match(int loc, long key) {
         return this.buffer.get(loc * 2) == key;
     }
 
-    public long tryGet(long key) {
+    /**
+     * try to get the associated value for the key. return <tt>-1</tt> if no such key exists.
+     *
+     * @param key
+     * @return
+     */
+    public long get(long key) {
         int loc = hashCode(key) % this.size;
-        long currentTime = System.currentTimeMillis();
         while (isUse(loc)) {
             if (match(loc, key)) {
                 long info = this.buffer.get(loc * 2 + 1);
@@ -129,9 +149,19 @@ public class HashTable {
         return -1;
     }
 
+    /**
+     * @param key
+     * @return whether this hash table contains the key.
+     */
+    public boolean contains(long key) {
+        return this.get(key) != -1;
+    }
+
+    /**
+     * closing this hash table.
+     */
     public void close() {
         AccessController.doPrivileged(new PrivilegedAction() {
-
             public Object run() {
                 try {
                     Method getCleanerMethod = hashTable.getClass().getMethod("cleaner",new Class[0]);
@@ -145,7 +175,6 @@ public class HashTable {
             }
 
         });
-
         try {
             this.mmapedFile.close();
             this.channel.close();

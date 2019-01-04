@@ -9,9 +9,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * an external memory and efficient bplus tree implementation. Note that this bplustree only can hold long type key and
@@ -47,6 +45,12 @@ import java.util.Map;
  * long -> parent offset
  * [key (long type) , info (long type) ] pairs.
  *
+ *
+ * BplusTree is constructed by a path which specifics where to save the real data. Again, BPlusTree can only save positive
+ * long type as value.
+ *
+ * @author tomzhu
+ * @since 1.7
  */
 
 public class BPlusTree {
@@ -67,8 +71,8 @@ public class BPlusTree {
     private LongBuffer midLongBuffer;
     private LongBuffer leafLongBuffer;
     private int metaSize = 1024 * 4;
-    private int leafMappedMaxSize = 1024 * 1024 * 1280;
-    private int midMappedMaxSize = 1024 * 1024 * 64;
+    private int leafMappedMaxSize = 1024 * 1024;
+    private int midMappedMaxSize = 1024 * 12;
 
     private int LEAF_LENGTH_THRESHOLD = (LeafBlock - 4 * 8) / 16;
     private int MID_LENGTH_THRESHOLD = (MIDBlock - 2 * 8) / 16;
@@ -79,26 +83,13 @@ public class BPlusTree {
 
     private Node root;
 
-    private LRUCache<Long, Long> cache;
-
-    public static class LRUCache<K, V> extends LinkedHashMap<K, V> {
-
-        private int maxSize;
-
-        @Override
-        protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
-            return size() > this.maxSize;
-        }
-
-        public LRUCache(int maxSize) {
-            super(16, 0.75f, true);
-            this.maxSize = maxSize;
-        }
-
-    }
-
-    public BPlusTree(String path, int cacheCpacity) throws IOException {
-        cache = new LRUCache(cacheCpacity);
+    /**
+     * construct a default bplustree
+     *
+     * @param path
+     * @throws IOException
+     */
+    public BPlusTree(String path) throws IOException {
         this.PATH = path;
         File p = new File(path);
         if (!p.exists()) p.mkdirs();
@@ -136,39 +127,66 @@ public class BPlusTree {
         }
     }
 
-    public Node readNode(int offset, boolean isLeaf) {
+
+    /**
+     * construct a bplustree with specific saving path, leaf node mapped file size and mid node mapped file size
+     *
+     * @param path
+     * @throws IOException
+     */
+    public BPlusTree(String path, int leafMappedMaxSize, int midMappedMaxSize) throws IOException {
+        this.PATH = path;
+        this.leafMappedMaxSize = leafMappedMaxSize;
+        this.midMappedMaxSize = midMappedMaxSize;
+        File p = new File(path);
+        if (!p.exists()) p.mkdirs();
+        this.leafFile = new RandomAccessFile(this.PATH + "/" + this.leafFileName, "rw");
+        this.midFile = new RandomAccessFile(this.PATH + "/" + this.midFileName, "rw");
+        this.metaFile = new RandomAccessFile(this.PATH + "/" + this.metaFileName, "rw");
+        long length = this.metaFile.length();
+        this.metaMappedByteBuffer = this.metaFile.getChannel()
+                .map(FileChannel.MapMode.READ_WRITE, 0, metaSize);
+        this.metaLongBuffer = this.metaMappedByteBuffer.asLongBuffer();
+        this.midMappedByteBuffer = this.midFile.getChannel().map(FileChannel.MapMode.READ_WRITE,
+                0, this.midMappedMaxSize);
+        this.midLongBuffer = this.midMappedByteBuffer.asLongBuffer();
+        this.leafMappedByteBuffer = this.leafFile.getChannel().map(FileChannel.MapMode.READ_WRITE, 0,
+                this.leafMappedMaxSize);
+        this.leafLongBuffer = this.leafMappedByteBuffer.asLongBuffer();
+        if (length != 0) {
+            this.MID_LENGTH_THRESHOLD = (int) this.metaLongBuffer.get(0);
+            this.current_mid_size = this.metaLongBuffer.get(1);
+            this.LEAF_LENGTH_THRESHOLD = (int) this.metaLongBuffer.get(2);
+            this.current_leaf_size = this.metaLongBuffer.get(3);
+            this.rootOffset = this.metaLongBuffer.get(4);
+            this.isRootLeaf = this.metaLongBuffer.get(5);
+        } else {
+            this.metaLongBuffer.put(0, this.MID_LENGTH_THRESHOLD);
+            this.metaLongBuffer.put(1, 0);
+            this.metaLongBuffer.put(2, this.LEAF_LENGTH_THRESHOLD);
+            this.metaLongBuffer.put(3, 0);
+            this.metaLongBuffer.put(4, -1);
+            this.metaLongBuffer.put(5, 1);
+        }
+        if (this.rootOffset != -1) {
+            // we can read the root node.
+            this.root = readNode((int) this.rootOffset, this.isRootLeaf == 1l);
+        }
+    }
+
+    private Node readNode(int offset, boolean isLeaf) {
         Node node = new Node(offset, isLeaf);
         return node;
     }
 
-    private static long wrap(int offset, int fileNo) {
-        long ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= ( ((long) ((offset >>> i) & 1)) << i);
-            ans |= ( ((long) ((fileNo >>> i) & 1)) << (32 + i));
-        }
-        return ans;
-    }
-
-    private static int unwrapOffset(long wrapper) {
-        int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= (((wrapper >>> i) & 1) << i);
-        }
-        return ans;
-    }
-
-    private static int unwrapFileNo(long wrapper) {
-        int ans = 0;
-        for (int i = 0; i < 32; i++) {
-            ans |= (((wrapper >>> (i + 32) ) & 1) << i);
-        }
-        return ans;
-    }
-
-
-    public void engineAdd(long key, long info) {
-        // cache.put(key, info);
+    /**
+     * try to add a key, value pair to this bplustree. replace previous
+     * value if a same key already exists.
+     *
+     * @param key
+     * @param value
+     */
+    public void addOrUpdate(long key, long value) {
         if (this.root == null) {
             this.rootOffset = 0;
             this.isRootLeaf = 1l;
@@ -176,54 +194,33 @@ public class BPlusTree {
             updateRoot(0, 1l);
             this.current_leaf_size ++;
             updateLeafNodeSize();
-            this.root.leafNode.addOrUpdateKey(key, info);
+            this.root.leafNode.addOrUpdateKey(key, value);
         } else {
             Node n = searchForAdd(key);
-            n.leafNode.addOrUpdateKey(key, info);
+            n.leafNode.addOrUpdateKey(key, value);
         }
     }
 
-    public void add(long key, long info) {
-        if (this.root == null) {
-            this.rootOffset = 0;
-            this.isRootLeaf = 1l;
-            this.root = new Node(0, -1, true);
-            updateRoot(0, 1l);
-            this.current_leaf_size ++;
-            updateLeafNodeSize();
-            this.root.leafNode.addOrUpdateKey(key, info);
-
-            // this.printTree();
-
-        } else {
-            Node n = searchForAdd(key);
-            n.leafNode.addOrUpdateKey(key, info);
-
-            // this.printTree();
-        }
-    }
-
-    public void updateRoot(long offset, long isLeaf) {
+    private void updateRoot(long offset, long isLeaf) {
         this.rootOffset = offset;
         this.isRootLeaf = isLeaf;
         metaLongBuffer.put(4, offset);
         metaLongBuffer.put(5, isLeaf);
     }
 
-    public void updateLeafNodeSize() {
+    private void updateLeafNodeSize() {
         metaLongBuffer.put(3, this.current_leaf_size);
     }
 
-    public void updateMidNodeSize() {
+    private void updateMidNodeSize() {
         metaLongBuffer.put(1, this.current_mid_size);
     }
 
     /**
-     * return the leaf node that the key should appear.
      * @param key
-     * @return
+     * @return the leaf node that the key should appear.
      */
-    public Node search(long key) {
+    private Node search(long key) {
         Node node = this.root;
         while (node != null) {
             if (node.isLeaf()) {
@@ -236,11 +233,10 @@ public class BPlusTree {
     }
 
     /**
-     * return the leaf node that the key should appear.
      * @param key
-     * @return
+     * @return the leaf node that the key should appear.
      */
-    public Node searchForAdd(long key) {
+    private Node searchForAdd(long key) {
         Node node = this.root;
         while (node != null) {
             if (node.isLeaf()) {
@@ -252,35 +248,50 @@ public class BPlusTree {
         return null;
     }
 
-    public long engineGet(long key) {
-        if (cache.containsKey(key)) return cache.get(key);
-        Node ans = this.search(key);
-        if (ans != null) {
-            long info = ans.leafNode.engineGetInfo(key);
-            cache.put(key, info);
-            return info;
-        } else {
-            cache.put(key, -1l);
-            return -1l;
-        }
-    }
-
-
+    /**
+     * try to get the associated value for the key and return <tt>null</tt>
+     * if no such key exists
+     *
+     * @param key
+     * @return
+     */
     public Long get(long key) {
-        // if (cache.containsKey(key)) return cache.get(key);
         Node ans = this.search(key);
         if (ans != null) {
-            long info = ans.leafNode.getInfo(key);
+            long value = ans.leafNode.getValue(key);
             // todo
-            //    cache.put(key, info);
-            return info;
+            return value > 0 ? value : null;
         } else {
             // todo
-            // cache.put(key, null);
             return null;
         }
     }
 
+    /**
+     * try to remove and return the associated value for the key, return <tt>-1</tt>
+     * if no such key exists.
+     *
+     * @param key
+     * @return the associated value for the key, return <tt>-1</tt> if no such key exists.
+     */
+    public Long remove(long key) {
+        if (this.root == null) return null;
+        Node n = searchForAdd(key);
+        return n.leafNode.removeKey(key);
+    }
+
+    /**
+     * @param key
+     * @return whether this bplustree contains the key.
+     */
+    public boolean contains(long key) {
+        Long ans =  this.get(key);
+        return ans != null && ans > 0;
+    }
+
+    /**
+     * a simple Node holder
+     */
     class Node {
 
         MidNode midNode;
@@ -305,6 +316,9 @@ public class BPlusTree {
             }
         }
 
+        /**
+         * @return whether this node is a leaf node
+         */
         public boolean isLeaf() {
             return this.leaf;
         }
@@ -323,13 +337,12 @@ public class BPlusTree {
     private Node dummyLeaf = new Node(-1,  true);
     private Node dummyMid = new Node(-1, false);
 
-    /*
-        a mid node has:
-        long -> size.
-        long -> parentOffset.
-        keys which holding $size items: [long, long] pair and the first long is key, second is offset
+    /**
+     * a mid node has:
+     * long -> size.
+     * long -> parentOffset.
+     * keys which holding $size items: [long, long] pair and the first long is key, second is offset
      */
-
     class MidNode {
 
         int offset;
@@ -365,17 +378,10 @@ public class BPlusTree {
             return midLongBuffer.get(offset + 2 + (i * 2));
         }
 
-        public long getKeyOffset(int i) {
-            return midLongBuffer.get(offset + 2 + (i * 2) + 1);
-        }
-
-        public void setKeyOffset(int i, long keyOffset) {
-            midLongBuffer.put(offset + 2 + (i * 2) + 1, keyOffset);
-        }
-
         /**
          * add the key to this midNode. the isLeaf represent that whether this offset point to
          * a leaf node.
+         *
          * @param replacedKey the left key, it needs updated.
          * @param rightKey and keyOffset needs to be inserted.
          * @param isLeaf
@@ -526,8 +532,9 @@ public class BPlusTree {
 
         /**
          * search the location of key. if exist, would return the location of the key,
-         * otherwise return the less key beforehead the search key. return -1 if all key are
-         * larger than the search key.
+         * otherwise return the less key beforehead the search key. return <tt>-1</tt>
+         * if all key are larger than the search key.
+         *
          * @param key
          * @param size
          * @return
@@ -547,40 +554,21 @@ public class BPlusTree {
             return ans;
         }
 
-        /**
-         * search the location of key which all keys are less than the specific key.
-         * @param key
-         * @param size
-         * @return
-         */
-        public int binarySearch2(long key, int size) {
-            int left = 0, right = size - 1;
-            int ans = right;
-            while (left <= right) {
-                int mid = (left + right) >>> 1;
-                if (buffer[mid * 2] <= key) {
-                    ans = mid;
-                    left = mid + 1;
-                } else {
-                    right = mid - 1;
-                }
-            }
-            return ans;
-        }
-
     }
 
     static long[] buffer = new long[ (1024 * 4) / 8];
 
 
     /**
+     * a leaf node holder.
+     *
      * storing as :
      * long -> size
      * long -> previousOffset
      * long -> nextOffset
      * long -> parentOffset
      *
-     * -> key, info pairs.
+     * follows -> key, info pairs.
      */
     class LeafNode {
 
@@ -631,20 +619,15 @@ public class BPlusTree {
             return leafLongBuffer.get(offset + 4 + (i * 2));
         }
 
-        public long getKeyInfo(int i) {
-            return leafLongBuffer.get(offset + 4 + (i * 2) + 1);
-        }
-
         public void setKeyInfo(int i, long info) {
             leafLongBuffer.put(offset + 4 + (i * 2) + 1, info);
         }
 
         /**
-         * get the value associated with the key.
          * @param key
-         * @return
+         * @return the value associated with the key.
          */
-        public Long getInfo(long key) {
+        public Long getValue(long key) {
             int size = (int) this.getSize();
             this.readBuffer(buffer, size);
             int ans = binarySearch(key, size);
@@ -654,19 +637,10 @@ public class BPlusTree {
             return null;
         }
 
-        public long engineGetInfo(long key) {
-            int size = (int) this.getSize();
-            this.readBuffer(buffer, size);
-            int ans = binarySearch(key, size);
-            if (ans != -1 && buffer[ans * 2] == key) {
-                return buffer[ans * 2 + 1];
-            }
-            return -1l;
-        }
-
         /**
          * add a key,info pair to this node, if the key already appeared, then replace the previous info.
          * if the size of this node exceeds the limit, then split these nodes.
+         *
          * @param key
          * @param info
          */
@@ -704,13 +678,24 @@ public class BPlusTree {
             }
         }
 
+        public long removeKey(long key) {
+            int size = (int) this.getSize();
+            if (size == 0) {
+                return -1;
+            }
+            this.readBuffer(buffer, size);
+            int ans = binarySearch(key, size);
+            if (ans != -1 && buffer[ans * 2] == key) {
+                long info = leafLongBuffer.get(offset + 4 + (ans * 2) + 1);
+                this.setKeyInfo(ans, -1);
+                return info;
+            }
+            return -1;
+        }
+
         public void init(int offset, int parentOffset) {
             this.offset = offset;
             this.setParentOffset(parentOffset);
-        }
-
-        public void init(int offset) {
-            this.offset = offset;
         }
 
         public void splitAndAdd(long key, long info, int loc) {
@@ -765,8 +750,9 @@ public class BPlusTree {
         }
 
         /**
-         * binary search a key, return the location if holding the key, otherwiseput
+         * binary search a key, return the location if holding the key, otherwise
          * return the index of some key less than search key.
+         *
          * @param key
          * @param size
          * @return
@@ -787,9 +773,8 @@ public class BPlusTree {
         }
 
         /**
-         *
          * @param key
-         * @return
+         * @return whether this node has the key
          */
         public boolean hasKey(long key) {
             int size = (int) this.getSize();
@@ -800,6 +785,9 @@ public class BPlusTree {
 
     }
 
+    /**
+     * closing this bplustree
+     */
     public void close() {
         AccessController.doPrivileged(new PrivilegedAction() {
 
@@ -836,7 +824,7 @@ public class BPlusTree {
         }
     }
 
-    public String arraysToString(int from, int till, boolean isLeaf) {
+    private String arraysToString(int from, int till, boolean isLeaf) {
         StringBuilder build = new StringBuilder();
         if (isLeaf) {
             for (int i = from; i < till; i++) {
