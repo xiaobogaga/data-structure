@@ -12,8 +12,8 @@ import java.security.PrivilegedAction;
 import java.util.LinkedList;
 
 /**
- * an external memory and efficient bplus tree implementation. Note that this bplustree only can hold long type key and
- * value, for other type, must change the code here.
+ * an external memory and efficient bplus tree implementation. Note that this bplustree only can hold
+ * long type key and value, for other type, must change the code here.
  * <p>
  * we design the external bplus tree as following:
  * it contains three files :
@@ -34,8 +34,8 @@ import java.util.LinkedList;
  * 2. the mid_node file organized as follows:
  * long -> current size
  * long -> parent offset
- * [key (long type), offset (long type) ] pairs. remember that the first bit for offset of the pair used as
- * a sign when it is 1, then this offset point to a leaf node, otherwise 0 represent a mid node.
+ * [key (long type), offset (long type) ] pairs. remember that the first bit for offset of the pair
+ * used as a sign when it is 1, then this offset point to a leaf node, otherwise 0 represent a mid node.
  *
  *
  * 3. the leaf_node file organize as follows:
@@ -46,8 +46,21 @@ import java.util.LinkedList;
  * [key (long type) , info (long type) ] pairs.
  *
  *
- * BplusTree is constructed by a path which specifics where to save the real data. Again, BPlusTree can only save positive
+ * Again, BPlusTree can only save positive
  * long type as value.
+ *
+ * when do deleting, a lazy deletion strategy is actually what happened. instead of removing the key
+ * value pair, this bplustree implementation would set the value to a negative integer, and this is
+ * why this bplustree cannot hold negative values.
+ *
+ * BPlusTree is built with the saving path and leaf node mapped file size, mid node mapped file size.
+ * these two mapped file size are very important, it controls how many elements at most this bplustree
+ * can holds. Leaf mapped file size is the maximum leaf file size, for example, given leaf mapped file
+ * size 1024 * 16, then there could be at most 4 leaf block (by 1024 * 16 / (leaf block sie = 1024 * 4)).
+ * each leaf block has 4 long data to represent current size, previous offset, and so on (see previous
+ * leaf node file organization for more detail), and then remaining elements are used to save key-info pairs,
+ * then at most 4 * ((1024 * 4 - 4 * 8) / 8) = 2032 elements. and if given mid node mapped file size
+ * 1024 * 16. then at most 4 * ( (1024 * 4 - 2 * 8) / 8) = 2040 leaves can be maintained.
  *
  * @author tomzhu
  * @since 1.7
@@ -72,7 +85,7 @@ public class BPlusTree {
     private LongBuffer leafLongBuffer;
     private int metaSize = 1024 * 4;
     private int leafMappedMaxSize = 1024 * 1024;
-    private int midMappedMaxSize = 1024 * 12;
+    private int midMappedMaxSize = 1024 * 4;
 
     private int LEAF_LENGTH_THRESHOLD = (LeafBlock - 4 * 8) / 16;
     private int MID_LENGTH_THRESHOLD = (MIDBlock - 2 * 8) / 16;
@@ -84,7 +97,8 @@ public class BPlusTree {
     private Node root;
 
     /**
-     * construct a default bplustree
+     * construct a default bplustree with leaf mapped size : 1024 * 1024,
+     * and mid node mapped file size 1024 * 4
      *
      * @param path
      * @throws IOException
@@ -249,21 +263,21 @@ public class BPlusTree {
     }
 
     /**
-     * try to get the associated value for the key and return <tt>null</tt>
+     * try to get the associated value for the key and return a negative integer
      * if no such key exists
      *
      * @param key
      * @return
      */
-    public Long get(long key) {
+    public long get(long key) {
         Node ans = this.search(key);
         if (ans != null) {
             long value = ans.leafNode.getValue(key);
             // todo
-            return value > 0 ? value : null;
+            return value;
         } else {
             // todo
-            return null;
+            return -1l;
         }
     }
 
@@ -627,14 +641,14 @@ public class BPlusTree {
          * @param key
          * @return the value associated with the key.
          */
-        public Long getValue(long key) {
+        public long getValue(long key) {
             int size = (int) this.getSize();
             this.readBuffer(buffer, size);
             int ans = binarySearch(key, size);
             if (ans != -1 && buffer[ans * 2] == key) {
                 return buffer[ans * 2 + 1];
             }
-            return null;
+            return -1;
         }
 
         /**

@@ -23,7 +23,7 @@ public class BPlusTreeTest {
     private String path = "/tmp/tmp_test";
     private BPlusTree bPlusTree;
     private HashMap<Integer, Integer> hashMap;
-    private int size = 10;
+    private int size = 100;
 
     @Test
     public void addOrUpdate() {

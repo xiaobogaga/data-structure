@@ -16,11 +16,14 @@ import java.io.RandomAccessFile;
  *
  * Note that this external memory hash table is just a sample for showing how an out-of-memory data structure
  * is implemented. This hash table uses mapped file to save data efficiently, it can only save long data as key, and
- * long type as value. and value must be positive integers.
+ * long type as value. and value, key must be positive integers.
  *
  * the collision resolution strategy here is linear probing. and another important issue is that
  * this hash table must be built with a given size which defines how many elements this hash table
  * can save at most, so we don't consider rehash here.
+ *
+ * when removing an key value pair, what this hash table do is a lazy deletion, instead of removing the key value pair
+ * directly, it just set the value to a negative integer which denotes that this key value pair is deleted.
  *
  * @author tomzhu
  * @since 1.7
@@ -40,9 +43,20 @@ public class HashTable {
 
     private LongBuffer buffer;
 
-    private int size = 1024 * 1024 * 12; //这个究竟可以设置多大.
+    private int size = 1024 * 12; //这个究竟可以设置多大.
 
     private static long item_size = 8 * 2;
+
+    /**
+     * creating a default hash table.
+     *
+     * @param PATH
+     * @throws IOException
+     */
+    public HashTable(String PATH) throws IOException {
+        this.PATH = PATH;
+        init();
+    }
 
     /**
      * construct a hash table with the save path and maximum element size.
@@ -82,15 +96,22 @@ public class HashTable {
      */
     public void addOrUpdate(long key, long value) {
         int loc = hashCode(key) % this.size;
+        int deleteLoc = -1;
         while (isUse(loc)) {
             if (match(loc, key)) {
                 update(loc, value);
                 return ;
-            }
+            } else if (deleteLoc == -1 && deleted(loc)) deleteLoc = loc;
             loc = (loc + 1) % this.size;
         }
-        put(loc, key, value);
+        if (deleteLoc != -1) put(deleteLoc, key, value);
+        else put(loc, key, value);
     }
+
+    private boolean deleted(int loc) {
+        return this.buffer.get(loc * 2 + 1) <= 0;
+    }
+
 
     /**
      * try to remove and return the associate value for the key. return <tt>-1</tt>
@@ -103,8 +124,9 @@ public class HashTable {
         int loc = hashCode(key) % this.size;
         while (isUse(loc)) {
             if (match(loc, key)) {
+                if (deleted(loc)) return -1l;
                 long info = this.buffer.get(loc * 2 + 1);
-                put(loc, 0, 0);
+                update(loc, -1);
                 return info;
             }
             loc = (loc + 1) % this.size;
@@ -124,7 +146,7 @@ public class HashTable {
     }
 
     private boolean isUse(long loc) {
-        return this.buffer.get( (int) (loc * 2 + 1) ) > 0;
+        return this.buffer.get( (int) (loc * 2) ) > 0;
     }
 
     private boolean match(int loc, long key) {
@@ -141,12 +163,13 @@ public class HashTable {
         int loc = hashCode(key) % this.size;
         while (isUse(loc)) {
             if (match(loc, key)) {
+                if (deleted(loc)) return -1l;
                 long info = this.buffer.get(loc * 2 + 1);
                 return info;
             }
             loc = (loc + 1) % this.size;
         }
-        return -1;
+        return -1l;
     }
 
     /**
@@ -154,7 +177,7 @@ public class HashTable {
      * @return whether this hash table contains the key.
      */
     public boolean contains(long key) {
-        return this.get(key) != -1;
+        return this.get(key) > 0;
     }
 
     /**
