@@ -24,25 +24,25 @@ import java.util.LinkedList;
  * the meta data file organize the data as:
  * total 4k.
  * real data (48 bytes)
- * |long| -> mid_length_threshold
- * |long| -> current mid node size.
- * |long| -> leaf_length_threshold
- * |long| -> current leaf node size.
- * |long| -> root's offset
- * |long| -> is Root leaf.
+ * |long| - mid_length_threshold
+ * |long| - current mid node size.
+ * |long| - leaf_length_threshold
+ * |long| - current leaf node size.
+ * |long| - root's offset
+ * |long| - is Root leaf.
  *
  * 2. the mid_node file organized as follows:
- * long -> current size
- * long -> parent offset
+ * long - current size
+ * long - parent offset
  * [key (long type), offset (long type) ] pairs. remember that the first bit for offset of the pair
  * used as a sign when it is 1, then this offset point to a leaf node, otherwise 0 represent a mid node.
  *
  *
  * 3. the leaf_node file organize as follows:
- * long -> current size
- * long -> previous offset
- * long -> next offset
- * long -> parent offset
+ * long - current size
+ * long - previous offset
+ * long - next offset
+ * long - parent offset
  * [key (long type) , info (long type) ] pairs.
  *
  *
@@ -146,6 +146,8 @@ public class BPlusTree {
      * construct a bplustree with specific saving path, leaf node mapped file size and mid node mapped file size
      *
      * @param path
+     * @param leafMappedMaxSize
+     * @param midMappedMaxSize
      * @throws IOException
      */
     public BPlusTree(String path, int leafMappedMaxSize, int midMappedMaxSize) throws IOException {
@@ -353,8 +355,8 @@ public class BPlusTree {
 
     /**
      * a mid node has:
-     * long -> size.
-     * long -> parentOffset.
+     * long - size.
+     * long - parentOffset.
      * keys which holding $size items: [long, long] pair and the first long is key, second is offset
      */
     class MidNode {
@@ -577,12 +579,12 @@ public class BPlusTree {
      * a leaf node holder.
      *
      * storing as :
-     * long -> size
-     * long -> previousOffset
-     * long -> nextOffset
-     * long -> parentOffset
+     * long - size
+     * long - previousOffset
+     * long - nextOffset
+     * long - parentOffset
      *
-     * follows -> key, info pairs.
+     * follows - key, info pairs.
      */
     class LeafNode {
 

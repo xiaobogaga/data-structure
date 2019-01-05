@@ -410,7 +410,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
 
     /**
      * check whether the node has the specific child node <tt>child</tt>, if yes, return true, otherwise return
-     * false. a simple method is just checking {@ccode child.parent == this} , although user can use this strategy
+     * false. a simple method is just checking {@code child.parent == this} , although user can use this strategy
      * for simplify and performance , the child will not be added to the parent
      * because user can call {@code child.parent = this}.
      *

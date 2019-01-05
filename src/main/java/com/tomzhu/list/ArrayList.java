@@ -87,6 +87,7 @@ public class ArrayList<E> {
      *
      * @param i
      * @param ele
+     * @throws MyNosuchElementException
      */
     public void replace(int i, E ele) throws MyNosuchElementException {
         if (!ensureSize(i))

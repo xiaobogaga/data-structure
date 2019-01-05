@@ -120,7 +120,7 @@ public class SkipList<E extends Comparable<E>> {
     }
 
     /**
-     * remove an element from this skipList. return <tt>true/tt> if success and <tt>false</tt> if no such
+     * remove an element from this skipList. return <tt>true</tt> if success and <tt>false</tt> if no such
      * element exists
      *
      * @param ele

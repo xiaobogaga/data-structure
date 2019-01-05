@@ -76,7 +76,7 @@ public class BTree<E extends Comparable<E>> implements Tree {
     private Node root;
 
     /**
-     * construct a empty btree with default <tt>mid_m/tt> and <tt>leaf_l</tt> parameters
+     * construct a empty btree with default <tt>mid_m</tt> and <tt>leaf_l</tt> parameters
      */
     public BTree() {
     }
@@ -320,7 +320,7 @@ public class BTree<E extends Comparable<E>> implements Tree {
 
     /**
      * try to remove an element from this tree, if success , return <tt>true</tt>
-     * otherwise return <tt>false<tt> and this implies that the tree doesn't have the element.
+     * otherwise return <tt>false</tt> and this implies that the tree doesn't have the element.
      *
      * @param element
      * @return true if success, false if not found

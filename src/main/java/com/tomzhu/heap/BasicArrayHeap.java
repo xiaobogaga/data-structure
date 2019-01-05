@@ -47,6 +47,7 @@ public class BasicArrayHeap<E extends Comparable<E>> {
     /**
      * building a heap using data within O(N) time.
      *
+     * @param <T> the type of element
      * @param eles the elements
      * @param heapType heap type
      * @return the built heap

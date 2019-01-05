@@ -3,7 +3,8 @@ package com.tomzhu.heap;
 /**
  * a simple min-max or max-min heap. A double ended heap can be seen as a union
  * of min heap and max heap. it supports {@code getMax} and {@code getMin} operations
- * with constant time overhead. see {@link } for the original paper of this structure.
+ * with constant time overhead. @see <a href="https://dl.acm.org/citation.cfm?id=6621">here</a>
+ * for the original paper of this structure.
  *
  * @param <E> the type of element
  *
