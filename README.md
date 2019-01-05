@@ -57,9 +57,6 @@ into java hash map source code since jdk 1.8, then you can get 2390 line
 codes, and my hash map implementation only has 160 line. This is
 another reason I built this.
 
-# Install
-
-
 # Documentations
 For a detailed api documentation, please go to api docs.
 
