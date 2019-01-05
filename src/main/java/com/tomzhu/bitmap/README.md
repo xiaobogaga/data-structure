@@ -10,3 +10,5 @@ bitMap.isSet(10); // return true
 bitMap.clear(10);
 bitMap.isSet(10); // return false
 ```
+
+go to test file for more usages.

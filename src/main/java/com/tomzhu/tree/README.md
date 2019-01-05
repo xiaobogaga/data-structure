@@ -119,8 +119,6 @@ hashMap.contains(1); // return true
 hashMap.get(1); // return 2
 ```
 
-see [api doc]() for more information
-
 ## BasicNumberTrie and BasicStringTrie
 they are both trie data structures while basicNumberTrie just saving numbers.
 they support basic methods like `insert(String ele)`, `remove(String ele)` and
@@ -134,3 +132,5 @@ a.insert(Integer.toString(100));
 a.contains(Integer.toString(100)); // return true.
 a.remove(Integer.toString(100));
 ```
+
+go to test file for more usages.

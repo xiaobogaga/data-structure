@@ -23,4 +23,4 @@ heap.getMax(); // return 10.
 heap.getMin(); // return null, doesn't support
 ```
 
-for more details, see [api doc]().
+go to test file for more usages.

@@ -61,7 +61,7 @@ another reason I built this.
 
 
 # Documentations
-For a detailed api documentation, please [ref here]().
+For a detailed api documentation, please go to api docs.
 
 # Examples
 

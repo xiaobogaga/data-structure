@@ -22,3 +22,5 @@ bplusTree.addOrUpdate(1, 10);
 bplusTree.contains(1); // return true
 bplusTree.close();
 ```
+
+go to test file for more usages.

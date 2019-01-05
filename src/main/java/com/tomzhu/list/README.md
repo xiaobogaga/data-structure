@@ -80,4 +80,4 @@ stack.pop() return 3 and change to 2 <- 1
 stack.getHead() return 2
 ```
 
-for more information. see [api doc]() and for real example, see test file.
+go to test file for more usages.

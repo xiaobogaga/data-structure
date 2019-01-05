@@ -24,5 +24,4 @@ hashTable.remove(1);
 hashTable.contains(1) // return false
 ```
 
-for more detail, see [api doc]() for more.
-
+go to test file for more usages.
