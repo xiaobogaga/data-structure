@@ -20,6 +20,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **TreeMap** </p>
 **HashMap based on Red-black Tree** </p>
 **BTree** </p>
+**SkipList** </p>
 **Treap** </p>
 **Tries**
 
@@ -28,8 +29,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Leftist Heap** </p>
 **Skew Heap** </p>
 **Binomial Heap** </p>
-**DoubleEndedHeap** </p>
-**SkipList** </p>
+**DoubleEndedHeap**
 
 * Hash: </p>
 **Basic Hash Table by seperate chain** </p>
@@ -37,7 +37,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Perfect Hashing Table** </p>
 **Cuckoo Hash Table** </p>
 **Hopscotch Hash Table** </p>
-**Extensible Hash Table** </p>
+**Extensible Hash Table**
 
 * BitMap: </p>
 **BitMap**
