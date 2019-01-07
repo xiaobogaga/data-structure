@@ -62,14 +62,14 @@ For a detailed api documentation, please go to api docs.
 
 # Examples
 
-* [List](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/list)
+* [List](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/list)
 
-* [Tree](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/tree)
+* [Tree](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/tree)
 
-* [Heap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/heap)
+* [Heap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/heap)
 
-* [Hash](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/hash)
+* [Hash](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/hash)
 
-* [BitMap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/bitmap)
+* [BitMap](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/bitmap)
 
-* [External](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/com/tomzhu/external)
+* [External](https://github.com/xiaobogaga/data-structure/tree/master/src/main/java/io/github/xiaobogaga/external)
