@@ -1,7 +1,9 @@
 java collection implementations for the data structures talked about in
 the book **DATA STRUCTURES AND ALGORITHM ANALYSIS IN JAVA, THIRD EDITION**
 
-
+[![Build Status](https://travis-ci.org/xiaobogaga/data-structure.svg?branch=master)](https://travis-ci.org/xiaobogaga/data-structure)
+[![Javadocs](https://www.javadoc.io/badge/io.github.xiaobogaga/datastructure.svg)](https://www.javadoc.io/doc/io.github.xiaobogaga/datastructure)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.xiaobogaga/datastructure.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.github.xiaobogaga%22%20AND%20a:%22datastructure%22)
 
 Yep, this can be seen as another collection library like java collection
 framework, but it provides other data structure implementations like
