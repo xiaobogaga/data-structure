@@ -29,6 +29,7 @@ public class AVLTree<E extends Comparable<E>> {
     }
 
     /**
+     * @param element
      * @return whether this tree has the specific element.
      */
     public boolean contains(E element) {

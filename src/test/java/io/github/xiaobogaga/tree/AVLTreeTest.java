@@ -20,38 +20,6 @@ public class AVLTreeTest {
 
     @Test
     public void contains() throws Exception {
-        /**
-         inserting -1819809584 -1819, 1979, 1548, -463, 1029, 491, 220, 1128, 1462, -1086, 1191, 825, -1075, -64, -2027
-         inserting 1979286919
-         inserting 1548905930
-         inserting -463593194
-         inserting 1029555040
-         inserting 491017514
-         inserting 220029634
-         inserting 1128919825
-         inserting 1462327558
-         inserting -1086744216
-         inserting 1191628043
-         inserting 825925168
-         inserting -1075980160
-         inserting -64420876
-         inserting -2027568271
-         removing : -463593194
-         removing : 825925168
-         */
-
-        tree = new AVLTree<>();
-        int[] arr1 = new int[] {-1819, 1979, 1548, -463, 1029, 491, 220, 1128,
-                1462, -1086, 1191, 825, -1075, -64, -2027};
-        for (int i = 0; i < size; i++)
-            tree.insert(arr1[i]);
-        int[] arr2 = new int[] {-463, 825};
-        int size2 = 5;
-        for (int i = 0; i < size2; i++) {
-            System.out.println("removing " + arr2[i]);
-            assertTrue(tree.remove(arr2[i]));
-            assertFalse(tree.contains(arr2[i]));
-        }
     }
 
     @Test

@@ -21,39 +21,6 @@ public class BTreeTest {
     @Test
     public void contains() throws Exception {
 
-        /**
-         inserting : 1321407825
-         inserting : -907868213
-         inserting : -743077739
-         inserting : 196761683
-         inserting : 2323411
-
-         , 1321407825, -907868213, -743077739, 196761683, 2323411
-
-         removing : -743077739, 2323411, 1321407825, -907868213
-         */
-        int[] arr1 = new int[] {1321407825, -907868213, -743077739, 196761683, 2323411};
-        int[] arr2 = new int[] {-743077739, 2323411, 1321407825, -907868213, 196761683};
-        tree = new BTree<>();
-        for (int i = 0; i < size; i++) {
-            tree.insert(arr1[i]);
-        }
-        tree.PrintTree();
-        for (int i = 0; i < size; i++) {
-
-            System.out.println();
-            System.out.println("removing : " + arr2[i]);
-            System.out.println();
-            tree.PrintTree();
-            System.out.println();
-
-            assertTrue(tree.contains(arr2[i]));
-            assertTrue(tree.remove(arr2[i]));
-            assertFalse(tree.contains(arr2[i]));
-        }
-
-        tree.PrintTree();
-
     }
 
 

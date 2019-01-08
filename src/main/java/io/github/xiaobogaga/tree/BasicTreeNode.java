@@ -252,6 +252,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
      *
      * @param value
      * @return the added node
+     * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addLeftSibling(E value) throws MyNotSupportException {
         if (this.hasLeftSibling())
@@ -268,6 +269,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
      *
      * @param node
      * @return the added node
+     * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addLeftSibling(BasicTreeNode<E> node) throws MyNotSupportException {
         if (this.hasLeftSibling() || node.hasRightSibling()) {
@@ -289,6 +291,7 @@ public class BasicTreeNode<E> extends TreeNode<E> {
      *
      * @param value
      * @return added node
+     * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addRightSibling(E value) throws MyNotSupportException {
         if (this.hasRightSibling())

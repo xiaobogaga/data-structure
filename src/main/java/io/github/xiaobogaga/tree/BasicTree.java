@@ -121,6 +121,7 @@ public class BasicTree<E> implements Tree {
      * @param location
      * @param node
      * @return added node
+     * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addChild(BasicTreeNode<E> node , BasicTreeNode<E> neededNode , int location)
             throws MyNotSupportException {
@@ -174,6 +175,7 @@ public class BasicTree<E> implements Tree {
      * @param value
      * @param node
      * @return the added node
+     * @throws MyNotSupportException
      */
     public BasicTreeNode<E> addLeftSibling(BasicTreeNode<E> node , E value) throws MyNotSupportException {
         return node.addLeftSibling(value);
