@@ -90,23 +90,27 @@ public class PerfectHashingTable<K, V> {
             // secondary location table.
             HashFunction f = hashFamily(this.capacity);
             for (Entry entry : this.obs) {
-                entry.location = f.hash(entry.key);
-                secondaryHashTableSize[entry.location] ++;
+                if (entry != null) {
+                    entry.location = f.hash(entry.key);
+                    secondaryHashTableSize[entry.location]++;
+                }
             }
             if (isAppropriateSecondaryHashTable(secondaryHashTableSize)) {
                 // try to distribute these pairs to secondary location table.
                 this.hashFunction = f;
                 this.chains = new Object[this.capacity];
                 for (Entry entry : this.obs) {
-                    if (this.chains[entry.location] == null) {
-                        this.chains[entry.location] = new PerfectHashingTable<K, V>(entry.location,
-                                secondaryHashTableSize[entry.location], true);
-                    }
-                    ((PerfectHashingTable)this.chains[entry.location]).insert(entry);
-                    if ( ((PerfectHashingTable) this.chains[entry.location]).size ==
-                            secondaryHashTableSize[entry.location]) {
-                        // all items are added, start build.
-                        ((PerfectHashingTable) this.chains[entry.location]).buildSecondaryPerfectHashTable();
+                    if (entry != null) {
+                        if (this.chains[entry.location] == null) {
+                            this.chains[entry.location] = new PerfectHashingTable<K, V>(entry.location,
+                                    secondaryHashTableSize[entry.location], true);
+                        }
+                        ((PerfectHashingTable) this.chains[entry.location]).insert(entry);
+                        if (((PerfectHashingTable) this.chains[entry.location]).size ==
+                                secondaryHashTableSize[entry.location]) {
+                            // all items are added, start build.
+                            ((PerfectHashingTable) this.chains[entry.location]).buildSecondaryPerfectHashTable();
+                        }
                     }
                 }
                 return; // finish build.

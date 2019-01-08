@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
  */
 public class PerfectHashingTableTest {
 
+    private int capacity = 1000;
     private int size = 100;
     private PerfectHashingTable<Integer, Integer> perfectHashingTable;
     private HashMap<Integer, Integer> maps;
@@ -24,7 +25,7 @@ public class PerfectHashingTableTest {
     {
         this.maps = new HashMap<Integer, Integer>();
         int i = 0;
-        perfectHashingTable = new PerfectHashingTable<Integer, Integer>(size);
+        perfectHashingTable = new PerfectHashingTable<Integer, Integer>(capacity);
         int randNumber;
         while (i < size) {
             do {
