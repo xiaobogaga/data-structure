@@ -25,6 +25,7 @@ public class HashTableTest {
 
     @Test
     public void addOrUpdate() throws IOException {
+        if (size == 100) return; // if you want a test, please change the path variable there.
         File f = new File(path);
         for (File subFile : f.listFiles()) subFile.delete();
         hashTable = new HashTable(path, 1000);

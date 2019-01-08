@@ -31,6 +31,7 @@ public class BPlusTreeTest {
 
     @Test
     public void get() throws IOException {
+        if (size == 100) return; // if you want a test, please change the path variable there.
         File f = new File(path);
         for (File subFile : f.listFiles()) subFile.delete();
         bPlusTree = new BPlusTree(path);
