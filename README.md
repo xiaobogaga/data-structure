@@ -22,6 +22,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 **Splay Tree** </p>
 **Red-black tree** </p>
 **TreeMap** </p>
+**TreeSet**</p>
 **HashMap based on Red-black Tree** </p>
 **BTree** </p>
 **SkipList** </p>
@@ -38,7 +39,7 @@ Splay Tree, AVL Tree, Red-black Tree etc. it includes:
 * Hash: </p>
 **Basic Hash Table by seperate chain** </p>
 **Hash Table by linear probing, quadratic probing** </p>
-**Perfect Hashing Table** </p>
+**Perfect Hash Table** </p>
 **Cuckoo Hash Table** </p>
 **Hopscotch Hash Table** </p>
 **Extensible Hash Table**
